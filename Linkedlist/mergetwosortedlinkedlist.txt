@@ -1,0 +1,83 @@
+    public ListNode mergeTwoLists(ListNode h1, ListNode h2) {
+       
+       if(h1==null){
+           return h2;
+       }
+
+          
+       if(h2==null){
+           return h1;
+       }
+    //recursion   T: O(N + M)  , S: O(N+M)
+    //    if(h1.val<h2.val){
+    //        h1.next = mergeTwoLists(h1.next,h2);
+
+    //        return h1;
+
+    //    }
+    //    else{
+    //            h2.next = mergeTwoLists(h1,h2.next);
+    //        return h2;
+    //    }
+
+
+    //iterative T: O(N + M)  , S: O(1)
+
+    // ListNode dummy=new ListNode(-1);
+    // ListNode tail = dummy;
+
+    // while(h1 !=null && h2 !=null){
+
+    //     if(h1.val<h2.val){
+    //         tail.next=h1;
+    //         tail=h1;
+    //         h1=h1.next;
+    //     }
+    //     else{
+    //          tail.next=h2;
+    //         tail=h2;
+    //         h2=h2.next;
+    //     }
+    // }
+
+    // if(h1 !=null){
+    //     tail.next=h1;
+    // }
+
+    //   if(h2 !=null){
+    //     tail.next=h2;
+    // }
+
+    // return dummy.next;
+
+    // keep h1 small (other approach)T: O(N + M)  , S: O(1)
+
+    if(h1.val>h2.val){
+        ListNode temp = h1;
+        h1=h2;
+        h2=temp;
+    }
+
+    ListNode res = h1;
+
+    while(h1!=null && h2!=null){
+
+        ListNode tmp = null;
+
+        while(h1!=null && h1.val<=h2.val){
+            // tmp = new ListNode(h1.val);
+            tmp=h1;
+            h1=h1.next;
+        }
+
+        tmp.next=h2; //if greate comes in h1
+
+
+        ListNode temp=h1;
+        h1=h2;
+        h2=temp;
+    }
+
+    return res;
+
+    }

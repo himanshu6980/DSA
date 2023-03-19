@@ -1,0 +1,44 @@
+Node flatten(Node root)
+    {
+        Node h1=root;
+        Node h2=root.next;
+        
+        while(h2!=null){
+            h1=mergeTwoLists(h1,h2);
+            h2=h2.next;
+        }
+        
+        return h1;
+        
+    }
+    
+ public Node mergeTwoLists(Node h1, Node h2) {
+        
+   Node dummy = new Node(0);
+   Node tmp=dummy;
+   
+   while(h1!=null && h2!=null){
+       
+       if(h1.data<h2.data){
+           tmp.bottom=h1;
+             tmp=tmp.bottom;
+           h1=h1.bottom;
+       }
+       else{
+           tmp.bottom=h2;
+             tmp=tmp.bottom;
+           h2=h2.bottom;
+       }
+
+   }
+   
+   if(h1!=null){
+       tmp.bottom=h1;
+   }
+   else{
+       tmp.bottom=h2;
+   }
+   
+   return dummy.bottom;
+    
+    }

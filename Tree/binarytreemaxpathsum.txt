@@ -1,0 +1,25 @@
+
+t: O(N) s : O(N).
+
+  public int maxPathSum(TreeNode root) {
+        
+      int maxValue[] = new int[1];
+        maxValue[0] = Integer.MIN_VALUE;
+        maxPathDown(root, maxValue);
+        return maxValue[0];
+    }
+
+    public  int maxPathDown(TreeNode node, int maxValue[]) {
+        if (node == null) return 0;
+        int leftsum=maxPathDown(node.left, maxValue);
+        if(leftsum<0){
+            leftsum=0;
+        }
+        int rightsum = maxPathDown(node.right, maxValue);
+
+        if(rightsum<0){
+            rightsum=0;
+        }
+        maxValue[0] = Math.max(maxValue[0], leftsum + rightsum + node.val);
+        return Math.max(leftsum, rightsum) + node.val;
+    }

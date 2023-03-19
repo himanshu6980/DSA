@@ -1,0 +1,93 @@
+0-1 knapsack : 
+subset sum
+equal sum partition
+min subset sum diff
+target sum
+noof subset with given diff
+
+//normal recursion : t: o(2^n) s: o(n)
+
+
+//recursive with memoization t:O(N*W) s: O(N*W) + O(N)
+
+   static int knapSack(int W, int wt[], int val[], int n)
+    {
+        int[][] t = new int[n+1][W+1];
+        for (int[] row: t){
+            Arrays.fill(row, -1);
+        }
+        return utilKnapSack(W, wt, val, n, t);
+    } 
+    static int utilKnapSack(int W, int wt[], int val[], int n, int[][] t){
+        if(W == 0 || n == 0){
+            return 0;
+        }
+        if(t[n][W] != -1){
+            return t[n][W];
+        }
+        if(wt[n - 1] <= W){
+            return t[n][W] = Math.max(val[n - 1] + utilKnapSack(W-wt[n-1], wt, val, n-1, t), utilKnapSack(W, wt, val, n-1, t));
+        }else {
+            return t[n][W] = utilKnapSack(W, wt, val, n-1, t);
+        }
+    }
+	
+	
+	
+//iterative  t: O(N*W) s: O(N*W)
+    static int knapSack(int W, int wt[], int val[], int n) 
+    { 
+            int [][]t = new int[n+1][W+1];
+        
+   for(int i=0;i<n+1;i++){
+       
+       for(int j=0;j<W+1;j++){
+           
+           if(i==0 || j==0){
+               t[i][j] =0;
+           }
+       }
+   }
+        
+        //Choice Diagram to code
+        for(int i = 1; i<n+1; i++){
+            for(int j=1; j<W+1; j++){
+                //1. In case of choice
+                if(wt[i-1] <= j){
+                    t[i][j] = Math.max(val[i-1] + t[i-1][j-wt[i-1]], 0+t[i-1][j]);
+                }
+                //2. No choice
+                else if(wt[i-1] > j){
+                    t[i][j] = 0+t[i-1][j];
+                }
+            }
+        }
+        return t[n][W];
+        
+    }
+	
+	////iterative  t: O(N*W) s: O(W)
+    static int knapSack(int W, int wt[], int val[], int n) 
+    { 
+           int []t = new int[W+1];
+        
+        for(int j=0; j<W+1; j++){
+            t[j] = 0;
+        }
+        for(int i = 1; i<n+1; i++){
+            int []temp = new int[W+1];
+            for(int j=0; j<W+1; j++){
+        //1. In case of choice
+                if(wt[i-1] <= j){
+             temp[j] = Math.max(val[i-1] + t[j-wt[i-1]], t[j]);
+                }
+        //2. No choice
+                else {
+            temp[j] = t[j];
+                }
+            }       
+            t = temp;
+        }
+return t[W];
+        
+    }

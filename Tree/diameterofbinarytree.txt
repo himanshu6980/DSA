@@ -1,0 +1,55 @@
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. 
+This path may or may not pass through the root.
+
+    int maxi=-1;
+    public int diameterOfBinaryTree(TreeNode root) {
+        //brute force t: o(n^2) s:o(n)
+
+//         if(root==null){
+//             return 0;
+//         }
+
+//         int lh=findheight(root.left);
+//         int rh=findheight(root.right);
+
+//     maxi=Math.max(maxi,lh+rh);
+//     diameterOfBinaryTree(root.left);
+//     diameterOfBinaryTree(root.right);
+
+// return maxi;
+
+        //approach 2 t: o(n) s:o
+        int [] diameter = new int[1];
+        getheightoptimal(root,diameter);
+
+        return diameter[0];
+
+    }
+
+  int getheightoptimal(TreeNode root , int[] diameter){
+
+        if(root==null){
+            return 0;
+        }
+
+        int l =getheightoptimal(root.left,diameter);
+        int r = getheightoptimal(root.right,diameter);
+        diameter[0]=Math.max(diameter[0],l+r);
+        return 1+Math.max(l,r);
+    }
+
+
+
+
+
+    int findheight(TreeNode root){
+
+        if(root==null){
+            return 0;
+        }
+
+        int l =findheight(root.left);
+        int r = findheight(root.right);
+
+        return 1+Math.max(l,r);
+    }

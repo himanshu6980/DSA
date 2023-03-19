@@ -1,0 +1,41 @@
+
+t: o(N) s:o(N)
+
+public class Solution {
+    public int[] solve(TreeNode A, int B) {
+        ArrayList<Integer> arr=new ArrayList<>();
+
+        getpath(A,arr,B);
+        
+         int[] al = new int[arr.size()];
+  
+        // ArrayList to Array Conversion
+        for (int i = 0; i < arr.size(); i++)
+            al[i] = arr.get(i);
+            
+        return al;
+    }
+    
+    public boolean getpath(TreeNode root , ArrayList<Integer> arr, int x){
+        if(root==null){
+            return false;
+        }
+        arr.add(root.val);
+        if(root.val==x){
+            return true;
+        }
+        
+        boolean lh=getpath(root.left,arr,x);
+        if(lh==true){
+            return true;
+        }
+        
+        boolean rh=getpath(root.right,arr,x);
+        if(rh==true){
+            return true;
+        }
+        
+        arr.remove(arr.size()-1);
+        return false;
+    }
+}

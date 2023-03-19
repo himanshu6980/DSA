@@ -1,0 +1,59 @@
+ public ListNode getIntersectionNode(ListNode head1, ListNode head2) {
+        //brute force TC: O(m*n) SC: O(1)
+    //       while(head2 != null) {
+    //     ListNode temp = head1;
+    //     while(temp != null) {
+    //         //if both nodes are same
+    //         if(temp == head2) return head2;
+    //         temp = temp.next;
+    //     }
+    //     head2 = head2.next;
+    // }
+    // //intersection is not present between the lists return null
+    // return null;
+
+
+//hashing  TC: O(n+m) SC: O(N)
+
+// HashSet<ListNode> hset = new HashSet<>();
+
+// while(head1!=null){
+//     hset.add(head1);
+//     head1=head1.next;
+// }
+
+// while(head2!=null){
+//    if(hset.contains(head2)){
+//        return head2;
+//    }
+//     head2=head2.next;
+// }
+
+// return null;
+
+
+//optimal O(2*max(length of list1,length of list2)) SC: O(1)
+
+ListNode d1=head1;
+ListNode d2=head2;
+
+while(d1!=d2){
+
+    if(d1==null){
+        d1=head2;
+    }
+    else{
+        d1=d1.next;
+    }
+
+       if(d2==null){
+        d2=head1;
+    }
+    else{
+        d2=d2.next;
+    }
+}
+
+return d2;
+
+    }

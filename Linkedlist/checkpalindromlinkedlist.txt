@@ -1,0 +1,65 @@
+//bruteforce using extra data strcutre
+
+static boolean isPalindrome(Node head) {
+    ArrayList<Integer> arr=new ArrayList<>();
+    while(head != null) {
+        arr.add(head.num);
+        head = head.next;
+    }
+    for(int i=0;i<arr.size()/2;i++) 
+        if(arr.get(i) != arr.get(arr.size()-i-1)) return false;
+    return true;
+}
+T: O(N) S: O(N)
+
+//approach 2 
+// TC: O(N/2)+O(N/2)+O(N/2  S:O(1)
+
+    public boolean isPalindrome(ListNode head) {
+        if(head==null || head.next==null){
+            return true;
+        }
+
+        ListNode fast=head;
+        ListNode slow = head;
+
+        //find middle
+
+        while(fast.next !=null && fast.next.next !=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        
+        //point to other half
+
+        slow.next=reverse(slow.next);
+ 
+        slow=slow.next;//move to first of half list , escepae middle
+
+        while(slow !=null){
+            if(head.val!=slow.val){
+                return false;
+            }
+
+            head=head.next;
+            slow=slow.next;
+        }
+
+        return true;
+
+    }
+
+
+    public ListNode reverse(ListNode head){
+        ListNode prev = null;
+        ListNode next = null;
+
+        while(head !=null){
+            next=head.next;
+            head.next=prev;
+            prev=head;
+            head = next;
+        }
+
+        return prev;
+    }

@@ -1,0 +1,27 @@
+balance bt = for every node ==> height(lt)-height(rt) <=1;
+Time Complexity: O(N) 
+
+Space Complexity: O(1) Extra Space + O(H) Recursion Stack space (Where “H”  is the height of binary tree)
+
+   boolean isBal=true;
+    public boolean isBalanced(TreeNode root) {
+        helper(root);
+        return isBal;
+    }
+
+       public int helper(TreeNode root){
+        
+        if(root==null)
+            return 0;
+        
+        int left = helper(root.left);
+        int right = helper(root.right);
+        
+        int gap = Math.abs(left-right);
+        if(gap>1)
+            isBal=false;
+        
+        int height = Math.max(left,right)+1;
+        return height;
+    }
+

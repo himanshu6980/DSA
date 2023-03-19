@@ -1,0 +1,61 @@
+     //brtue force
+
+        // HashMap<Node,Node> hmap = new HashMap<>();
+
+        // Node temp = head;
+
+        // while(temp!=null){
+        //     hmap.put(temp,new Node(temp.val));
+        //     temp=temp.next;
+        // }
+
+        // temp=head;
+        // while(temp!=null){
+        //     hmap.get(temp).next=hmap.get(temp.next);
+        //        hmap.get(temp).random=hmap.get(temp.random);
+
+        //        temp=temp.next;
+            
+        // }
+        // return hmap.get(head);
+
+//apprach2
+T: O(N)+O(N)+O(N) ~ O(N) S: O(1)
+
+        Node iter=head;
+        Node front = head;
+
+        while(iter!=null){
+            front=iter.next;
+            Node copynode = new Node(iter.val);
+            iter.next=copynode;
+            copynode.next=front;
+            iter=front;
+        }
+
+
+        iter=head;
+        while(iter!=null){
+            if(iter.random!=null){
+                iter.next.random=iter.random.next;
+             
+            }
+               iter=iter.next.next;
+        }
+
+        iter=head;
+        Node psuedohead=new Node(0);
+        Node cpnode=psuedohead;
+
+        while(iter!=null){
+            front=iter.next.next;
+            cpnode.next=iter.next;
+              cpnode=cpnode.next;
+            iter.next=front;
+          
+            iter=front;
+
+        }
+        return psuedohead.next;
+
+    }

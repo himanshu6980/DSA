@@ -1,0 +1,87 @@
+
+		t: o(N) s:o(N)
+		
+	    ArrayList<Integer> ans = new ArrayList<>();
+	    
+	    if(node==null){
+	        return ans;
+	    }
+	    
+	    if(isleaf(node)==false){
+	        ans.add(node.data);
+	    }
+	    
+	    addleftboundary(node,ans);
+	    addleaves(node,ans);
+	    addrightboundary(node,ans);
+	    
+	    return ans;
+	    
+	}
+	
+	public boolean isleaf(Node node){
+	    
+	    if(node.left==null && node.right==null){
+	        return true;
+	    }
+	    
+	    return false;
+	}
+	
+	public void addleftboundary(Node node, ArrayList<Integer> ans){
+	   node=node.left;
+	   
+	   while(node !=null){
+	       
+	       if(isleaf(node)==false){
+	           ans.add(node.data);
+	       }
+	       
+	       if(node.left!=null){
+	           node=node.left;
+	       }
+	       else{
+	           node=node.right;
+	       }
+	   }
+	}
+	
+	public void addleaves(Node node, ArrayList<Integer> ans){
+	    if(node==null){
+	        return;
+	    }
+	    if(isleaf(node)==true){
+	        ans.add(node.data);
+	        return;
+	    }
+	    
+	    addleaves(node.left,ans);
+	    addleaves(node.right,ans);
+	}
+	
+	public void addrightboundary(Node node, ArrayList<Integer> ans){
+	    
+	    node=node.right;
+	    Stack<Integer> st=new Stack<>();
+	    
+	     while(node !=null){
+	       
+	       if(isleaf(node)==false){
+	           st.push(node.data);
+	       }
+	       
+	       if(node.right!=null){
+	           node=node.right;
+	       }
+	       else{
+	           node=node.left;
+	       }
+	   }
+	   
+	   while(!st.isEmpty()){    //print right from bottom to top because of  anticlock wise
+	       ans.add(st.peek());
+	       st.pop();
+	   }
+	    
+	}
+	

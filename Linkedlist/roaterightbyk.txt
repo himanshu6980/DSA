@@ -1,0 +1,50 @@
+  static Node rotateRight(Node head, int k) {
+    if (head == null || head.next == null) return head;
+    for (int i = 0; i < k; i++) {
+      Node temp = head;
+      while (temp.next.next != null) temp = temp.next;
+      Node end = temp.next;
+      temp.next = null;
+      end.next = head;
+      head = end;
+    }
+    return head;
+  }
+  
+  T: O(n*k) S: O(1)
+  
+  
+		//2nd approach 
+		Time Complexity: O(length of list) + O(length of list – (length of list%k))
+		SC  o(1)
+		
+      public ListNode rotateRight(ListNode head, int k) {
+
+        if(head==null || head.next==null || k==0){
+            return head;
+        }
+
+        int len=1;
+        ListNode curr=head;
+        while(curr.next != null){
+            len++;
+            curr=curr.next;
+        }
+
+        curr.next=head;
+
+        k = len- k%len;
+
+        while(k-->0){
+            curr=curr.next;
+        }
+
+        head=curr.next;
+        curr.next=null;
+
+        return head;
+
+
+    }
+  
+  

@@ -1,0 +1,120 @@
+
+tc: 0(Nlogn) s: o(N)
+
+
+class Pair{
+    
+    Node node;
+    int  vl;
+    
+    Pair(Node node , int vl){
+        this.node=node;
+        this.vl=vl;
+    }
+}
+
+class Solution
+{
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    static ArrayList<Integer> topView(Node root)
+    {
+        // add your code
+        
+        Queue<Pair> q = new LinkedList<Pair>();
+        
+        Map<Integer, Integer> map=new TreeMap<>();
+        
+        ArrayList<Integer> ans=new ArrayList<>();
+        
+        if(root==null){
+            return ans;
+        }
+        
+        q.offer(new Pair(root,0));
+        
+        while(!q.isEmpty()){
+            Pair curr=q.remove();
+            
+            int vl=curr.vl;
+            Node temp=curr.node;
+            
+            if(map.get(vl)==null){
+                map.put(vl,temp.data);
+            }
+            
+            if(temp.left !=null){
+                q.offer(new Pair(temp.left,vl-1));
+            }
+            if(temp.right !=null){
+                q.offer(new Pair(temp.right,vl+1));
+            }
+        }
+        
+        for (Map.Entry<Integer,Integer> entry: map.entrySet()){
+            ans.add(entry.getValue());
+        }
+        
+        return ans;
+    }
+	
+	
+	
+	
+//  bottom view one change only
+ if(map.get(vl)==null){
+                map.put(vl,temp.data);
+            }  change to ==>   map.put(vl,temp.data);
+
+class Pair{
+    
+    Node node;
+    int  vl;
+    
+    Pair(Node node , int vl){
+        this.node=node;
+        this.vl=vl;
+    }
+}
+
+class Solution
+{
+    //Function to return a list containing the bottom view of the given tree.
+    public ArrayList <Integer> bottomView(Node root)
+    {
+        // Code here
+        Queue<Pair> q = new LinkedList<Pair>();
+        
+        Map<Integer, Integer> map=new TreeMap<>();
+        
+        ArrayList<Integer> ans=new ArrayList<>();
+        
+        if(root==null){
+            return ans;
+        }
+        
+        q.offer(new Pair(root,0));
+        
+          while(!q.isEmpty()){
+            Pair curr=q.remove();
+            
+            int vl=curr.vl;
+            Node temp=curr.node;
+            
+             map.put(vl,temp.data);
+            
+            if(temp.left !=null){
+                q.offer(new Pair(temp.left,vl-1));
+            }
+            if(temp.right !=null){
+                q.offer(new Pair(temp.right,vl+1));
+            }
+        }
+        
+        for (Map.Entry<Integer,Integer> entry: map.entrySet()){
+            ans.add(entry.getValue());
+        }
+        
+        return ans;
+    }
+}

@@ -1,0 +1,61 @@
+
+Time Complexity: O(N*logN)
+
+Space Complexity: O(N)
+
+//leetcode
+public class Tuple{
+    TreeNode node;
+    int vl;
+    int hl;
+
+    Tuple(TreeNode node,int vl,int hl){
+        this.node=node;
+        this.vl=vl;
+        this.hl=hl;
+    }
+}
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+
+        //vl--> hl : nodes
+  TreeMap < Integer, TreeMap < Integer, PriorityQueue < Integer >>> map = new TreeMap < > ();
+        Queue < Tuple > q = new LinkedList < Tuple > ();
+        q.offer(new Tuple(root, 0, 0));
+        while (!q.isEmpty()) {
+            Tuple tuple = q.poll();
+            TreeNode node = tuple.node;
+            int vl = tuple.vl;
+            int hl = tuple.hl;
+
+
+            if (!map.containsKey(vl)) {
+                map.put(vl, new TreeMap < > ());
+            }
+            if (!map.get(vl).containsKey(hl)) {
+                map.get(vl).put(hl, new PriorityQueue < > ());
+            }
+            map.get(vl).get(hl).offer(node.val);
+
+            if (node.left != null) {
+                q.offer(new Tuple(node.left, vl - 1, hl + 1));
+            }
+            if (node.right != null) {
+                q.offer(new Tuple(node.right, vl + 1, hl + 1));
+            }
+        }
+        
+    List<List<Integer>> res = new LinkedList<>();
+        for (int key : map.keySet()){
+            List<Integer> list = new LinkedList<>();
+            TreeMap<Integer, PriorityQueue<Integer>> tm = map.get(key);
+            for (int k : tm.keySet()){
+                PriorityQueue<Integer> pq = tm.get(k);
+                while (!pq.isEmpty()){
+                    list.add(pq.poll());
+                }
+            }
+            res.add(list);
+        }
+        return res;
+    }

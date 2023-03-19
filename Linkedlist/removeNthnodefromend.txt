@@ -1,0 +1,29 @@
+ // TC : O(N) SC: O(1)
+ 
+ public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode start=new ListNode();
+        start.next=head;
+
+        ListNode fast=start;
+        ListNode slow = start;
+
+        for(int i=1;i<=n;i++){
+            fast=fast.next;
+        }
+
+            if(fast.next == null) {
+            return head.next;
+        }
+
+        while(fast.next!=null){
+            fast=fast.next;
+            slow=slow.next;
+        }
+
+        //node to delete
+        //delete(slow.next)
+
+        slow.next=slow.next.next;
+
+        return head;
+    }

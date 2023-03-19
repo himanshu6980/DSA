@@ -1,0 +1,46 @@
+ public List<Integer> preorderTraversal(TreeNode root) {
+        //root left right  t : o(n)  s: o(n)
+
+        // ArrayList<Integer> preorder = new ArrayList<>();
+        // preOrderTrav(root, preorder);
+        // return preorder;
+
+ // iterative t : o(n)  s: o(n)
+    List<Integer> ans=new ArrayList<>();
+
+    Stack<TreeNode> st=new Stack<>();
+
+    TreeNode node = root;
+
+       if(root==null){
+        return ans;
+    }
+
+
+    st.push(node);
+
+    while(!st.isEmpty()){
+        root=st.pop();
+        ans.add(root.val);
+
+        if(root.right !=null){
+            st.push(root.right);
+        }
+
+         if(root.left !=null){
+            st.push(root.left);
+        }
+    }
+
+    return ans;
+
+    }
+
+       public void preOrderTrav(TreeNode root, List<Integer> preorder) {
+         if(root==null){
+             return;
+         }
+        preorder.add(root.val);  
+         preOrderTrav(root.left,preorder);
+         preOrderTrav(root.right,preorder);
+    }

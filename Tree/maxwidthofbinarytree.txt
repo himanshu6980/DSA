@@ -1,0 +1,62 @@
+widht: max no of nodes in any level between 2 nodes 
+
+//leetcode solution where ques is  in between 2 nodes if nodes missing dont matter
+and in gfg codestudio In code studio they have excluded all the null nodes and then calculate the width....
+which we can get easily by level order traversal and storing the max size of queue..
+
+class Pair{
+    TreeNode node;
+    int index;
+    Pair(TreeNode node, int index){
+        this.node=node;
+        this.index=index;
+    }
+}
+
+class Solution {
+    public int widthOfBinaryTree(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+
+        Queue<Pair> q=new LinkedList<>();
+
+        q.offer(new Pair(root,0));
+
+        int maxwidth=0;
+        int leftindex=0;
+        int rightindex=0;
+
+        while(!q.isEmpty()){
+            int size=q.size();
+
+            for(int i=0;i<size;i++){
+
+            Pair curr=q.poll();
+            TreeNode node=curr.node;
+            int currindex=curr.index;
+
+            if(i==0){
+                leftindex=currindex;
+            }
+
+            if(i==(size-1)){
+                rightindex=currindex;
+            }
+
+            if(node.left !=null){
+                q.offer(new Pair(node.left,currindex*2));
+            }
+
+              if(node.right !=null){
+                q.offer(new Pair(node.right,currindex*2+1));
+            }
+
+
+            }
+            maxwidth=Math.max(maxwidth,rightindex-leftindex+1);
+
+        }
+
+        return maxwidth;
+    }

@@ -1,0 +1,76 @@
+   public ListNode reverseKGroup(ListNode head, int k) {
+   
+   Time complexity: 0(n) -- .
+Space complexity: O(n/k) -- memory used in recursion stack.
+        // if(head==null || head.next==null || k==1){
+        //     return head;
+        // }
+
+        // ListNode s=head;
+        // ListNode e= head;
+
+        // int inc=k-1;
+        // while(inc-- > 0){
+        //     e=e.next;
+
+        //     if(e==null){
+        //         return head;
+        //     }
+        // }
+        // ListNode nextHead=reverseKGroup(e.next,k);
+        // reverse(s,e);
+        // s.next=nextHead;
+
+        // return e;
+
+        //2nd apporach  
+		
+   Time complexity: 0(n) -- 
+Space complexity: O(1)
+            if(head==null || head.next==null || k==1){
+            return head;
+        }
+
+        ListNode e= head;
+        ListNode dummy = new ListNode(-1);
+        dummy.next=head;
+
+        ListNode beforestart=dummy;
+        int i=0;
+        while(e!=null){
+            i++;
+            if(i%k==0){
+                //reversal
+                ListNode s = beforestart.next;
+                ListNode endnext=e.next;
+                reverse(s,e);
+
+                beforestart.next=e;
+                s.next=endnext;
+
+                beforestart=s;
+                e=endnext;
+            }
+            else{
+                e=e.next;
+            }
+        }
+
+        return dummy.next;
+    }
+
+    public void reverse(ListNode s, ListNode e){
+
+         ListNode prev = null;
+        ListNode curr = s;
+        ListNode next = s.next;
+        while (prev != e) {
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            if (next != null) {
+                next = next.next;
+            }
+        }
+
+    }

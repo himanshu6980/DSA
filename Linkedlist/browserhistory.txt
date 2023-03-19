@@ -1,0 +1,34 @@
+    class Node{
+        Node next, prev;
+        String url;
+        Node(String url, Node n, Node p){
+            this.url = url;
+            next = n;
+            prev = p;
+        }
+    }
+class BrowserHistory {
+    Node browser;
+    public BrowserHistory(String homepage) {
+        browser = new Node(homepage, null, null);
+    }
+    
+    public void visit(String url) {
+          Node node = new Node(url, null, browser);
+        browser.next = node;
+        browser = browser.next;
+    }
+    
+    public String back(int steps) {
+        while(steps-- > 0 && browser.prev != null)
+            browser = browser.prev;
+        return browser.url;
+    }
+    
+    public String forward(int steps) {
+           while(steps-- > 0 && browser.next != null)
+            browser = browser.next;
+        return browser.url;
+    }
+    
+}
