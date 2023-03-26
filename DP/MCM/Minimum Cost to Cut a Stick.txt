@@ -1,0 +1,42 @@
+ public int minCost(int n, int[] arr) {
+        //tc: o(n^3) sc : o(n^2)+o(n)
+        Arrays.sort(arr); //sort why so that left and right subproblems will be independent after cut
+        List<Integer> cuts= new ArrayList<>();
+        cuts.add(0);
+
+        for(int i =0;i<arr.length;i++){
+            cuts.add(arr[i]);
+        }
+
+        cuts.add(n);
+
+        int [][] dp = new int[arr.length+1][arr.length+1];
+
+        for(int i=0;i<dp.length;i++){
+            Arrays.fill(dp[i], -1);
+        }
+
+        return f(1 ,arr.length , cuts, dp);
+        
+    }
+
+    static int f(int i , int j , List<Integer> cuts , int[][] dp ){
+        if(i>j){ //ifno partition
+            return 0;
+        }
+
+        if(dp[i][j] !=-1){
+            return dp[i][j];
+        }
+
+        int mini  = Integer.MAX_VALUE;
+
+        for(int ind = i;ind<=j;ind++){
+            int cost = cuts.get(j+1) - cuts.get(i-1) + f(i , ind-1 , cuts,dp) + f(ind+1,j,cuts,dp);
+
+            mini = Math.min(cost,mini);
+        }
+
+        return dp[i][j]=mini;
+    }
+}

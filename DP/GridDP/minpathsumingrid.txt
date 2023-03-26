@@ -1,0 +1,40 @@
+Time Complexity: O(N*M)
+
+Reason: At max, there will be N*M calls of recursion.
+
+Space Complexity: O((M-1)+(N-1)) + O(N*M)
+
+Reason: We are using a recursion stack space:O((M-1)+(N-1)),
+ here (M-1)+(N-1) is the path length and an external DP Array of size ‘N*M’.
+
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    int dp[][]=new int[m][n];
+    for (int[] row : dp)
+        Arrays.fill(row, -1);
+    return f(m-1,n-1,dp,grid);
+    }
+
+        public int f(int i,int j,int[][] t, int[][] arr){
+
+        if(i==0 && j==0){
+            return arr[i][j];
+        }
+
+        if(i<0 || j<0){
+	
+        return (int)Math.pow(10,9);
+        }
+		
+			//it means that we have crossed the boundary of the matrix and we don’t want to find a path from here, 
+		//so we return a very large number( say, 1e9) so that this path is rejected by the calling function.
+
+        if(t[i][j]!=-1){
+            return t[i][j];
+        }
+
+        int up = arr[i][j] + f(i-1,j,t,arr);
+        int left = arr[i][j]+f(i,j-1,t,arr);
+        return t[i][j] = Math.min(up,left);
+    }    

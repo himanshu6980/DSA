@@ -1,0 +1,56 @@
+Floor Value Node: Node with the greatest data lesser than or equal to the key value. 
+Ceil Value Node: Node with the smallest data larger than or equal to the key value
+
+tc: log(n) sc:log(n)
+
+int ceil=-1;
+
+ while(root !=null){
+
+if(root.data==x){
+    ceil=root.data;
+    return ceil;
+}
+
+if(x>root.data){
+    root=root.right;
+}
+else{
+    ceil=root.data;
+    root=root.left;
+}
+
+
+     
+ }
+
+ return ceil;
+ 
+ 
+ 
+ 
+ 
+ 
+int floor=-1;
+
+ while(root !=null){
+
+if(root.data==x){
+    floor=root.data;
+    return floor;
+}
+
+if(x>root.data){
+    floor=root.data;
+    root=root.right;
+}
+else{
+    
+    root=root.left;
+}
+
+
+     
+ }
+
+ return floor;

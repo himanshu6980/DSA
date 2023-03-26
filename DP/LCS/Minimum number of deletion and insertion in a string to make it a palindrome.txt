@@ -1,0 +1,3 @@
+
+
+min no of deletion = min no of insertion = len(String) - length(LPS)

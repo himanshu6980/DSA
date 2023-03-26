@@ -1,0 +1,28 @@
+tc: o(n*n) sc: o(n*n)+o(n)
+
+   public int minimumTotal(List<List<Integer>> triangle) {
+
+        int [][] t = new int[triangle.size()][triangle.size()];
+
+        for(int i=0;i<t.length;i++){
+            Arrays.fill(t[i],-1);
+        }
+
+        return f(0,0,triangle,t);
+    }
+
+    public int f(int i,int j ,List<List<Integer>> arr ,int[][] t){
+
+        if(i==arr.size()-1){
+            return arr.get(arr.size()-1).get(j);
+        }
+
+        if(t[i][j] != -1){
+            return t[i][j];
+        }
+
+        int down = arr.get(i).get(j) + f(i+1,j,arr,t);
+        int diagonal = arr.get(i).get(j) + f(i+1,j+1,arr,t);
+
+        return t[i][j]=Math.min(down ,diagonal );
+    }

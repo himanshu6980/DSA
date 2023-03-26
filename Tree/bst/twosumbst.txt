@@ -1,0 +1,45 @@
+tc: o(n) sc: o(n)
+
+   public boolean findTarget(TreeNode root, int k) {
+        
+        List<Integer> inorder = new ArrayList<>();
+        Inorder(root, inorder);
+        int i=0, j=inorder.size()-1;
+       while(j>i){
+            if(inorder.get(i)+inorder.get(j)>k){
+                j--;
+            }
+            if(inorder.get(i)+inorder.get(j)<k){
+                i++;         
+            }
+            if(inorder.get(i)+inorder.get(j)==k && j>i){
+                return true;
+            }     
+        } 
+        return false; 
+    }
+    
+    public static void Inorder(TreeNode root, List<Integer> inorder){
+        if(root==null){
+            return;
+        }
+        Inorder(root.left, inorder);
+        inorder.add(root.val);
+        Inorder(root.right, inorder);
+    }
+	
+
+
+
+//recursive
+
+   Set<Integer> set = new HashSet<Integer>();
+    public boolean findTarget(TreeNode root, int k) {
+        
+            if(root==null)return false;
+
+        if(set.contains(k-root.val))return true;
+
+        set.add(root.val);
+        return findTarget(root.left,k) || findTarget(root.right,k);
+    }

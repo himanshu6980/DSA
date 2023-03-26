@@ -1,0 +1,27 @@
+Time Complexity: O((log N)2)  O(log N)
+
+  public int countNodes(TreeNode root) {
+       if(root==null)
+            return 0;
+        int left=ghl(root.left);
+        int right=ghr(root.right);
+        if(left==right) return (int)(Math.pow(2, left+1) - 1);
+        else
+            return 1+countNodes(root.left)+countNodes(root.right);
+    }
+    public int ghl(TreeNode root){
+        int cnt=0;
+        while(root!=null){
+            cnt++;
+            root=root.left;
+        }
+        return cnt;
+    }
+    public int ghr(TreeNode root){
+        int cnt=0;
+        while(root!=null){
+            cnt++;
+            root=root.right;
+        }
+        return cnt;
+    }

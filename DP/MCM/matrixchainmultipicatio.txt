@@ -1,0 +1,75 @@
+
+
+topdown - bigger to smaller prob (base case)
+//recusion with memoiziation t: o(n^3) s: o(n^2)+o(n)
+
+    static int matrixMultiplication(int N, int arr[])
+    {  
+        int t[][] = new int[N][N];
+        for(int i =0;i<t.length;i++){
+           Arrays.fill(t[i],-1); 
+        } 
+       return solve(arr,1,N-1,t);
+    }
+    
+    static int solve(int arr[],int i , int j,int t[][]){
+        
+        if(i>=j){
+            return 0;
+        }
+        
+           if(t[i][j]!=-1) return t[i][j];
+        
+        int min =Integer.MAX_VALUE;
+        
+        for(int k=i;k<=j-1;k++){
+            
+            int temp = solve(arr,i,k,t)+ solve(arr,k+1,j,t)+arr[i-1]*arr[k]*arr[j];
+            
+            if(temp<=min){
+                min=temp;
+            }
+        }
+        
+        t[i][j] = min;
+        return t[i][j];
+    }
+	
+	
+	
+//tabulation (bottom up) smaller to bigger
+
+static int matrixMultiplication(int[] arr, int N){
+    
+    int [][] dp=new int[N][N];
+    for(int row[]: dp)
+    Arrays.fill(row,-1);
+    
+    for(int i=1; i<N; i++){
+        dp[i][i] = 0;
+    }
+    
+    for(int i=N-1; i>=1; i--){
+        
+        for(int j=i+1; j<N; j++){
+            
+            int mini = Integer.MAX_VALUE;
+    
+            // partioning loop
+            for(int k = i; k<= j-1; k++){
+                
+                int ans = dp[i][k]+ dp[k+1][j] + arr[i-1]*arr[k]*arr[j];
+                
+                mini = Math.min(mini,ans);
+                
+            }
+            
+            dp[i][j] = mini;
+    
+        }
+    }
+    
+    return dp[1][N-1];
+    
+    
+}

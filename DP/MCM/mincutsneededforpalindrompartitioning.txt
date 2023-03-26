@@ -1,0 +1,65 @@
+tc : o(n^3) sc : o(n^2) + o(n)
+
+class Solution{
+    static int palindromicPartition(String s)
+    { 
+      int [][] t = new int[s.length()][s.length()];
+      
+      for(int i=0;i<t.length;i++){
+          Arrays.fill(t[i],-1);
+      }
+      return solve(s,0,s.length()-1,t);
+    }
+    
+    static int solve(String s , int i , int j,int[][] t){
+        
+        if(i>=j){
+            return 0;
+        }
+        
+        if(t[i][j] != -1){
+            return t[i][j];
+        }
+        
+        if(ispalindrom(s,i,j)){
+            return 0;
+        }
+        
+        int ans = Integer.MAX_VALUE;
+        
+        for(int k=i;k<=j-1;k++){
+            
+            int temp = 1+ solve(s,i,k,t)+ solve(s,k+1,j,t);
+            
+            ans = Math.min(ans,temp);
+        }
+        
+        t[i][j] = ans;
+        
+        return t[i][j];
+    }
+    
+    
+    static  boolean ispalindrom(String s , int i,int j){
+            
+            while( i < j){
+                
+            if(s.charAt(i) != s.charAt(j) ) return false; 
+            i++; j--;
+        }
+        return true;
+    }
+}
+
+
+
+
+to run on leetode  : 
+
+   for(int k=i;k<=j-1;k++){
+
+            if(ispalindrom(s,i,k)){
+                 temp = 1+  solve(s,k+1,j,t);
+            }
+            ans = Math.min(ans,temp);
+        }

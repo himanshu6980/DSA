@@ -1,0 +1,78 @@
+tc: o(n^2) 
+
+    static int largestBst(Node root)
+    {
+        if(root == null){
+            return 0;
+        }
+        
+        if(isBST(root, Long.MIN_VALUE, Long.MAX_VALUE)){
+            return count(root);
+        }
+        
+        return Math.max(largestBst(root.left),
+        largestBst(root.right));
+        
+        
+    }
+    
+      public static boolean isBST(Node root, long l, long r){
+        if(root == null){
+            return true;
+        }
+        
+        if(root.data <= l || root.data >= r){
+            return false;
+        }
+        
+        return isBST(root.left, l, root.data) && isBST(root.right, root.data, r);
+    }
+    
+    static int count(Node root){
+        if(root == null){
+            return 0;
+        }
+        
+        return 1 + count(root.left) + count(root.right);
+    }
+	
+	
+	
+
+// tabulation tc: o(n)  
+
+check max of left < node(root) < min of right for valid bst
+
+ class BSTInfo {
+    int size, min, max;
+    BSTInfo(int size, int min, int max) {
+        this.size = size;
+        this.min = min;
+        this.max = max;
+    }
+}
+
+ static int largestBst(Node root)
+    {
+     
+        BSTInfo info = largestBstHelper(root);
+        return info.size;
+        
+    }
+	
+	static BSTInfo largestBstHelper(Node root) {
+    if (root == null) {
+        return new BSTInfo(0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+    BSTInfo left = largestBstHelper(root.left);
+    BSTInfo right = largestBstHelper(root.right);
+    if (root.data > left.max && root.data < right.min) {
+        int size = left.size + 1 + right.size;
+        int min = Math.min(root.data, left.min);
+        int max = Math.max(root.data, right.max);
+        return new BSTInfo(size, min, max);
+    } else {
+        int size = Math.max(left.size, right.size);
+        return new BSTInfo(size, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+}

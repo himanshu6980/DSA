@@ -1,0 +1,61 @@
+tc: o(n^3)  sc: o(n^2)
+
+ static int countWays(int n, String s){
+        // code here
+        int l=0,m=n-1;
+        int t[][][]=new int[n+1][n+1][2];
+        for(int i=0;i<n+1;i++){
+            for(int j=0;j<n+1;j++){
+                for(int k=0;k<2;k++)
+                t[i][j][k]=-1;
+            }
+        }
+        return solve(s,l,m,1,t);
+    }
+    public static int solve(String s,int i,int j,int istrue,int t[][][]){
+        int mod=1003;
+        if(i>j)
+        return 0;
+        if(t[i][j][istrue]!=-1)
+        return t[i][j][istrue];
+        if(i==j){
+            if(istrue == 1){
+                if(s.charAt(i)=='T')
+                return 1;
+            else
+            return 0;
+            }
+        else{
+                if(s.charAt(i)=='F')
+                return 1;
+            else
+            return 0;
+        }
+        }
+        long ans=0;
+        for(int k=i+1;k<j;k+=2){
+            int lt=solve(s,i,k-1,1,t);
+            int lf=solve(s,i,k-1,0,t);
+            int rt=solve(s,k+1,j,1,t);
+            int rf=solve(s,k+1,j,0,t);
+            if(s.charAt(k)=='&'){
+                if(istrue == 1)
+            ans=ans+(lt*rt);
+            else
+                ans=ans+(lt*rf)+(lf*rf)+(lf*rt);
+            }
+            else if(s.charAt(k)=='^'){
+                if(istrue==1)
+            ans=ans+(lf*rt)+(lt*rf);
+            else
+            ans=ans+(lf*rf)+(lt*rt);
+            }
+            else if(s.charAt(k)=='|'){
+                if(istrue==1)
+                ans=ans+(lf*rt)+(lt*rf)+(lt*rt);
+                else
+                ans=ans+(lf*rf);
+            }
+        }
+        return t[i][j][istrue]=(int)(ans%mod);
+    }

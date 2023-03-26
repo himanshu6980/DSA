@@ -1,0 +1,28 @@
+inorder of bst is sorted
+
+kth lagest = n-k smallest
+
+tc: o(n) sc:0(n)
+
+    public int kthSmallest(TreeNode root, int k) {
+    int[] counter = {0}; // use an array to pass by reference
+    int[] ans = new int[1];
+    inOrderTrav(root, k, counter, ans);
+    return ans[0];
+}
+
+public void inOrderTrav(TreeNode root, int k, int[] counter, int[] ans) {
+    if (root == null) {
+        return;
+    }
+    inOrderTrav(root.left, k, counter, ans);
+    counter[0]++;
+    if (counter[0] == k) {
+        ans[0] = root.val;
+        return; // no need to continue after finding kth smallest element
+    }
+    inOrderTrav(root.right, k, counter, ans);
+}
+
+
+for more optimization : use morris traversal

@@ -1,0 +1,36 @@
+Time Complexity: O(N*4*3)
+
+Reason: There are N*4 states and for every state, we are running a for loop iterating three times.
+
+Space Complexity: O(N) + O(N*4)
+
+Reason: We are using a recursion stack space(O(N)) 
+and a 2D array (again O(N*4)). Therefore total space complexity will be O(N) + O(N) ≈ O(N) 
+ 
+ public static int solve(int day , int last , int[][] task,int[][] t ){
+            if(day < 0){
+            return 0;
+            }
+        if(day==0){
+            int maxi=Integer.MIN_VALUE;
+            
+            for(int i=0;i<=2;i++){
+                if(i!=last){
+                    maxi = Math.max(maxi,task[0][i]);            }
+            }
+            return maxi;
+        }
+        
+        if(t[day][last]!=-1){
+            return t[day][last];
+        }
+     int maxi=Integer.MIN_VALUE;
+           for(int i=0;i<=2;i++){
+                if(i!=last){
+                 int point = task[day][i] + solve(day-1,i,task,t);
+                 maxi = Math.max(point,maxi);
+           }
+       
+    }
+ return t[day][last]=maxi;
+}

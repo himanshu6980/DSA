@@ -1,0 +1,8 @@
+S1 = "heap" ,  S2 = "pea", lcs = "ea"
+
+To convert S1 into S2,
+  -> All other characters besides lcs, we have to delete from S1
+  -> All other characters in S2 besides lcs, we have to insert into S1
+Number of insertions = len( S2) - lcs
+Number of deletions = len( S1) - lcs
+

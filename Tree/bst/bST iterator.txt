@@ -1,0 +1,28 @@
+tc: o(h) sc :o(h)
+
+    Stack<TreeNode> s=new Stack<>();
+
+    public BSTIterator(TreeNode root) {
+        pushAll(root);
+    }
+    
+    public int next() {
+        TreeNode tmp=s.pop();
+        if(tmp.right !=null){
+            pushAll(tmp.right);
+        }
+      
+        return tmp.val;
+    }
+    
+    public boolean hasNext() {
+        return !s.isEmpty();
+    }
+
+    public void pushAll(TreeNode root){
+        while(root !=null){
+            s.push(root);
+            root=root.left;
+        }
+
+    }

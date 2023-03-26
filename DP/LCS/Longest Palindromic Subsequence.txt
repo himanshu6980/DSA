@@ -1,0 +1,4 @@
+ longest palindromic subsequence's length = revese a given string and do lcs
+ 
+       StringBuffer Yt = new StringBuffer(X);
+        String Y = new String(Yt.reverse());

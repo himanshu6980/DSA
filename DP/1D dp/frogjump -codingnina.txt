@@ -1,0 +1,25 @@
+tc: o(n) sc:o(n)  
+
+  public static int frogJump(int n, int heights[]) {     
+      int[] t = new int[n+1];
+      Arrays.fill(t,-1);
+      return solve(heights , n-1,t);
+    }
+    
+    public static int solve(int[] heights , int index,int[] t){
+        if(index==0){
+            return 0;
+        }
+        
+        if(t[index] !=-1){
+            return t[index];
+        }
+        
+        int oneStep = solve(heights , index-1,t) + Math.abs(heights[index] - heights[index-1]);
+        int twoStep=Integer.MAX_VALUE;
+        if(index>1){
+                twoStep = solve(heights , index-2,t) + Math.abs(heights[index] - heights[index-2]);
+        }
+        
+        return t[index]=Math.min(oneStep,twoStep);
+    }
