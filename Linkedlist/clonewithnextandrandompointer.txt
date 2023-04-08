@@ -1,30 +1,38 @@
      //brtue force
 
-        // HashMap<Node,Node> hmap = new HashMap<>();
-
-        // Node temp = head;
-
-        // while(temp!=null){
-        //     hmap.put(temp,new Node(temp.val));
-        //     temp=temp.next;
-        // }
-
-        // temp=head;
-        // while(temp!=null){
-        //     hmap.get(temp).next=hmap.get(temp.next);
-        //        hmap.get(temp).random=hmap.get(temp.random);
-
-        //        temp=temp.next;
-            
-        // }
-        // return hmap.get(head);
+   public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+        
+        Map<Node, Node> map = new HashMap<>();
+        Node curr = head;
+        
+        // create the cloned nodes and put them in the HashMap
+        while (curr != null) {
+            Node clone = new Node(curr.val);
+            map.put(curr, clone);
+            curr = curr.next;
+        }
+        
+        // set the next and random pointers for the cloned nodes
+        curr = head;
+        while (curr != null) {
+            Node clone = map.get(curr);
+            clone.next = map.get(curr.next);
+            clone.random = map.get(curr.random);
+            curr = curr.next;
+        }
+        
+        return map.get(head);
+    }
 
 //apprach2
 T: O(N)+O(N)+O(N) ~ O(N) S: O(1)
 
         Node iter=head;
         Node front = head;
-
+    // Insert the cloned nodes just after the original nodes
         while(iter!=null){
             front=iter.next;
             Node copynode = new Node(iter.val);
@@ -33,7 +41,7 @@ T: O(N)+O(N)+O(N) ~ O(N) S: O(1)
             iter=front;
         }
 
-
+// Set the random pointer for each cloned node
         iter=head;
         while(iter!=null){
             if(iter.random!=null){
@@ -42,7 +50,7 @@ T: O(N)+O(N)+O(N) ~ O(N) S: O(1)
             }
                iter=iter.next.next;
         }
-
+// Split the combined list into two separate lists
         iter=head;
         Node psuedohead=new Node(0);
         Node cpnode=psuedohead;
@@ -50,9 +58,9 @@ T: O(N)+O(N)+O(N) ~ O(N) S: O(1)
         while(iter!=null){
             front=iter.next.next;
             cpnode.next=iter.next;
-              cpnode=cpnode.next;
+             cpnode=cpnode.next;
+			 
             iter.next=front;
-          
             iter=front;
 
         }

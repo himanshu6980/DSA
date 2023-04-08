@@ -1,0 +1,60 @@
+ tc: O(n^2 * k) k is the average length of the words in the array
+ sc: o(n)
+
+ public int longestStrChain(String[] words) {
+        int n = words.length;
+
+        Arrays.sort(words , new Comparator<>(){
+            public int compare(String a , String  b){
+                  return a.length()-b.length();
+            }
+        });
+
+        int length[] = new int[n];
+
+        Arrays.fill(length,1);
+       int maxLength=1;
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(checkvalid(words[i],words[j]) && length[j]+1>length[i]){
+                    length[i]= length[j] +1;
+                }
+            }
+
+             if(length[i]>maxLength){
+                maxLength=length[i];
+             }
+        }
+        return maxLength;
+    }
+  
+     boolean checkvalid(String a , String b){
+         int m = a.length();
+         int n = b.length();
+
+         if(m-n !=1){
+             return false;
+         }
+
+         int first=0;
+         int second=0;
+
+         while(first<m){
+             if(second<n && a.charAt(first) == b.charAt(second)){
+                 first++;
+                 second++;
+             }
+             else{
+                 first++;
+             }
+         }
+
+         if(first==m && second==n){
+             return true;
+         }
+         else{
+             return false;
+         }
+     }
+
+}

@@ -1,0 +1,29 @@
+
+
+    public int maxProfit(int[] prices, int fee) {
+        
+          int[][] t = new int[prices.length][2];
+        for(int i=0;i<t.length;i++){
+            Arrays.fill(t[i],-1);
+        }
+        return f(0,1,prices,t,fee);
+    }
+
+    int f(int index , int buy, int[] prices , int[][] t,int fee){
+
+            if(index==prices.length){
+                return 0;
+            }
+
+            if(t[index][buy] != -1){
+                return t[index][buy];
+            }
+
+        if(buy==1){
+            return t[index][buy] = Math.max(-prices[index] + f(index+1,0,prices,t,fee) ,0+ f(index+1,1,prices,t,fee) ); 
+        }
+        else{
+             return t[index][buy] = Math.max(f(index+1,1,prices,t,fee) + prices[index] - fee ,
+              0+ f(index+1,0,prices,t,fee));
+        }
+    }

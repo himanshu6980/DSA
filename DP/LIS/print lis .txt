@@ -1,0 +1,35 @@
+array : [0,1,0,3,2,3]  ans =4
+
+tc: o(n^2) sc:o(n)
+
+class Solution {
+    public int lengthOfLIS(int[] arr) {
+          int n = arr.length;
+        int[] length = new int[n];
+        int[] subsequence = new int[n];
+        Arrays.fill(length, 1);
+        Arrays.fill(subsequence, -1);
+        int maxLengthIndex = 0;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if ( arr[j] < arr[i] &&  length[j] + 1 > length[i]) {
+                    length[i] = length[j] + 1;
+                    subsequence[i] = j;
+                }
+            }
+            if (length[i] > length[maxLengthIndex]) {
+                maxLengthIndex = i;
+            }
+        }
+		
+		// maxLengthIndex =  5 for above input
+		// subsequence array is [-1 ,  0 ,  -1 ,  1 ,  1 ,  4 ]
+        List<Integer> result = new ArrayList<>();
+        int i = maxLengthIndex;
+        while (i >= 0) {
+            result.add(arr[i]);
+            i = subsequence[i];
+        }
+        return result.size();
+}
+}

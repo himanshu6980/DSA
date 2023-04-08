@@ -1,0 +1,33 @@
+
+tc: o(n^2) sc:o(n)
+
+change in lis code : arr[i] % arr[j] ==0 in place of if ( arr[j] < arr[i] &&  length[j] + 1 > length[i])
+
+  public List<Integer> largestDivisibleSubset(int[] arr) {
+		//sort beause to format like lis
+        Arrays.sort(arr);
+       int n = arr.length;
+        int[] length = new int[n];
+        int[] subsequence = new int[n];
+        Arrays.fill(length, 1);
+        Arrays.fill(subsequence, -1);
+        int maxLengthIndex = 0;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if ( arr[i] % arr[j] ==0 &&  length[j] + 1 > length[i]) {
+                    length[i] = length[j] + 1;
+                    subsequence[i] = j;
+                }
+            }
+            if (length[i] > length[maxLengthIndex]) {
+                maxLengthIndex = i;
+            }
+        }
+        List<Integer> result = new ArrayList<>();
+        int i = maxLengthIndex;
+        while (i >= 0) {
+            result.add(arr[i]);
+            i = subsequence[i];
+        }
+        return result;
+    }

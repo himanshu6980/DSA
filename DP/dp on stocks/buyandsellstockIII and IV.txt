@@ -1,0 +1,50 @@
+tc: o(n*2*3) sc: o(n*2*3)+o(n)
+ //atmost 2 transaction
+  public int maxProfit(int[] prices) {
+        
+        int[][][] t = new int[prices.length][2][3];
+
+       for(int row [][]: t){
+           for(int col []: row){
+               Arrays.fill(col,-1);
+           }
+       }
+
+       return fi(0,1,2,prices,t);
+    }
+
+    int fi(int ind , int buy , int cap , int[] prices , int[][][] t){
+
+        if(cap==0){
+            return 0;
+        }
+
+        if(ind==prices.length){
+            return 0;
+        }
+        if(t[ind][buy][cap] != -1){
+            return t[ind][buy][cap];
+        }
+        if(buy==1){
+            return t[ind][buy][cap]= Math.max(-prices[ind] + fi(ind+1,0,cap,prices,t), 
+            0+fi(ind+1,1, cap,prices,t));
+        }
+
+        else{ //on sell tranaction will complete
+           return t[ind][buy][cap]= Math.max(prices[ind] + fi(ind+1,1,cap-1,prices,t),
+            0+fi(ind+1,0,cap,prices,t)); 
+        }
+    }
+	
+	
+//for atmost k transaction
+
+         int[][][] t = new int[prices.length][2][k+1];
+
+       for(int row [][]: t){
+           for(int col []: row){
+               Arrays.fill(col,-1);
+           }
+       }
+
+       return fi(0,1,k,prices,t);

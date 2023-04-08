@@ -1,0 +1,34 @@
+tc: o(n*n) sc: o(n)
+
+       int n = nums.length;
+        int[] lengths = new int[n];
+        int[] counts = new int[n];
+        int maxLength = 0, result = 0;
+
+        // initialize lengths and counts arrays
+        Arrays.fill(lengths, 1);
+        Arrays.fill(counts, 1);
+
+        // calculate the length of the longest increasing subsequence ending at each index
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    if (lengths[j] + 1 > lengths[i]) {
+                        lengths[i] = lengths[j] + 1;
+                        counts[i] = counts[j];
+                    } else if (lengths[j] + 1 == lengths[i]) { //different subsequence giving same length
+                        counts[i] += counts[j];
+                    }
+                }
+            }
+            maxLength = Math.max(maxLength, lengths[i]);
+        }
+
+        // count the number of longest increasing subsequences
+        for (int i = 0; i < n; i++) {
+            if (lengths[i] == maxLength) {
+                result += counts[i];
+            }
+        }
+
+        return result;
