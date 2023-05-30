@@ -1,0 +1,38 @@
+MergeSort(arr, low, high)
+    if low < high
+        mid = (low + high) / 2
+        MergeSort(arr, low, mid)          // Sort first half
+        MergeSort(arr, mid + 1, high)     // Sort second half
+        Merge(arr, low, mid, high)        // Merge the sorted halves
+
+Merge(arr, low, mid, high)
+    n1 = mid - low + 1                  // Length of left subarray
+    n2 = high - mid                      // Length of right subarray
+    Create temp arrays L[0...n1] and R[0...n2]
+
+    // Copy data to temp arrays
+    for i = 0 to n1
+        L[i] = arr[low + i]
+    for j = 0 to n2
+        R[j] = arr[mid + 1 + j]
+
+    // Merge the temp arrays back into arr[low...high]
+    i = 0, j = 0, k = low
+    while i < n1 and j < n2
+        if L[i] <= R[j]
+            arr[k] = L[i]
+            i++
+        else
+            arr[k] = R[j]
+            j++
+        k++
+
+    // Copy the remaining elements of L[], if any
+    while i < n1
+        arr[k] = L[i]
+        i++, k++
+
+    // Copy the remaining elements of R[], if any
+    while j < n2
+        arr[k] = R[j]
+        j++, k++

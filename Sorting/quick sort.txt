@@ -1,0 +1,17 @@
+QuickSort(arr, low, high)
+    if low < high
+        pivotIndex = Partition(arr, low, high)   // Partition the array
+        QuickSort(arr, low, pivotIndex - 1)      // Sort left subarray
+        QuickSort(arr, pivotIndex + 1, high)     // Sort right subarray
+
+Partition(arr, low, high)
+    pivot = arr[high]               // Choose the last element as the pivot
+    i = low - 1                     // Index of smaller element
+
+    for j = low to high - 1
+        if arr[j] <= pivot
+            i++
+            Swap(arr[i], arr[j])     // Swap elements smaller than or equal to pivot
+
+    Swap(arr[i + 1], arr[high])     // Place the pivot in its correct position
+    return i + 1                    // Return the partition index

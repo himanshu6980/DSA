@@ -1,0 +1,69 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class WordToInteger {
+
+    private static final Map<String, Integer> WORDS = new HashMap<>();
+
+    static {
+        WORDS.put("zero", 0);
+        WORDS.put("one", 1);
+        WORDS.put("two", 2);
+        WORDS.put("three", 3);
+        WORDS.put("four", 4);
+        WORDS.put("five", 5);
+        WORDS.put("six", 6);
+        WORDS.put("seven", 7);
+        WORDS.put("eight", 8);
+        WORDS.put("nine", 9);
+        WORDS.put("ten", 10);
+        WORDS.put("eleven", 11);
+        WORDS.put("twelve", 12);
+        WORDS.put("thirteen", 13);
+        WORDS.put("fourteen", 14);
+        WORDS.put("fifteen", 15);
+        WORDS.put("sixteen", 16);
+        WORDS.put("seventeen", 17);
+        WORDS.put("eighteen", 18);
+        WORDS.put("nineteen", 19);
+        WORDS.put("twenty", 20);
+        WORDS.put("thirty", 30);
+        WORDS.put("forty", 40);
+        WORDS.put("fifty", 50);
+        WORDS.put("sixty", 60);
+        WORDS.put("seventy", 70);
+        WORDS.put("eighty", 80);
+        WORDS.put("ninety", 90);
+    }
+
+    public static int convert(String word) {
+        int result = 0;
+        int currentNumber = 0;
+     
+
+        String[] words = word.split(" ");
+
+        for (String currentWord : words) {
+            Integer value = WORDS.get(currentWord);
+            if (value != null) {
+                currentNumber += value;
+            } else if (currentWord.equals("hundred")) {
+                currentNumber *= 100;
+            } else if (currentWord.equals("thousand")) {
+                currentNumber *= 1000;
+                result += currentNumber;
+                currentNumber = 0;
+            }
+        }
+
+        result += currentNumber;
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String word = "one thousand two hundred thirty three";
+        int number = convert(word);
+        System.out.println("The number is " + number);
+    }
+}

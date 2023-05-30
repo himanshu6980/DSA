@@ -1,0 +1,4 @@
+   employees.sort(
+            Comparator.comparing(Employee::getName)
+                .thenComparingInt(Employee::getAge)
+        );

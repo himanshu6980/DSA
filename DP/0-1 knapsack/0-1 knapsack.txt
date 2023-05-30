@@ -26,7 +26,8 @@ noof subset with given diff
             return t[n][W];
         }
         if(wt[n - 1] <= W){
-            return t[n][W] = Math.max(val[n - 1] + utilKnapSack(W-wt[n-1], wt, val, n-1, t), utilKnapSack(W, wt, val, n-1, t));
+            return t[n][W] = Math.max(val[n - 1] + utilKnapSack(W-wt[n-1], wt, val, n-1, t),
+			utilKnapSack(W, wt, val, n-1, t));
         }else {
             return t[n][W] = utilKnapSack(W, wt, val, n-1, t);
         }

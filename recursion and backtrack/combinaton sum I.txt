@@ -1,0 +1,39 @@
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+
+The same number may be chosen from candidates an unlimited number of times
+
+tc :  O(2^t * k) where t is the target, k is the average length
+ Space Complexity: O(k*x), k is the average length and x is the no. of combinations
+
+class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+         
+       List<Integer> res = new ArrayList<>();
+     
+        f(0 , nums , res,target);
+
+        return ans;
+    }
+
+   void f(int ind , int[] nums , List<Integer> res,int sum){
+
+       if(sum==0){
+             ans.add(new ArrayList<>(res));
+             return ;
+       }
+
+        if(sum<0 || ind>=nums.length){
+            return ;
+        }
+
+        res.add(nums[ind]);
+        f(ind,nums,res,sum-nums[ind]);  //unlimited that why not moving to next ind 
+        res.remove(res.size()-1);
+        f(ind+1,nums,res,sum);
+    }
+}
