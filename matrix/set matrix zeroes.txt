@@ -1,4 +1,56 @@
-    
+
+TC : O((N*M)*(N + M)) + O(N*M), 
+
+SC: O(1)
+
+
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> zeroMatrix(
+        ArrayList<ArrayList<Integer>> matrix, Integer n, Integer m) {
+    	// Write your code here.
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix.get(i).get(j)==0){
+                    markRow(matrix,n,m,i);
+                    markcol(matrix,n,m,j);
+
+                }
+            }
+        }
+
+         for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (matrix.get(i).get(j) == -1) {
+                    matrix.get(i).set(j, 0);
+                }
+            }
+        }
+        return matrix;
+    }
+
+    public static void markRow(ArrayList<ArrayList<Integer>> matrix, int n, int m , int i){
+
+         for (int j = 0; j < m; j++) {
+            if (matrix.get(i).get(j) != 0) {
+                matrix.get(i).set(j, -1);
+            }
+        }
+    }
+
+     public static void markcol(ArrayList<ArrayList<Integer>> matrix, int n, int m , int j){
+
+         for (int i = 0; i < n; i++) {
+            if (matrix.get(i).get(j) != 0) {
+                matrix.get(i).set(j, -1);
+            }
+        }
+    }
+}    
+	
+
+	
+	
 	tc: o(mn) sc: o(m+n)
 	
 	public void setZeroes(int[][] matrix) {

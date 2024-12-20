@@ -1,0 +1,35 @@
+class Solution {
+    public List<List<Integer>> generate(int N) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for(int i=1;i<=N;i++){
+
+            List<Integer> templist=generateRow(i);
+
+            ans.add(templist);
+        }
+
+        return ans;
+
+    }
+
+    public List<Integer> generateRow(int row){
+
+        List<Integer> templist=new ArrayList<>();
+
+        int ans=1;
+
+        templist.add(1);
+
+        for(int col=1;col<row;col++){
+
+            ans=ans*(row-col);
+
+            ans=ans/col;
+
+            templist.add(ans);
+        }
+
+        return templist;
+    }
+}

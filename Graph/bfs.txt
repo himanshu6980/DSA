@@ -1,0 +1,37 @@
+
+Time Complexity: O(N) + O(2E), Where N = Nodes, 2E is for total degrees as we traverse all adjacent nodes.
+
+Space Complexity: O(3N) ~ O(N), Space for queue data structure visited array and an adjacency list
+
+N=V (total no of vertices given)
+
+public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        
+        ArrayList<Integer> bfslist=new ArrayList<>();
+        
+        boolean [] vis=new boolean[V];
+        vis[0]=true;
+        
+        Queue<Integer> q=new LinkedList<>();
+        q.add(0);
+        
+        while(!q.isEmpty()){
+            Integer node=q.poll();
+            bfslist.add(node);
+            
+            
+            for(Integer neighbournodes : adj.get(node)){
+                
+                if(vis[neighbournodes] == false){
+                    vis[neighbournodes]=true;
+                    q.add(neighbournodes);
+                }
+            }
+            
+            
+        }
+        
+        return bfslist;
+        
+    }

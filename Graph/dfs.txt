@@ -1,0 +1,38 @@
+
+Time Complexity: For an undirected graph, O(N) + O(2E), For a directed graph, O(N) + O(E), 
+Because for every node we are calling the recursive function once, the time taken is O(N) and 2E is for total degrees as we traverse for all adjacent nodes.
+
+Space Complexity: O(3N) ~ O(N), Space for dfs stack space, visited array and an adjacency list.
+
+
+class Solution {
+    // Function to return a list containing the DFS traversal of the graph.
+    public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        
+        ArrayList<Integer> dfslist=new ArrayList<>();
+        
+        boolean [] vis=new boolean[V];
+        vis[0]=true;
+        
+        dfs(0,dfslist,vis,adj);
+        
+        return dfslist;
+        
+        
+    }
+    
+    public static void dfs(int node, ArrayList<Integer> dfslist,boolean [] vis,ArrayList<ArrayList<Integer>> adj){
+        
+        vis[node]=true;
+        
+        dfslist.add(node);
+        
+        for(Integer neighbournodes : adj.get(node)){
+            
+            if(vis[neighbournodes]==false){
+                dfs(neighbournodes,dfslist,vis,adj);
+            }
+        }
+    }
+}

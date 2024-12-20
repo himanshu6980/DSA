@@ -42,7 +42,7 @@ public int findDuplicate(int[] nums) {
 	
 	other ques : t: o(n) s: o(1)
 	
-	
+		//mark visited negative
 	    public List<Integer> findDuplicates(int[] nums) {
         List<Integer> ans=new ArrayList<>();
 

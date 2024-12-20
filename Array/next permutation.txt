@@ -1,0 +1,51 @@
+import java.util.*;
+public class Solution {
+    public static List< Integer > nextGreaterPermutation(List< Integer > A) {
+        // Write your code here.
+
+        int idx=-1;
+
+        int n = A.size();
+
+        for(int i=n-2;i>=0;i--){
+            if(A.get(i)<A.get(i+1)){
+                idx=i;
+                break;
+            }
+        }
+
+        if(idx==-1){
+         Collections.reverse(A);
+         return A;
+
+        }
+
+        for(int i=n-1;i>=idx;i--){
+            if(A.get(i)>A.get(idx)){
+                int t= A.get(i);
+                A.set(i, A.get(idx));
+                A.set(idx, t);
+                break;
+            }
+        }
+
+        int left = idx+1;
+        int right = n - 1;
+
+        while (left < right) {
+            // Swap elements at left and right indexes
+            int temp = A.get(left);
+            A.set(left, A.get(right));
+            A.set(right, temp);
+
+            // Move pointers
+            left++;
+            right--;
+        }
+
+        return A;
+
+
+     
+    }
+}

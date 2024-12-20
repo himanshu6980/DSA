@@ -1,0 +1,102 @@
+it is for DAG only
+
+S: o(n)
+T: o(V+E)
+
+
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        
+        int[] vis=new int[V];
+        
+        Stack<Integer> st=new Stack<>();
+        
+        for(int i=0;i<V;i++){
+            
+            if(vis[i]==0){
+                
+                dfs(i,vis,st,adj);
+            }
+        }
+        
+        int[] ans=new int[V];
+        
+        int i=0;
+        
+        while(!st.isEmpty()){
+            ans[i++]=st.pop();
+        }
+        return  ans;
+        
+        
+    }
+    
+    
+    public static void dfs(int node,int[] vis,Stack<Integer> st,ArrayList<ArrayList<Integer>> adj)
+    {
+        vis[node]=1;
+        
+        for(int neighbour: adj.get(node)){
+           if(vis[neighbour]==0){
+               dfs(neighbour,vis,st,adj);
+           } 
+        }
+        
+        st.push(node);
+        
+    }
+    
+    
+}
+
+
+
+//kahns algo : 
+
+
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        
+        int[] indegree=new int[V];
+        
+        for(int i=0;i<V;i++){
+            for(int n: adj.get(i)){
+                indegree[n]++;
+            }
+        }
+        
+        Queue<Integer> q=new LinkedList<>();
+        
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+        
+        int [] topo=new int[V];
+        int k=0;
+        while(!q.isEmpty()){
+            int node=q.remove();
+            
+            topo[k++]=node;
+            
+            for(int an: adj.get(node)){
+                indegree[an]--;
+                
+                if(indegree[an]==0){
+                    q.add(an);
+                }
+            }
+        }
+        
+        return topo;
+    }
+}

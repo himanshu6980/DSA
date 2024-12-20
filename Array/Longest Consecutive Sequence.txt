@@ -1,0 +1,105 @@
+
+
+tc: o(nlogn)  sc: o(1)
+
+import java.util.Arrays;
+import java.util.HashSet;
+
+public class Solution {
+    public static int longestSuccessiveElements(int []a) {
+        // Write your code here.
+        // Arrays.sort(a);
+        // int longest=1;
+        // int counter=0;
+        // int lastsmaller=Integer.MIN_VALUE;
+
+        // for(int i=0;i<a.length;i++){
+
+        //     if(a[i]-1==lastsmaller){
+        //         lastsmaller=a[i];
+        //         counter+=1;
+        //     }
+        //     else if(a[i] != lastsmaller){
+        //         lastsmaller=a[i];
+        //         counter=1;
+        //     }
+        //     longest=Math.max(longest, counter);
+        // }
+
+        // return longest;
+
+
+        int n=a.length;
+
+        int longest=1;
+
+        int counter=0;
+
+        HashSet<Integer> hset=new HashSet<>();
+
+        for(int i=0;i<n;i++){
+            hset.add(a[i]);
+        }
+
+        for(int num: hset){
+
+            if(!hset.contains(num-1)){
+                counter=1;
+                int x=num;
+
+                while(hset.contains(x+1)){
+                    x=x+1;
+                    counter+=1;
+                }
+
+                longest=Math.max(longest, counter);
+            }
+        }
+
+        return longest;
+
+    }
+}
+	
+	
+	
+	tc: o(n)  sc: o(n)
+
+
+    public int longestConsecutive(int[] nums) {
+        HashMap<Integer,Boolean> hmap=new HashMap<>();
+
+        for(int i=0;i<nums.length;i++){
+            hmap.put(nums[i], true);
+        }
+
+        for(int i=0;i<nums.length;i++){
+            if(hmap.containsKey(nums[i]-1)){
+                hmap.put(nums[i], false);
+            }
+         
+        }
+
+        int maxlen=0;
+
+        for(Integer key: hmap.keySet()){
+
+            if(hmap.get(key)==true){
+                maxlen=Math.max(maxlen , getlength(hmap,key));
+            }
+        }
+
+        return maxlen;
+    }
+
+    public static int getlength(HashMap<Integer,Boolean> hmap , int key){
+
+        int len=0;
+
+        while(hmap.containsKey(key)){
+            len++;
+            key++;
+        }
+
+        return len;
+    }
