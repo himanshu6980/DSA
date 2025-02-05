@@ -1,0 +1,101 @@
+//T.C : O(n^2) - Because the AMortized Time Complexity of solve() will become 1 due to memoization.
+
+//recursion + memo 
+
+class Solution {
+    public String longestPalindrome(String s) {
+        int n= s.length();
+        int maxlen=0;
+        int startingIndex=-1;
+
+        int [][] t = new int [n+1][n+1];
+
+        for(int i=0;i<t.length;i++){
+            Arrays.fill(t[i], -1);
+        }
+
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+
+                if(isPalindrom(s,i,j,t)==1){
+
+                    if(j-i+1 > maxlen){
+                        maxlen=j-i+1;
+                        startingIndex=i;
+
+                    }
+                }
+            }
+        }
+
+        return s.substring(startingIndex,startingIndex+maxlen);
+    }
+
+    public int isPalindrom(String s , int i , int j , int [][] t){
+
+        if(i>=j){
+            //i corssed j
+            return 1;
+        }
+        if(t[i][j] !=-1){
+            return t[i][j];
+        }
+
+        if(s.charAt(i)==s.charAt(j)){
+           return  t[i][j]= isPalindrom(s,i+1,j-1,t);
+        }
+
+        return 0;
+    }
+}
+
+
+//bottom up
+
+
+class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        if (n <= 1) return s; // Single character or empty string is already a palindrome
+        
+        int maxlen = 1; // The minimum length of palindrome is 1
+        int startingIndex = 0; // Initialize to the start of the string
+        
+        int[][] t = new int[n][n];
+
+         //t[i][j] if 1 --> i to j is palindrom
+
+
+
+        // Single character palindromes
+        for (int i = 0; i < n; i++) {
+            t[i][i] = 1; //single character
+        }
+
+        // Check substrings of length greater than 1
+        for (int L = 2; L <= n; L++) {
+            for (int i = 0; i < n - L + 1; i++) {
+
+                // j should be j<n
+                //i+L-1 < n --> i< n-L+1
+                int j = i + L - 1;
+
+                // Check if the substring s[i..j] is a palindrome
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (L == 2 || t[i + 1][j - 1] == 1) {
+                        t[i][j] = 1; // Mark it as a palindrome
+                        if (L > maxlen) {
+                            maxlen = L;
+                            startingIndex = i;
+                        }
+                    }
+                } else {
+                    t[i][j] = 0; // Not a palindrome
+                }
+            }
+        }
+
+        return s.substring(startingIndex, startingIndex + maxlen);
+    }
+}
+

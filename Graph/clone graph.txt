@@ -1,35 +1,64 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
 class Solution {
     public Node cloneGraph(Node node) {
         if(node==null){
             return null;
         }
 
-        HashMap<Node,Node> nodetoclonenode=new HashMap<>();
+        HashMap<Node,Node> map=new HashMap<>();
+
+        //orignal --cloned
 
         Queue<Node> q=new LinkedList<>();
 
         q.add(node);
 
-        nodetoclonenode.put(node,new Node(node.val, new ArrayList<>()));
+        Node clone=new Node(node.val, new ArrayList<>());
+
+        map.put(node,clone);
 
         while(!q.isEmpty()){
 
             Node curr=q.poll();
 
-            for(Node neighbournodes : curr.neighbors){
+            for(Node neighbournodesofgivengraph : curr.neighbors){
 
-                if(!nodetoclonenode.containsKey(neighbournodes)){
-                    nodetoclonenode.put(neighbournodes, new Node(neighbournodes.val, new ArrayList<>()));
-                    q.add(neighbournodes);
+                if(!map.containsKey(neighbournodesofgivengraph)){
+                    // node is not there in map , create new clone to track
+                    Node newclone=new Node(neighbournodesofgivengraph.val, new ArrayList<>());
+                    map.put(neighbournodesofgivengraph, newclone);
+                    q.add(neighbournodesofgivengraph);
                 }
 
-                //copy the neighbour
-                nodetoclonenode.get(curr).neighbors.add(nodetoclonenode.get(neighbournodes));
+                Node clonedNode = map.get(curr);  // Get the cloned version of the current node
+                Node clonedNeighbor = map.get(neighbournodesofgivengraph); // Get the cloned version of the neighbor
+
+                clonedNode.neighbors.add(clonedNeighbor);  // Add the cloned neighbor
+
 
             }
         }
 
-        return nodetoclonenode.get(node);
+        return map.get(node);
  
     }
 }

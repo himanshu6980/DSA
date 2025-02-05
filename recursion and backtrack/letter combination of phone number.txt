@@ -1,0 +1,52 @@
+tc: n* 4^n  (9 has  charcter means  choices)
+
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> ans = new ArrayList<>();
+
+        HashMap<Character,String> m = new HashMap<>();
+        m.put('2',"abc");
+        m.put('3',"def");
+        m.put('4',"ghi");
+        m.put('5',"jkl");
+        m.put('6',"mno");
+        m.put('7',"pqrs");
+        m.put('8',"tuv");
+        m.put('9',"wxyz");
+
+        
+        if(digits.length() == 0)
+            return ans;
+        
+        // String temp = "";
+
+        help(0 , digits , new StringBuilder() , ans , m) ;
+
+        return ans;
+    }
+
+
+    public void help(int index , String digits, StringBuilder sb , List<String> ans,  HashMap<Character,String> hmap )
+
+{
+
+    if(index==digits.length()){
+        ans.add(sb.toString());
+        return;
+    }
+
+        char chr = digits.charAt(index);
+        String str = hmap.get(chr);
+
+        for(int j=0;j<str.length();j++){
+
+           sb.append(str.charAt(j));
+            help(index+1,digits,sb,ans,hmap);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+    
+}
+
+
+}

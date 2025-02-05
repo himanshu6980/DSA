@@ -1,4 +1,111 @@
-//target sum == count of subset with given diff
+ Input: nums = [1,1,1,1,1], target = 3
+Output: 5
+Explanation: There are 5 ways to assign symbols to make the sum of nums be target 3.
+-1 + 1 + 1 + 1 + 1 = 3
++1 - 1 + 1 + 1 + 1 = 3
++1 + 1 - 1 + 1 + 1 = 3
++1 + 1 + 1 - 1 + 1 = 3
++1 + 1 + 1 + 1 - 1 = 3
+
+tc: o(n*target)
+sc: o(n*targte)
+ 
+ class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+
+       // int [][] t = new int[nums.legnth+1][target+1]; this we cantdo currsum can be negative
+
+     HashMap<String, Integer> memo = new HashMap<>();
+
+        return solve(0,0,nums, target,memo);
+    }
+
+    public int solve(int idx, int currsum, int [] nums, int target, HashMap<String, Integer> memo){
+
+        if(idx==nums.length){
+            if(currsum==target){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+
+         // Create a unique key for the current state
+        String key = idx + "_" + currsum;
+        
+        if(memo.containsKey(key)){
+             return memo.get(key);
+        }
+
+        int plus=  solve(idx+1,currsum+nums[idx], nums,target,memo);
+        int minus=  solve(idx+1,currsum-nums[idx], nums,target,memo);
+
+         memo.put(key, plus + minus);
+
+        return memo.get(key);
+
+
+    }
+}
+
+
+other ways
+
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+
+        int s=0;
+
+        for(int i=0;i<nums.length;i++){
+            s+=nums[i];
+        }
+        //s needd to avoid negative index, ([1,1,1,1,1])sum will shfit scale (-5,5) to (0,10)
+
+        int [][] t = new int[nums.length+1][2*s+1];
+
+        for(int i=0;i<t.length;i++){
+            Arrays.fill(t[i],-1);
+        }
+
+
+        return solve(0,0,nums, target,t,s);
+    }
+
+    public int solve(int idx, int currsum, int [] nums, int target,int[][] t,int s){
+
+        if(idx==nums.length){
+            if(currsum==target){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+
+        if(t[idx][currsum+s] != -1){
+            return t[idx][currsum+s];
+        }
+
+
+        int plus=  solve(idx+1,currsum+nums[idx], nums,target,t,s);
+        int minus=  solve(idx+1,currsum-nums[idx], nums,target,t,s);
+
+        return t[idx][currsum+s]=plus+minus;
+
+
+    }
+}
+
+
+bottom up:
+
+Subset1−Subset2=target
+Subset1+Subset2=sigma (sum of array) 
+
+Subset11=(target+sigma)/2;
+
+reduced to finding the number of subsets whose sum equals (sigma+target)/2.
 
 class Solution {
     public int findTargetSumWays(int[] arr, int target) {
@@ -9,11 +116,14 @@ class Solution {
     for(int i=0;i<n;i++){
         sigma+=arr[i];
     }
+	
+	//If target > sigma, it's impossible to achieve the target since the total sum of elements is less than the //target. 
+	//If ( sigma + target ) (sigma+target) is odd, it's impossible to partition into two equal subsets, so //return 0
 
     if (target > sigma || (sigma + target) % 2 != 0){ 
 
             return 0;
- }
+	}
     int sum=0;
 
     sum=(sigma + target)/2;
@@ -23,11 +133,15 @@ class Solution {
     int[][] t = new int[n+1][targetSUM];
 
     for(int j=0;j<targetSUM;j++){
+	
+	//t[0][j]=0 (0 elements can't form any sum except 0).
         t[0][j]=0;
     }
 
     for(int i=0;i<n+1;i++){
             int k = countnoofzeroestillindex(arr , i);
+			
+			// presence of zeros in the array. Every zero doubles the number of ways (it can either contribute +0 or -0
 	        
 	        t[i][0] = (int)Math.round(Math.pow(2 , k));
     }

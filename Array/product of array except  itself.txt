@@ -41,3 +41,6 @@ tc: o(n^2)
         }
         return ans;
     }
+	
+	
+	https://leetcode.com/problems/product-of-array-except-self/solutions/135882/a-java-solution-with-an-explanation/

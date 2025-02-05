@@ -1,0 +1,43 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        //brute force
+
+        // int n = nums.length;
+
+        // int []ans=new int[n-k+1];
+
+        // for(int i=0;i<n-k+1;i++){
+        //     int maxi = nums[i];
+        //     for (int j = i; j < i + k; j++) {
+        //         maxi = Math.max(maxi, nums[j]);
+        //     }
+        //     ans[i]=maxi;
+        // }
+
+        // return ans;
+
+        // 1. when new element comes,make space for it (window size can't exceed k)
+        // 2. when nums[i] comes,there is no need to keep small elements in that window,pop them;
+        // 3. now push i in deque-> for nums[i]
+        // 4. if(i>=k-1),then deque.front() is our answer for that window
+
+        int n=nums.length;
+        int x=0;
+        Deque <Integer> deque = new ArrayDeque<>();
+        int[] res=new int[n-k+1];
+        for(int i=0;i<n;i++){
+            while(!deque.isEmpty() && deque.getFirst()<=i-k){
+                deque.removeFirst();
+            }
+            while(!deque.isEmpty() && nums[i]>nums[deque.getLast()]){
+                deque.removeLast();
+            }
+            deque.addLast(i);
+            if(i>=k-1){
+                res[x++]=nums[deque.getFirst()];
+            }
+        }
+        return res;
+
+    }
+}

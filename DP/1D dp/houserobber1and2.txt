@@ -1,0 +1,135 @@
+tc: o(N) sc: o(N)
+
+memoization
+
+class Solution {
+    public int rob(int[] nums) {
+        
+        int[] t= new int[nums.length+1];
+        Arrays.fill(t,-1);
+        return solve(0,nums,t);
+    }
+
+    public int solve(int idx, int[] nums,int [] t){
+        if(idx>=nums.length){
+            return 0;
+        }
+
+        if(t[idx]!=-1){
+            return t[idx];
+        }
+
+        int pick=nums[idx]+ solve(idx+2,nums,t);
+        int notpick=solve(idx+1,nums,t);
+
+        return t[idx]=Math.max(pick,notpick);
+    }
+}
+
+bottom up
+
+class Solution {
+    public int rob(int[] nums) {
+
+    int n = nums.length;
+        
+    int[] t= new int[n+1];
+
+    t[1]=nums[0];
+
+    //t[i] max stolen till house i
+
+    for(int i=2;i<=n;i++){
+        t[i]= Math.max(nums[i-1]+ t[i-2] ,t[i-1]);
+    }
+
+    return t[n];
+    
+       
+    }
+
+
+}
+	
+	
+//house robber ||
+
+ class Solution {
+    public int rob(int[] nums) {
+
+        int n = nums.length;
+
+        if (n == 1) return nums[0];
+
+        int [] t1= new int[n];
+
+        Arrays.fill(t1,-1);
+
+        int [] t2= new int[n];
+
+        Arrays.fill(t2,-1);
+
+        return Math.max(solve(0,nums,n-1,t1), solve(1,nums,n,t2));
+        
+    }
+
+    public int solve(int idx, int[] nums, int n, int[] t){
+        if(idx>=n){
+            return 0;
+        }
+
+        if(t[idx]!=-1){
+            return t[idx];
+        }
+       
+
+        int pick=nums[idx]+ solve(idx+2,nums,n,t);
+        int notpick=solve(idx+1,nums,n,t);
+
+        return t[idx]=Math.max(pick,notpick);
+    }
+}
+
+
+bottom up
+
+class Solution {
+    public int rob(int[] nums) {
+
+        int n = nums.length;
+
+        if(n==1){
+            return nums[0];
+        }
+
+        int [] t = new int[n+1];
+
+        t[0]=0;
+
+        // skip last house
+        for(int i=1;i<=n-1;i++){
+            t[i]= Math.max(nums[i-1]+ (i-2>=0 ? t[i-2] : 0), t[i-1]);
+        }
+
+        int r1=t[n-1];
+
+        Arrays.fill(t,0);
+
+        //take last house
+
+        for(int i=2;i<=n;i++){
+         t[i]= Math.max(nums[i-1]+ (i-2>=0 ? t[i-2] : 0), t[i-1]);
+        }
+
+        int r2=t[n];
+
+        return Math.max(r1,r2);
+
+
+
+       
+        
+    }
+
+ 
+}

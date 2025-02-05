@@ -4,20 +4,61 @@ Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 tc : O(n*n!)
 sc: o(n)
 
-
 class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
     public List<List<Integer>> permute(int[] nums) {
-            List<List<Integer>> ans =new ArrayList<>();
-        List<Integer> ds = new ArrayList<>();
-        boolean [] vis = new boolean[nums.length];
         
-        getPermutations(nums,ans,ds,vis);
-
+        // appoarch 1
+//         List<List<Integer>> ans =new ArrayList<>();
+//         List<Integer> ds = new ArrayList<>();
+//         boolean [] freq = new boolean[nums.length];
+        
+//         getPermutations(nums,ans,ds,freq);
+        
+//         return ans;
+        
+        //approach 2
+        
+        List<List<Integer>> ans =new ArrayList<>();
+        
+        permute(0,nums,ans);
+        
         return ans;
+        
     }
-
- public void  getPermutations(int [] nums,List<List<Integer>> ans,List<Integer> ds,boolean [] vis){
+    
+    
+    public void  permute(int index , int [] nums,List<List<Integer>> ans){
+        
+        if(index==nums.length){
+          List<Integer> ds = new ArrayList<>();
+            
+            for(int i =0;i<nums.length;i++){
+                ds.add(nums[i]);
+            }
+            
+            ans.add(new ArrayList<>(ds));
+            return;
+            
+        }
+        
+        for(int i=index;i<nums.length;i++){
+            
+            swap(i,index,nums);
+            permute(index+1,nums,ans);
+               swap(i,index,nums);
+        }
+        
+        
+    }
+    
+    public void swap(int i , int j , int[] nums){
+        int temp = nums[i];
+        nums[i]=nums[j];
+        nums[j]= temp;
+        
+    }
+    
+    public void  getPermutations(int [] nums,List<List<Integer>> ans,List<Integer> ds,boolean [] freq){
         
         // recursion end
         
@@ -27,12 +68,12 @@ class Solution {
         }
         
         for(int i=0;i<nums.length;i++){
-            if(!vis[i]){
-                vis[i]=true;
+            if(!freq[i]){
+                freq[i]=true;
                 ds.add(nums[i]);
-                getPermutations(nums,ans,ds,vis);
+                getPermutations(nums,ans,ds,freq);
                 ds.remove(ds.size()-1);
-                vis[i]=false;
+                freq[i]=false;
             }
         }
         

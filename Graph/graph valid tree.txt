@@ -1,0 +1,48 @@
+class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        // A tree must have exactly n - 1 edges
+        if (edges.length != n - 1) {
+            return false;
+        }
+
+        // Create adjacency list
+        List<List<Integer>> adjlist = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adjlist.add(new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            adjlist.get(edge[0]).add(edge[1]);
+            adjlist.get(edge[1]).add(edge[0]);
+        }
+
+        // Check cycle and connectivity
+        boolean[] vis = new boolean[n];
+
+        if (checkCycle(0, -1, adjlist, vis)) {
+            return false; // If cycle is detected, it's not a tree
+        }
+
+        // Ensure all nodes are visited (graph is connected)
+        for (boolean v : vis) {
+            if (!v) return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkCycle(int node, int parent, List<List<Integer>> adjlist, boolean[] vis) {
+        vis[node] = true;
+
+        for (int neighbor : adjlist.get(node)) {
+            if (!vis[neighbor]) {
+                if (checkCycle(neighbor, node, adjlist, vis)) {
+                    return true;
+                }
+            } else if (neighbor == parent) {
+                continue; // Cycle detected
+            }
+        }
+        return false;
+    }
+}

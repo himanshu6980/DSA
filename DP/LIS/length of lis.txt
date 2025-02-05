@@ -1,32 +1,74 @@
    tc: O(N*N) 
    sc : O(N*N) + O(N)
    
-   public int lengthOfLIS(int[] nums) {
-        int[][] t = new int[nums.length][nums.length + 1];
+  class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[][] t= new int[nums.length+1][nums.length+1];
 
         for(int i=0;i<t.length;i++){
             Arrays.fill(t[i],-1);
         }
-
-        return fi(0,-1,nums,t);
+        return solve(-1, 0, nums,t);
     }
 
-    int fi(int ind , int prev_ind , int[] arr, int[][] t){
-        if(ind == arr.length){
+    public int solve(int prev, int idx, int[] nums,int [][] t) {
+        if (idx >= nums.length) {
             return 0;
         }
 
-        if(t[ind][prev_ind+1] != -1){
-            return t[ind][prev_ind+1];
+        if(prev !=-1 && t[prev][idx]!=-1){
+            return t[prev][idx];
         }
 
-        int len;
 
-        len = 0 + fi(ind + 1 , prev_ind , arr, t);
-
-        if(prev_ind == -1 || arr[ind]> arr[prev_ind]){
-            len = Math.max(len , 1 + fi(ind+1 , ind , arr,t));
+        int take = 0;
+        if (prev == -1 || nums[idx] > nums[prev]) {
+            take = 1 + solve(idx, idx + 1, nums,t);
         }
 
-        return t[ind][prev_ind+1]= len;
+        int skip = solve(prev, idx + 1, nums,t);
+
+        if(prev !=-1){
+            t[prev][idx]=Math.max(skip, take);
+        }
+
+        return Math.max(skip, take);
     }
+}
+
+
+
+bottom up
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+       int n = nums.length;
+
+       //t[i] lis ending at index i
+
+       int [] t = new int[n];
+
+       Arrays.fill(t,1);  //single number is a self subsequence
+
+        int maxLIS = 1;
+
+
+       for(int i=0;i<n;i++){
+
+        for(int j=0;j<i;j++){
+
+            if(nums[i]> nums[j]){
+                //nottake, take
+                t[i] = Math.max(t[i], t[j] + 1);
+
+                 maxLIS = Math.max(maxLIS, t[i]);
+
+            }
+         }
+       }
+
+       return maxLIS;
+
+
+    }
+}

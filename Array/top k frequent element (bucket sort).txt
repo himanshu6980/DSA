@@ -1,0 +1,87 @@
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        // map approach  nlogn
+    //   HashMap<Integer, Integer> hmap = new HashMap<>();
+
+    //     // Count frequency of each number
+    //     for (int num : nums) {
+    //         hmap.put(num, hmap.getOrDefault(num, 0) + 1);
+    //     }
+
+    //     // Convert map entries to a list and sort by frequency
+    //     List<Map.Entry<Integer, Integer>> sortedEntries = new ArrayList<>(hmap.entrySet());
+
+    //     //[(1=3), (2=5), (3=2)]
+    //     sortedEntries.sort((a, b) -> b.getValue() - a.getValue()); // Sort in descending order by frequency
+
+    //     int[] res = new int[k];
+    //     for (int i = 0; i < k; i++) {
+    //         res[i] = sortedEntries.get(i).getKey();
+    //     }
+
+    //     return res;
+
+    //bucket sort  o(n)
+         
+        // HashMap<Integer, Integer> hmap = new HashMap<>();
+        // // Count frequency of each number
+        // for (int num : nums) {
+        //     hmap.put(num, hmap.getOrDefault(num, 0) + 1);
+        // }
+
+        // List<Integer> [] bucket=new List[nums.length+1];
+
+        // for(int key: hmap.keySet()){
+
+        //     int freq=hmap.get(key);
+
+        //     if(bucket[freq]==null){
+        //         bucket[freq]=new ArrayList<>();
+        //     }
+        //     bucket[freq].add(key);
+        // }
+
+        //  int[] res = new int[k];
+        //  int counter=0;
+
+        //  for(int i= bucket.length-1;i>=0;i--){
+        //     if(bucket[i]!=null){
+        //         for(int j=0;j<bucket[i].size();j++){
+        //             if(counter<k){
+        //             res[counter++]=bucket[i].get(j);
+        //             }
+
+        //         }
+        //         if(counter==k){
+        //             break;
+        //         }
+        //     }
+
+        //  }
+
+        //  return res;
+
+         //heap nlogk
+
+        HashMap<Integer, Integer> hmap = new HashMap<>();
+        // Count frequency of each number
+        for (int num : nums) {
+            hmap.put(num, hmap.getOrDefault(num, 0) + 1);
+        }
+
+        PriorityQueue<Integer> maxHeap = new PriorityQueue((a,b) -> hmap.get(b) - hmap.get(a));
+        
+        for(int key : hmap.keySet()){
+         maxHeap.add(key);
+        }
+
+         int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = maxHeap.poll();
+        }
+        return res;
+
+
+        
+    }
+}

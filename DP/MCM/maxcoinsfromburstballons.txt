@@ -1,19 +1,22 @@
-public int maxCoins(int[] nums) {
-        //tc: o(n^3 ) sc: o(n^2)+o(n)
+class Solution {
+    public int maxCoins(int[] nums) {
+
         List<Integer> arr = new ArrayList<>();
-        arr.add(1);
+        arr.add(1); // 1 as for first ele if last to burst
 
         for(int i=0;i<nums.length;i++){
             arr.add(nums[i]);
         }
 
-        arr.add(1);
+        arr.add(1); // for last ele if last t burst
 
         int[][] dp = new int[nums.length+1][nums.length+1];
 
         for(int i=0;i<dp.length;i++){
             Arrays.fill(dp[i], -1);
         }
+
+        //1 -- n we pass becuae we want to try evreey arr number in burst (1 [arr] 1)
 
         return f(1,nums.length,arr,dp);
         
@@ -30,15 +33,63 @@ public int maxCoins(int[] nums) {
         }
 
         int maxi = Integer.MIN_VALUE;
-//start from bottom 
-        for(int ind =i ; ind<=j;ind++){
-            int cost = arr.get(i-1) * arr.get(ind) * arr.get(j+1)
-             + f(i , ind-1 , arr,dp) + f(ind+1 , j , arr,dp);
+
+        // MCM format 
+		
+		//The problem is very similar to MCM question where we assume we are multiplying the selected matrix //index at the last and calling 2 recursive functions to solve left and right sub-problems.
+
+        for(int k=i ; k<=j;k++){
+		
+		// start from bottom of burst 
+            int cost = arr.get(i-1) * arr.get(k) * arr.get(j+1)
+             + f(i , k-1 , arr,dp) + f(k+1 , j , arr,dp);
             maxi= Math.max(cost, maxi);
         }
 
-
         return dp[i][j] = maxi;
 
-
     }
+}
+
+bottom up 
+
+dp[i][j] represents the maximum coins collected by bursting all balloons in the range [i, j].
+1 to n we have array ele stored in new array so return dp[1][n]
+
+class Solution {
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+        
+        // Create a new array with padding (1 at the start and end)
+        int[] arr = new int[n + 2];
+        arr[0] = 1; // padding at the beginning
+        arr[n + 1] = 1; // padding at the end
+        for (int i = 0; i < n; i++) {
+            arr[i + 1] = nums[i];
+        }
+
+        // Initialize the dp array
+        int[][] dp = new int[n + 2][n + 2];
+
+        // Iterate for all possible lengths of subarrays
+        for (int len = 1; len <= n; len++) {
+            for (int i = 1; i <= n - len + 1; i++) {
+                int j = i + len - 1;
+                dp[i][j] = 0; // Initialize dp[i][j] for the current subarray
+
+                // Try bursting each balloon in the range [i, j]
+                for (int k = i; k <= j; k++) {
+                    int cost = arr[i - 1] * arr[k] * arr[j + 1] // Bursting balloon `k`
+                            + dp[i][k - 1] // Coins from the left subarray
+                            + dp[k + 1][j]; // Coins from the right subarray
+                    dp[i][j] = Math.max(dp[i][j], cost);
+                }
+            }
+        }
+
+        
+        return dp[1][n];
+    }
+}
+
+

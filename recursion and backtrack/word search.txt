@@ -1,0 +1,104 @@
+
+tc: no of cells * 4^n 
+
+sc: o(n)
+
+n is lenght of word
+
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        //n*m
+        int n= board.length;
+        int m = board[0].length;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j] == word.charAt(0)){
+                    if(search(i,j,word,board,n,m,0)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean search(int i,int j , String word, char [][] board, int n,int m , int idx){
+
+        if(idx==word.length()){
+            return true;
+        }
+
+        if(i<0 || j<0 || i>=n || j>=m || board[i][j] !=word.charAt(idx) || board[i][j] == '#'){
+            return false;
+        }
+
+        char temp=board[i][j];
+        board[i][j]='#'; //mak visited
+
+        boolean top=search(i-1,j,word,board,n,m,idx+1);
+        boolean down=search(i+1,j,word,board,n,m,idx+1);
+        boolean left=search(i,j-1,word,board,n,m,idx+1);
+        boolean right=search(i,j+1,word,board,n,m,idx+1);
+
+
+        board[i][j]=temp; // backttrack
+
+
+        if(top || down || left || right){
+            return true;
+        }
+
+        return false;
+
+    }
+}class Solution {
+    public boolean exist(char[][] board, String word) {
+        //n*m
+        int n= board.length;
+        int m = board[0].length;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j] == word.charAt(0)){
+                    if(search(i,j,word,board,n,m,0)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean search(int i,int j , String word, char [][] board, int n,int m , int idx){
+
+        if(idx==word.length()){
+            return true;
+        }
+
+        if(i<0 || j<0 || i>=n || j>=m || board[i][j] !=word.charAt(idx) || board[i][j] == '#'){
+            return false;
+        }
+
+        char temp=board[i][j];
+        board[i][j]='#'; //mak visited
+
+        boolean top=search(i-1,j,word,board,n,m,idx+1);
+        boolean down=search(i+1,j,word,board,n,m,idx+1);
+        boolean left=search(i,j-1,word,board,n,m,idx+1);
+        boolean right=search(i,j+1,word,board,n,m,idx+1);
+
+
+        board[i][j]=temp; // backttrack
+
+
+        if(top || down || left || right){
+            return true;
+        }
+
+        return false;
+
+    }
+}

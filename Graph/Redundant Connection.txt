@@ -1,0 +1,48 @@
+import java.util.*;
+
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        List<List<Integer>> adj = new ArrayList<>();
+
+        // Initialize adjacency list
+        for (int i = 0; i < n + 1 ; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        int[] res = new int[2];
+
+        for (int i = 0; i < edges.length; i++) {
+            boolean[] vis = new boolean[n + 1]; // Reset visited array for each edge check
+
+            // Add edge to adjacency list
+            adj.get(edges[i][0]).add(edges[i][1]);
+            adj.get(edges[i][1]).add(edges[i][0]);
+
+            // Check if the graph contains a cycle
+            if (graphiscyclic(edges[i][0], -1, adj, vis)) {
+                res[0] = edges[i][0];
+                res[1] = edges[i][1];
+                break;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean graphiscyclic(int node, int parent, List<List<Integer>> adj, boolean[] vis) {
+        vis[node] = true;
+
+        for (int neighbor : adj.get(node)) {
+            if (!vis[neighbor]) {
+                if (graphiscyclic(neighbor, node, adj, vis)) {
+                    return true;
+                }
+            } else if (neighbor != parent) {
+                return true; // Cycle detected
+            }
+        }
+
+        return false;
+    }
+}

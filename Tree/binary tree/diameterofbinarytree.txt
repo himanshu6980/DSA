@@ -18,7 +18,8 @@ This path may or may not pass through the root.
 
 // return maxi;
 
-        //approach 2 t: o(n) s:o
+        //approach 2 t: o(n) s:o(n)
+		// height calculation me hi diameter calcuale krke
         int [] diameter = new int[1];
         getheightoptimal(root,diameter);
 
@@ -34,6 +35,8 @@ This path may or may not pass through the root.
 
         int l =getheightoptimal(root.left,diameter);
         int r = getheightoptimal(root.right,diameter);
+		// Update the diameter array by taking the maximum diameter that passes through the current node
+
         diameter[0]=Math.max(diameter[0],l+r);
         return 1+Math.max(l,r);
     }

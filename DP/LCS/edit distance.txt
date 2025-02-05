@@ -1,69 +1,84 @@
-tc: o(n*m) sc:  O(N*M) + O(N+M)
+tc: o(n*m) sc:  O(N*M) + O(N+M) 
 
+conevt str1 to str2 
 class Solution {
-    public int minDistance(String str1, String str2) {
-     int[][] t = new int[str1.length()][str2.length()];
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+
+        int[][] t = new int[word1.length()][word2.length()];
 
         for(int i=0;i<t.length;i++){
             Arrays.fill(t[i], -1);
         }
-        
-        return f(str1.length()-1, str2.length()-1 , str1,str2,t);
+
+        return solve(0,0,word1,word2,  m, n,t);
     }
 
-    static int f(int i, int j , String str1 , String str2,int[][]t){
+    public int solve(int i, int j, String word1, String word2, int m, int n,int [][] t){
 
-        if(i<0){   //s1 exhausted --> add all of s2 
-            return j+1;
+        //i ->word1, j->word2
+        //make word1 convert to word 2
+        if(i==m){
+            return n-j; //word 1 exhaaust , insert in word1 to ,atch
         }
 
-        if(j<0){  //s2 exhausted --> add all of s1
-            return i+1;
+        if(j==n){
+            return m-i; // word2 exhaust, delet from word1 to match
         }
 
+        if(word1.charAt(i)==word2.charAt(j)){
+            return solve(i+1,j+1,word1,word2,m,n,t);
+        }
+        
         if(t[i][j]!= -1){
             return t[i][j];
         }
 
-        if(str1.charAt(i)==str2.charAt(j)){
-            return t[i][j]= 0+ f(i-1,j-1,str1,str2,t);
-        }
-        else{
-            int in = 1 + f(i,j-1,str1,str2,t); //extra char we are adding in s1 
-            int d = 1+ f(i-1,j,str1,str2,t);  // deleting from s1 
-            int r = 1+ f(i-1,j-1, str1,str2,t); //replace will match
+        int insert=1+solve(i,j+1,word1,word2,m,n,t);  //insert before i in word1 , j increase becuase match
+        int delete=1+solve(i+1,j,word1,word2,m,n,t); //deelte from i , j will not afffect
+        int replace=1+solve(i+1,j+1,word1,word2,m,n,t); // replace will match both increase
 
-            return t[i][j]= Math.min(in , Math.min(d,r));
-        }
-}
+        return t[i][j]=Math.min(insert,Math.min(delete, replace));
 
+
+    }
 }
 
 
 //tabulation 
 
-static int editDistance(String S1, String S2){
-    
-    int n = S1.length();
-    int m = S2.length();
-    
-    int[][] dp=new int[n+1][m+1];
-     for(int i=0;i<=n;i++){
-        dp[i][0] = i;
-    }
-    for(int j=0;j<=m;j++){
-        dp[0][j] = j;
-    }
-    
-    for(int i=1;i<n+1;i++){
-        for(int j=1;j<m+1;j++){
-            if(S1.charAt(i-1)==S2.charAt(j-1))
-            if(S1.charAt(i-1)==S2.charAt(j-1))
-                dp[i][j] = 0+dp[i-1][j-1];
-            
-            else dp[i][j] = 1+Math.min(dp[i-1][j-1],Math.min(dp[i-1][j],dp[i][j-1]));
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+
+        // Create a DP table with dimensions (m+1) x (n+1)
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Fill the base cases
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i; // Deleting all characters of word1 to match an empty word2
         }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j; // Inserting all characters of word2 to match an empty word1
+        }
+
+        // Fill the DP table iteratively
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1]; // Characters match, no cost
+                } else {
+                    int insert = dp[i][j - 1];  // Insert before i in word1
+                    int delete = dp[i - 1][j]; // Delete from i in word1
+                    int replace = dp[i - 1][j - 1]; // Replace at i in word1
+                    dp[i][j] = 1 + Math.min(insert, Math.min(delete, replace));
+                }
+            }
+        }
+
+        // The answer is in the bottom-right cell of the DP table
+        return dp[m][n];
     }
-    
-    return dp[n][m];
 }

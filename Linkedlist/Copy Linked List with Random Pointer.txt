@@ -1,0 +1,149 @@
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+class Solution {
+    public Node copyRandomList(Node head) {
+
+        if(head == null){
+            return null;
+        }
+
+        HashMap<Node,Node> map = new HashMap<>();
+
+        Node curr=head;
+        Node prev=null;
+        Node newHead=null;
+
+        while(curr !=null){
+            Node newNode=new Node(curr.val);
+
+            map.put(curr, newNode);
+
+            if(newHead==null){
+                newHead=newNode;
+                prev=newHead;
+            }
+            else{
+				//next pointer copy
+                prev.next=newNode;
+                prev=newNode;
+            }
+            curr=curr.next; 
+        }
+
+
+        //fill random pointer
+
+        curr=head;
+        Node newcurr=newHead;
+
+        while(curr !=null){
+            if(curr.random ==null){
+                newcurr.random=null;
+            }
+            else{
+                Node originalRandomNode=curr.random;
+                Node deepcopycorrespodingoriginal=map.get(originalRandomNode);
+                newcurr.random=deepcopycorrespodingoriginal;
+               
+            }
+             curr=curr.next;
+            newcurr=newcurr.next;
+        }
+
+        return newHead;
+
+
+    }
+}
+
+
+
+apporach 2
+
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+class Solution {
+    public Node copyRandomList(Node head) {
+
+        if(head == null){
+            return null;
+        }
+
+        //add copy node in existing linkedlist
+
+        Node curr=head;
+
+        while(curr !=null){
+
+            Node newNode=new Node(curr.val);
+            Node currnext=curr.next;
+            curr.next=newNode;
+            newNode.next=currnext;
+
+            curr=curr.next.next;
+
+        }
+
+        //copy of random pointer
+
+        curr=head;
+        while(curr !=null && curr.next !=null){
+            if(curr.random==null){
+                curr.next.random=null;
+            }
+            else{
+                Node currpointingtowhichrandom=curr.random;
+                curr.next.random=currpointingtowhichrandom.next;
+            }
+            curr=curr.next.next;
+        }
+
+        //seeprate lists
+
+        Node newHead=head.next; //copynode
+        Node newcurr=newHead;
+        curr=head;
+
+        while(curr !=null && newHead !=null){
+            curr.next=curr.next == null ? null : curr.next.next;
+            newcurr.next=newcurr.next == null ? null : newcurr.next.next;
+
+            curr=curr.next;
+            newcurr=newcurr.next;
+        }
+
+        return newHead;
+
+
+
+ 
+
+
+    }
+}

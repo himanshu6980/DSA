@@ -1,0 +1,60 @@
+class Solution {
+    public int minEatingSpeed(int[] arr, int h) {
+        //brute force is run loop from 1 to max(piles[i]), calculete total time if it is <= h , return that 
+
+        int maxi = maxEle(arr);
+        // //for brute force
+        // for (int i = 1; i <= maxi; i++) {
+        //     int reqTime = caculatetotaltimeforeatingatspeedofkperhour(arr, i);
+        //     if (reqTime <= h) {
+        //         return i;
+        //     }
+        // }
+
+       // for optimial binary seach
+
+       int left=1;
+       int right=maxi;
+
+       while(left<=right){
+
+        int mid = left+ (right-left)/2;
+
+        int reqTime = caculatetotaltimeforeatingatspeedofkperhour(arr, mid);
+
+        if(reqTime<=h){
+            right=mid-1;
+        }
+        else{
+            left=mid+1;
+        }
+
+
+       }
+
+        return left;
+
+    }
+
+    public int maxEle(int [] arr){
+
+        int maxi=Integer.MIN_VALUE;
+
+        for(int i=0;i<arr.length;i++){
+            maxi=Math.max(maxi,arr[i]);
+        }
+
+        return maxi;
+    }
+
+    public int caculatetotaltimeforeatingatspeedofkperhour(int [] arr, int k){
+
+        int totaltime=0;
+
+        for(int i=0;i<arr.length;i++){
+            totaltime+=Math.ceil( (double) arr[i] / (double) k );
+        }
+
+        return totaltime;
+    }
+}

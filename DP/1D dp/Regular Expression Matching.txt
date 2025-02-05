@@ -1,0 +1,50 @@
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+        // Create a memoization table to store results for subproblems
+        Boolean[][] dp = new Boolean[m + 1][n + 1];
+        return solve(0, 0, s, p, dp);
+    }
+
+    public boolean solve(int i, int j, String s, String p, Boolean[][] dp) {
+        // If we have already computed the result for this subproblem, return the result
+        if (dp[i][j] != null) {
+            return dp[i][j];
+        }
+
+        // Base case: if both strings are completely processed
+        if (i == s.length() && j == p.length()) {
+            dp[i][j] = true;
+        }
+        // If pattern is exhausted but string is not, or vice versa
+        else if (j == p.length()) {
+            dp[i][j] = false;
+        }
+        // If string is exhausted but pattern still has characters left
+        else if (i == s.length()) {
+            // Pattern should match zero-length string: it must be like "a*" or ".*" etc.
+            if (j + 1 < p.length() && p.charAt(j + 1) == '*') {
+                dp[i][j] = solve(i, j + 2, s, p, dp);
+            } else {
+                dp[i][j] = false;
+            }
+        }
+        // Check if the current characters match or if the pattern character is a '.'
+        else {
+            boolean firstCharMatch = (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.');
+
+            // If the next character in pattern is '*', we have two cases
+            if (j + 1 < p.length() && p.charAt(j + 1) == '*') {
+                // Case 1: Skip both the '*' and the preceding character in the pattern
+                // Case 2: Use the '*' and continue to match the string with the same character
+                dp[i][j] = solve(i, j + 2, s, p, dp) || (firstCharMatch && solve(i + 1, j, s, p, dp));
+            } else {
+                // No '*' case, just check the current character and continue matching
+                dp[i][j] = firstCharMatch && solve(i + 1, j + 1, s, p, dp);
+            }
+        }
+
+        return dp[i][j];
+    }
+}

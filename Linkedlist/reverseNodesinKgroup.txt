@@ -41,6 +41,7 @@ Space complexity: O(1)
             i++;
             if(i%k==0){
                 //reversal
+				// e at kth node if k=3 1 2 3  : e at 3
                 ListNode s = beforestart.next;
                 ListNode endnext=e.next;
                 reverse(s,e);
@@ -74,3 +75,23 @@ Space complexity: O(1)
         }
 
     }
+	
+	public void reverse(ListNode s, ListNode e) {
+    if (s == null || e == null || s == e) {
+        return; // No reversal needed if either node is null or both are the same.
+    }
+    
+    ListNode prev = null;
+    ListNode current = s;
+    ListNode endNext = e.next; // Save the node after e, to reconnect later.
+
+    // Reverse the nodes until current reaches e.
+    while (current != endNext) {
+        ListNode next = current.next; // Save the next node.
+        current.next = prev; // Reverse the link.
+        prev = current; // Move prev to the current node.
+        current = next; // Move current to the next node.
+    }
+
+    
+}

@@ -1,34 +1,110 @@
+//brute force
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        //brute force
+
+        int ans=0;
+
+        if (s == null || s.length() == 0) {
+            return ans;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+
+        for(int i=0;i<s.length();i++){
+            String str="";
+            for(int j=i;j<s.length();j++){
+                str+=s.charAt(j);
+                if(hasDuplicateCharacters(str)){
+                    ans=Math.max(ans,str.length()-1);
+                    break;
+                }
+                ans=Math.max(ans,str.length());
+
+
+            }
+        }
+
+        return ans;
+    }
+
+    public  boolean hasDuplicateCharacters(String str) {
+        HashMap<Character, Integer> charCount = new HashMap<>();
+
+        for (char ch : str.toCharArray()) {
+            charCount.put(ch, charCount.getOrDefault(ch, 0) + 1);
+            if (charCount.get(ch) > 1) {
+                return true; // Duplicate found
+            }
+        }
+        return false; // No duplicates
+    }
+}
+
+better
 
 
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        
-        Map<Character,Integer> hmap=new HashMap<>();
+        //brute force
+        int ans = 0;
 
-        int tail=0;
+        if (s == null || s.length() == 0) {
+            return ans;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
 
-        int ans=0;
+        for (int i = 0; i < s.length(); i++) {
+            String str = "";
+            // Array to track character frequency
+            boolean[] charArray = new boolean[256]; // 256 for all ASCII characters
 
-        int head=0;
+            for (int j = i; j < s.length(); j++) {
+                char currentChar = s.charAt(j);
+                if (charArray[currentChar]) {
+                    ans = Math.max(ans, str.length());
+                    break; // Stop if a duplicate character is found
+                }
+                str += currentChar;
+                charArray[currentChar] = true; // Mark character as seen
 
-        for( head=0;head<s.length();head++ ){
-
-            char c = s.charAt(head);
-
-            int count = hmap.getOrDefault(c, 0);
-            hmap.put(c , count + 1);
-
-            while(hmap.get(c)>1){
-                ans=Math.max(ans,head-tail);
-
-                hmap.put(s.charAt(tail),hmap.get(s.charAt(tail)) - 1);
-                tail++;
+                ans = Math.max(ans, str.length());
             }
         }
 
-        ans=Math.max(ans,head-tail);
-
         return ans;
-       
+    }
+}
+
+
+
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int l=0;
+        int r=0;
+        Map<Character,Integer> charmap=new HashMap<>();
+        int maxLen=0;
+
+        for( r=0;r<s.length();r++){
+            //in the map
+            if(charmap.containsKey(s.charAt(r))){
+                //in the window
+                if(charmap.get(s.charAt(r))>=l){
+                    l = charmap.get(s.charAt(r)) + 1; 
+                }
+            }
+
+            maxLen=Math.max(maxLen, r-l+1);
+
+            charmap.put(s.charAt(r), r);
+
+        }
+
+        return maxLen;
     }
 }

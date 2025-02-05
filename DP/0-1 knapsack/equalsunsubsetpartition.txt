@@ -6,6 +6,57 @@ Input: arr[] = {1, 5, 3}
 Output: false 
 The array cannot be partitioned into equal sum sets.
 
+apply knapsack for sum /2 
+
+memoization
+
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        int n = nums.length;
+
+        for(int i: nums){
+            sum+=i;
+        }
+
+        if(sum %2 !=0){
+            return false;
+        }
+
+        sum=sum/2;
+
+        Boolean [][] t= new Boolean[n+1][sum+1];
+
+        return solve(0,sum,nums,t);
+    }
+
+    public boolean solve(int idx, int sum, int [] nums, Boolean [][] t){
+
+        if(idx>=nums.length || sum < 0){
+            return false;
+        }
+
+        if(sum==0){
+            return true;
+        }
+
+        if(t[idx][sum]!=null){
+            return t[idx][sum];
+        }
+
+        boolean take=false;
+
+        if(nums[idx]<=sum){
+         take=solve(idx+1,sum-nums[idx], nums,t);
+        }
+
+        boolean skip=solve(idx+1,sum,nums,t);
+
+        return t[idx][sum]=take || skip;
+
+    }
+}
+
 
 Time Complexity: O(sum * N) 
 Auxiliary Space: O(sum * N) 

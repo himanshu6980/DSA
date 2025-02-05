@@ -1,4 +1,29 @@
 balance bt = for every node ==> height(lt)-height(rt) <=1;
+
+//brute force  o(n^2)
+
+ public boolean isBalanced(Node root) {
+        // If the tree is empty, it's balanced
+        if (root == null) {
+            return true;
+        }
+
+        // Calculate the height of left and right subtrees
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+
+        // Check if the absolute difference in heights
+        // of left and right subtrees is <= 1
+        if (Math.abs(leftHeight - rightHeight) <= 1 &&
+            isBalanced(root.left) &&
+            isBalanced(root.right)) {
+            return true;
+        }
+
+        // If any condition fails, the tree is unbalanced
+        return false;
+    }
+
 Time Complexity: O(N) 
 
 Space Complexity: O(1) Extra Space + O(H) Recursion Stack space (Where “H”  is the height of binary tree)
@@ -25,3 +50,51 @@ Space Complexity: O(1) Extra Space + O(H) Recursion Stack space (Where “H”  
         return height;
     }
 
+withut global avriable
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    boolean isBal=true;
+    public boolean isBalanced(TreeNode root) {
+        if(helper(root)== -1){
+            return false;
+        }
+        return true;
+    }
+
+       public int helper(TreeNode root){
+        
+        if(root==null)
+            return 0;
+        
+        int left = helper(root.left);
+        int right = helper(root.right);
+
+        //if left or right is unbalncedd directly return from here
+
+        if(left==-1 || right== -1){
+            return -1;
+        }
+        
+        int gap = Math.abs(left-right);
+        if(gap>1)
+            return -1;
+        
+        int height = Math.max(left,right)+1;
+        return height;
+    }
+}

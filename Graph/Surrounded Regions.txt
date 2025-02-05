@@ -1,0 +1,80 @@
+tc: o(m*n)
+sC: o(m*n)
+
+class Solution {
+    public void solve(char[][] board) {
+
+        // start from boundary 0 and mark they can tbe converts
+        // convert rest of 0
+
+        int row = board.length;
+        int col = board[0].length;
+
+        boolean[][] vis = new boolean[row][col];
+
+        // iterate from corner
+
+        for (int i = 0; i < col; i++) {
+            // top row
+            if (board[0][i] == 'O') {
+                // call dfs
+                dfs(0, i, board, vis);
+            }
+        }
+
+        // left
+
+        for (int i = 0; i < row; i++) {
+            if (board[i][0] == 'O') {
+                // call dfs
+                dfs(i, 0, board, vis);
+            }
+        }
+
+        // bottom
+
+        for (int i = 0; i < col; i++) {
+            if (board[row - 1][i] == 'O') {
+                // call dfs
+                dfs(row-1, i, board, vis);
+            }
+        }
+
+        // right
+        for (int i = 0; i < row; i++) {
+            if (board[i][col - 1] == 'O') {
+                // call dfs
+                dfs(i, col-1, board, vis);
+            }
+        }
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (board[i][j] == 'O' && vis[i][j] != true) {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+
+    }
+
+    public void dfs(int i, int j, char[][] board, boolean[][] vis) {
+
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) {
+            return;
+        }
+
+        if (board[i][j] == 'X' || vis[i][j] == true) {
+            return;
+        }
+
+        vis[i][j] = true;
+
+        // visit neigburs and mark visited
+
+        dfs(i + 1, j, board, vis);
+        dfs(i - 1, j, board, vis);
+        dfs(i, j + 1, board, vis);
+        dfs(i, j - 1, board, vis);
+    }
+}

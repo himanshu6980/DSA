@@ -20,14 +20,20 @@ public int findDuplicate(int[] nums) {
         // return ans;
 
         //t: o(n) s: o(1)
+		
+		// hair and tortoise because there is duplicacy and traversal
 
         int slow=nums[0];
         int fast = nums[0];
+		
+		//cycle detect
 
         do{
             slow=nums[slow];
             fast=nums[nums[fast]];
         }while(slow!=fast);
+		
+		//cycle start
 
         fast=nums[0];
         while(slow!=fast){

@@ -17,6 +17,7 @@ tc: o(N) sc :o(N)
             TreeNode node=q.poll();
 
             if(node==null){
+				//leaf
                 res.append("# ");
                 continue;
             }

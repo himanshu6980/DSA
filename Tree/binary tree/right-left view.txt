@@ -32,3 +32,51 @@ Space Complexity: O(H)
         leftRecursive(root.left, level + 1, result);
          leftRecursive(root.right, level + 1, result);
     }
+	
+iterative
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        //ietrative
+        Queue<TreeNode> q=new LinkedList<>();
+        q.offer(root);
+        List<Integer> res=new ArrayList<>();
+
+        if(root==null){
+            return res;
+        }
+
+        while(!q.isEmpty()){
+            int qsize=q.size();
+            TreeNode lastnode=null;
+            for(int i=0;i<qsize;i++){
+                lastnode=q.poll();
+                if(lastnode.left!=null){
+                    q.offer(lastnode.left);
+                }
+                if(lastnode.right !=null){
+                    q.offer(lastnode.right);
+                }
+            }
+            res.add(lastnode.val);
+            
+        }
+
+        return res;
+    }
+}

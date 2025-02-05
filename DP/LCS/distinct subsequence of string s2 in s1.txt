@@ -4,26 +4,50 @@
 
 tc: o(n*m) sc: o(n*m)+o(n*m) 
   
-  public int numDistinct(String s, String t) {
-          int n = s.length();
-        int m = t.length();
-        if(n < m) return 0;
-        int[][] dp = new int[n][m];
-        for(int[] a : dp){
-             Arrays.fill(a, -1);
+class Solution {
+    public int numDistinct(String s, String t) {
+
+        int [][] tt= new int [s.length()+1][t.length()+1];
+
+        for(int i=0;i<tt.length;i++){
+            Arrays.fill(tt[i],-1);
         }
-        return helper(n-1, m-1, s, t, dp);
+        return solve(0,0,s,t,tt);
     }
-    
-    public int helper(int i, int j, String s, String t, int[][] dp){
-        if(j < 0) return 1;
-        if(i < 0) return 0;
-        if(dp[i][j] != -1) return dp[i][j];
-        if(s.charAt(i) == t.charAt(j)){
-            return dp[i][j] =  helper(i-1, j-1, s, t, dp) + helper(i-1, j, s, t, dp);
+
+    //t -- j to search  in s --> i
+
+    public int solve(int i, int j , String s , String t,int [][] tt){
+
+        if(j==t.length()){
+            return 1; // t ends
         }
-        else return dp[i][j] = helper(i-1, j, s, t, dp);
+
+        if(i>=s.length()){
+            return 0;
+        }
+
+        if(tt[i][j] != -1){
+            return tt[i][j];
+        }
+
+        int take=0;
+        int nottake=0;
+
+        if(s.charAt(i)==t.charAt(j)){
+		// take and nottake
+        take=solve(i+1,j+1,s,t,tt)+solve(i+1,j,s,t,tt);
+        }
+        else{
+		// if not match anyway more forward
+         nottake=solve(i+1,j,s,t,tt);
+        }
+
+
+        return tt[i][j]= take+nottake;
+
     }
+}
 	
 	
 	
@@ -35,6 +59,8 @@ tc: o(n*m) sc: o(n*m)+o(n*m)
     int n = s1.length();
     int m = s2.length();
     int dp[][]=new int[n+1][m+1];
+	
+	//  if s2 length-> 0 Initialize the first column with 1 because there's one empty subsequence in any string.
     
     for(int i=0;i<n+1;i++){
         dp[i][0]=1;
@@ -47,7 +73,7 @@ tc: o(n*m) sc: o(n*m)+o(n*m)
         for(int j=1;j<m+1;j++){
             
             if(s1.charAt(i-1)==s2.charAt(j-1))
-                dp[i][j] = (dp[i-1][j-1] + dp[i-1][j])%prime;
+                dp[i][j] = (dp[i-1][j-1] + dp[i-1][j]);
             else
                 dp[i][j] = dp[i-1][j];
         }

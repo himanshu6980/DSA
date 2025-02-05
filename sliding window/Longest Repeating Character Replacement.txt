@@ -1,0 +1,75 @@
+class Solution {
+    public int characterReplacement(String s, int k) {
+        //brute force
+
+        int maxLen=0;
+
+        for(int i=0;i<s.length();i++){
+
+            int maxfreq=0;
+            Map<Character,Integer> charmap=new HashMap<>();
+            for(int j=i;j<s.length();j++){
+
+                charmap.put(s.charAt(j), charmap.getOrDefault(s.charAt(j), 0) + 1);
+
+                maxfreq=Math.max(maxfreq,charmap.get(s.charAt(j)));
+
+                //substringlen- maxfreqcharacter  AAAB (4-3)
+
+               int noofchangesallowed=(j-i+1)-maxfreq;
+
+                if(noofchangesallowed <=k){
+                    maxLen=Math.max(maxLen,j-i+1);
+                }
+                else{
+                    break;
+                }
+
+
+            }
+
+
+        }
+
+        return maxLen;
+    }
+}
+
+
+//optimal
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+
+        int l=0;
+        int r=0;
+        int maxLen=0;
+        int maxfreq=0;
+
+        Map<Character,Integer> charmap=new HashMap<>();
+
+
+        for(r=0;r<s.length();r++){
+
+            charmap.put(s.charAt(r), charmap.getOrDefault(s.charAt(r), 0) + 1);
+
+            maxfreq=Math.max(maxfreq,charmap.get(s.charAt(r)));
+           // int noofchangesallowed=(r-l+1)-maxfreq;
+
+            //invalid window AAABBC k=2  (6-3) shink it
+
+            if(((r-l+1)-maxfreq) > k){
+                charmap.put(s.charAt(l), charmap.getOrDefault(s.charAt(l), 0) - 1);
+                l++;
+
+            }
+
+            if(((r-l+1)-maxfreq)<=k){
+                maxLen=Math.max(maxLen,r-l+1);
+            }
+
+        } 
+
+        return maxLen;
+    }
+}

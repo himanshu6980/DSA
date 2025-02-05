@@ -9,31 +9,37 @@ The same number may be chosen from candidates an unlimited number of times
 tc :  O(2^t * k) where t is the target, k is the average length
  Space Complexity: O(k*x), k is the average length and x is the no. of combinations
 
-class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
-    public List<List<Integer>> combinationSum(int[] nums, int target) {
-         
-       List<Integer> res = new ArrayList<>();
-     
-        f(0 , nums , res,target);
 
-        return ans;
+ class Solution {
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+        List<List<Integer>> ans =new ArrayList<>();
+        List<Integer> templist=new ArrayList<>();
+
+         f(nums, target, 0, templist,ans);
+         return ans;
     }
 
-   void f(int ind , int[] nums , List<Integer> res,int sum){
+    public void  f(int [] nums, int target, int idx, List<Integer> templist
+    , List<List<Integer>> ans){
 
-       if(sum==0){
-             ans.add(new ArrayList<>(res));
-             return ;
-       }
-
-        if(sum<0 || ind>=nums.length){
+        if(target< 0 || idx>=nums.length){
             return ;
         }
 
-        res.add(nums[ind]);
-        f(ind,nums,res,sum-nums[ind]);  //unlimited that why not moving to next ind 
-        res.remove(res.size()-1);
-        f(ind+1,nums,res,sum);
+        if(target==0){
+            ans.add(new ArrayList<>(templist));
+            return ;
+        }
+
+        if(nums[idx]<=target){
+            //include and not increasing idx becaue unlimited
+            templist.add(nums[idx]);
+            f(nums, target-nums[idx],idx,templist,ans);
+            templist.remove(templist.size()-1);
+        }
+
+        //exclude
+
+        f(nums, target, idx+1, templist,ans);
     }
 }

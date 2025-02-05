@@ -1,0 +1,126 @@
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) {
+            return false; 
+        }
+        Boolean[][][] t = new Boolean[s1.length() + 1][s2.length() + 1][s3.length() + 1];
+
+        return solve(0, 0, 0, s1, s2, s3,t);
+    }
+
+    public boolean solve(int i, int j, int k, String s1, String s2, String s3, Boolean [][][] t) {
+        if (i == s1.length() && j == s2.length() && k == s3.length()) {
+            return true;
+        }
+
+        if (k >= s3.length()) {
+            return false;
+        }
+
+        if(t[i][j][k] !=null){
+            return t[i][j][k];
+        }
+
+        boolean take_i_s1 = false;
+        boolean take_j_s2 = false;
+
+        if (i < s1.length() && s1.charAt(i) == s3.charAt(k)) {
+            take_i_s1 = solve(i + 1, j, k + 1, s1, s2, s3,t);
+        }
+
+        if (j < s2.length() && s2.charAt(j) == s3.charAt(k)) {
+            take_j_s2 = solve(i, j + 1, k + 1, s1, s2, s3,t);
+        }
+
+        return t[i][j][k]=take_i_s1 || take_j_s2;
+    }
+}
+
+
+usign 2 variables
+
+k is alwas i+j
+
+tcc: O(m*n)
+
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) {
+            return false; 
+        }
+        Boolean[][] t = new Boolean[s1.length() + 1][s2.length() + 1];
+
+        return solve(0, 0, s1, s2, s3,t);
+    }
+
+    public boolean solve(int i, int j, String s1, String s2, String s3, Boolean [][] t) {
+        if (i == s1.length() && j == s2.length() && i+j == s3.length()) {
+            return true;
+        }
+
+        if (i+j >= s3.length()) {
+            return false;
+        }
+
+        if(t[i][j] !=null){
+            return t[i][j];
+        }
+
+        boolean take_i_s1 = false;
+        boolean take_j_s2 = false;
+
+        if (i < s1.length() && s1.charAt(i) == s3.charAt(i+j)) {
+            take_i_s1 = solve(i + 1, j, s1, s2, s3,t);
+        }
+
+        if (j < s2.length() && s2.charAt(j) == s3.charAt(i+j)) {
+            take_j_s2 = solve(i, j + 1, s1, s2, s3,t);
+        }
+
+        return t[i][j]=take_i_s1 || take_j_s2;
+    }
+}
+
+
+bottom up 
+
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int m = s1.length();
+        int n = s2.length();
+        int N = s3.length();
+        if(m + n != N)
+            return false;
+        
+        Boolean [][]t = new Boolean [m+1][n+1];
+        //t[i][j] = true; //means, s1[0..i] and s2[0...j] interleaves with s3 till (i+j)
+        
+        //length of s1 = 0, s2 = 0 and s3 = 0 + 0, i.e. 0 . So obviously it's interleaved :-)
+        t[0][0] = true;
+        
+        //When s1 is of 0 length, we can interleave only when s2 forms s3
+        for(int j = 1; j<n+1; j++) {
+            t[0][j] = t[0][j-1] && s2.charAt(j-1)==s3.charAt(j-1);
+        }
+        
+        //When s2 is of 0 length, we can interleave only if s1 forms s3
+        for(int i = 1; i<m+1; i++) {
+            t[i][0] = t[i-1][0] && s1.charAt(i-1)==s3.charAt(i-1);
+        }
+        
+        
+        for(int i = 1; i<m+1; i++) {
+            for(int j = 1; j<n+1; j++) {
+                int k = i + j - 1;
+                
+                boolean s1_equals_s3  = t[i-1][j] && s1.charAt(i-1) == s3.charAt(k); //Try with s1
+                
+                boolean s2_equals_s3  = t[i][j-1] && s2.charAt(j-1) == s3.charAt(k); //Try with s2
+                
+                t[i][j] = s1_equals_s3 || s2_equals_s3 ;
+            }
+        }
+        
+        return t[m][n];
+    }
+}

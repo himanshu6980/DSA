@@ -1,57 +1,64 @@
+O(V + E) time and O(V + E) space
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        
+        //if no cycle can finish (get topological sort on dag)
+        //if cycle not possible cant finish
+
         int V=numCourses;
 
-        List<List<Integer>> adj=new ArrayList<>();
+        //create graph
+
+        List<List<Integer>> adjlist=new ArrayList<>();
 
         for(int i=0;i<V;i++){
-            adj.add(new ArrayList<>());
+            adjlist.add(new ArrayList<>());  // equal no of adj list for v vertice
         }
 
         for(int i=0;i<prerequisites.length;i++){
-            int course=prerequisites[i][0];
-            int pre=prerequisites[i][1];
+         int firstcourse = prerequisites[i][0];  // Course that depends on prerequisite
+        int secondcourse = prerequisites[i][1]; // Prerequisite course
 
-            adj.get(course).add(pre);
+        adjlist.get(secondcourse).add(firstcourse); // Edge from prerequisite to dependent course
+
+        //adjlist.get(secondcourse) retrieves the list of courses that are dependent on secondcourse, 
+        //and .add(firstcourse) adds firstcourse to that list.
         }
 
-        int[] indegree=new int[V];
-        
+        int [] indegree=new int[V];
+
         for(int i=0;i<V;i++){
-            for(int n: adj.get(i)){
-                indegree[n]++;
+
+            for(int dependent: adjlist.get(i)){
+                indegree[dependent]++;
             }
         }
-        
-        Queue<Integer> q=new LinkedList<>();
-        
+
+        Queue<Integer> q =new LinkedList<>();
+
         for(int i=0;i<V;i++){
             if(indegree[i]==0){
                 q.add(i);
             }
         }
-        
-       List<Integer>topo = new ArrayList<>();
+
+        List<Integer>topo = new ArrayList<>();
+
+
         while(!q.isEmpty()){
             int node=q.remove();
-            
-           topo.add(node);
-            
-            for(int an: adj.get(node)){
-                indegree[an]--;
-                
-                if(indegree[an]==0){
-                    q.add(an);
+            topo.add(node);
+            for(int dependent: adjlist.get(node)){
+                indegree[dependent]--;
+
+                if(indegree[dependent]==0){
+                    q.add(dependent);
                 }
             }
         }
 
-        if(topo.size()==V){
-            return true;
-        }
-        
-        return false;
+        return topo.size()==V; //check cycle or not
+
+
 
 
     }

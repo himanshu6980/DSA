@@ -1,0 +1,37 @@
+import java.util.Arrays;
+
+public class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) return false;
+
+        // Step 1: Frequency array for s1
+        int[] targetFreq = new int[26];
+        for (char c : s1.toCharArray()) {
+            targetFreq[c - 'a']++;
+        }
+
+        // Step 2: Sliding window initialization
+        int[] windowFreq = new int[26];
+        for (int i = 0; i < s1.length(); i++) {
+            windowFreq[s2.charAt(i) - 'a']++;
+        }
+
+        // Step 3: Check initial window
+        if (Arrays.equals(targetFreq, windowFreq)) return true;
+
+        // Step 4: Slide the window
+        for (int i = s1.length(); i < s2.length(); i++) {
+            // Add the new character to the window
+            windowFreq[s2.charAt(i) - 'a']++;
+
+            // Remove the old character from the window
+            windowFreq[s2.charAt(i - s1.length()) - 'a']--;
+
+            // Compare the updated window with the target
+            if (Arrays.equals(targetFreq, windowFreq)) return true;
+        }
+
+        // Step 5: No match found
+        return false;
+    }
+}

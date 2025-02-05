@@ -3,6 +3,8 @@ it is for DAG only
 S: o(n)
 T: o(V+E)
 
+to check cycle we can can check if topo aray have same no of vertices V
+
 
 class Solution
 {
@@ -69,7 +71,7 @@ class Solution
         
         for(int i=0;i<V;i++){
             for(int n: adj.get(i)){
-                indegree[n]++;
+                indegree[n]++; //no if incoming edges to node
             }
         }
         
@@ -77,7 +79,7 @@ class Solution
         
         for(int i=0;i<V;i++){
             if(indegree[i]==0){
-                q.add(i);
+                q.add(i); // because start will be this so that no incoming edge they can be first
             }
         }
         

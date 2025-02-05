@@ -1,0 +1,34 @@
+tc: o(n^2)
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) { 
+
+        Boolean [] t= new Boolean[s.length()+1];
+
+        return solve(0, s, wordDict,t);
+    }
+
+    public boolean solve(int idx, String s, List<String> wordDict,Boolean [] t) {
+        if (idx >= s.length()) {
+            return true;
+        }
+
+        if(wordDict.contains(s)){
+            return true;
+        }
+
+        if(t[idx]!=null){
+            return t[idx];
+        }
+
+        for (int l = 1; idx+l <= s.length(); l++) {
+            String temp = s.substring(idx, idx + l); 
+
+            if (wordDict.contains(temp) && solve(idx + l, s, wordDict,t)) {
+                return t[idx]=true;
+            }
+        }
+
+        return t[idx]=false;
+    }
+}

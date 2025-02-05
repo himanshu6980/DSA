@@ -1,0 +1,82 @@
+// min (left max, right max) at i - arr[i] ()building height
+
+class Solution {
+    public int trap(int[] arr) {
+        int n = arr.length;
+
+        int waterTrapped=0;
+
+        for(int i=0;i<n;i++){
+
+            int j=i;
+
+            int leftMax = 0, rightMax = 0;
+            while (j >= 0) {
+                leftMax = Math.max(leftMax, arr[j]);
+                j--;
+            }
+            j = i;
+            while (j < n) {
+                rightMax = Math.max(rightMax, arr[j]);
+                j++;
+            }
+            waterTrapped += Math.min(leftMax, rightMax) - arr[i];
+        }
+
+        return waterTrapped;
+    }
+}
+
+
+    public int trap(int[] arr) {
+     
+       int n = arr.length;
+        int prefixMax[] = new int[n];
+        int suffixMax[] = new int[n];
+        prefixMax[0] = arr[0];
+        for (int i = 1; i < n; i++) {
+            prefixMax[i] = Math.max(prefixMax[i - 1], arr[i]);
+        }
+        suffixMax[n - 1] = arr[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            suffixMax[i] = Math.max(suffixMax[i + 1], arr[i]);
+        }
+
+         int waterTrapped = 0;
+        for (int i = 0; i < n; i++) {
+            waterTrapped += Math.min(prefixMax[i], suffixMax[i]) - arr[i];
+        }
+        return waterTrapped;
+    }
+	
+	
+	
+	
+
+
+class Solution {
+    public int trap(int[] height) {
+        int l = 0, r = height.length - 1; // Initialize two pointers, one at the beginning and one at the end of the height array
+        int leftMax = -1, rightMax = -1; // Initialize variables to store the maximum height encountered so far from the left and right sides
+        int water = 0; // Initialize a variable to store the total trapped water
+
+        // Traverse the height array from both ends towards each other until the pointers meet
+        while (l < r) {
+            leftMax = Math.max(leftMax, height[l]); // Update the maximum height encountered from the left side
+            rightMax = Math.max(rightMax, height[r]); // Update the maximum height encountered from the right side
+
+            // Calculate the trapped water based on the lower maximum height encountered so far (between leftMax and rightMax)
+            // If leftMax is less than rightMax, the current height at index l can trap water, otherwise, the current height at index r can trap water
+            if (leftMax < rightMax){
+                water += leftMax - height[l];
+                l++;
+            }
+            else{
+                water += rightMax - height[r];
+                r--;
+            }
+        }
+
+        return water; // Return the total trapped water
+    }
+}

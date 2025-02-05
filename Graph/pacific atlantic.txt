@@ -1,33 +1,37 @@
+tc: o(m*n)
+sc: o(m*n)
+
 class Solution {
     public List<List<Integer>> pacificAtlantic(int[][] matrix) {
         
-        List<List<Integer>> res=new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
 
-        int row=matrix.length;
-        int col=matrix[0].length;
-
-        if(row==0 || col==0){
+        int row = matrix.length;
+        if (row == 0) { // Edge case: if matrix is empty, return empty list
             return res;
         }
+        int col = matrix[0].length;
 
-        boolean [][] pacific=new boolean[row][col];
-        boolean [][] atlantic=new boolean[row][col];
+        boolean[][] pacific = new boolean[row][col]; // Tracks cells that can flow to the Pacific Ocean
+        boolean[][] atlantic = new boolean[row][col]; // Tracks cells that can flow to the Atlantic Ocean
 
-
-        for(int i=0;i<col;i++){
-            dfs(0,i,pacific,matrix,Integer.MIN_VALUE);
-            dfs(row-1,i,atlantic,matrix,Integer.MIN_VALUE);
+        // Perform DFS for all cells in the first and last row (Pacific and Atlantic border rows)
+        for (int i = 0; i < col; i++) {
+            dfs(0, i, pacific, matrix, Integer.MIN_VALUE); // Top row (Pacific Ocean)
+            dfs(row - 1, i, atlantic, matrix, Integer.MIN_VALUE); // Bottom row (Atlantic Ocean)
         }
 
-          for(int i=0;i<row;i++){
-            dfs(i,0,pacific,matrix,Integer.MIN_VALUE);
-            dfs(i,col-1,atlantic,matrix,Integer.MIN_VALUE);
+        // Perform DFS for all cells in the first and last column (Pacific and Atlantic border columns)
+        for (int i = 0; i < row; i++) {
+            dfs(i, 0, pacific, matrix, Integer.MIN_VALUE); // Left column (Pacific Ocean)
+            dfs(i, col - 1, atlantic, matrix, Integer.MIN_VALUE); // Right column (Atlantic Ocean)
         }
 
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if(pacific[i][j]==true && atlantic[i][j]==true){
-                    res.add(Arrays.asList(i,j));
+        // Collect cells that can flow to both oceans
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    res.add(Arrays.asList(i, j));
                 }
             }
         }
@@ -35,22 +39,34 @@ class Solution {
         return res;
     }
 
+    /**
+     * Depth-first search (DFS) to mark reachable cells for the given ocean.
+     *
+     * @param i       Current row index
+     * @param j       Current column index
+     * @param ocean   Boolean matrix marking reachable cells for the ocean
+     * @param matrix  The height matrix
+     * @param prev    Height of the previous cell to ensure non-decreasing flow
+     */
+    public void dfs(int i, int j, boolean[][] ocean, int[][] matrix, int prev) {
 
-    public void dfs(int i,int j , boolean[][] ocean , int[][]matrix, int prev){
-
-        if(i<0 || i>=ocean.length || j<0 || j>=ocean[0].length){
-            return ;
-        }
-
-        if(ocean[i][j]==true || matrix[i][j]<prev){
+        // Boundary conditions: out of bounds check
+        if (i < 0 || i >= ocean.length || j < 0 || j >= ocean[0].length) {
             return;
         }
 
-        ocean[i][j]=true;
-        dfs(i,j-1,ocean,matrix,matrix[i][j]);
-        dfs(i,j+1,ocean,matrix,matrix[i][j]);
-        dfs(i-1,j,ocean,matrix,matrix[i][j]);
-        dfs(i+1,j,ocean,matrix,matrix[i][j]);
+        // If cell is already visited or the height is decreasing, stop recursion
+        if (ocean[i][j] || matrix[i][j] < prev) {
+            return;
+        }
 
+        // Mark cell as reachable for the ocean
+        ocean[i][j] = true;
+
+        // Explore all four possible directions
+        dfs(i, j - 1, ocean, matrix, matrix[i][j]); // Left
+        dfs(i, j + 1, ocean, matrix, matrix[i][j]); // Right
+        dfs(i - 1, j, ocean, matrix, matrix[i][j]); // Up
+        dfs(i + 1, j, ocean, matrix, matrix[i][j]); // Down
     }
 }

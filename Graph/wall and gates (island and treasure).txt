@@ -1,0 +1,114 @@
+
+
+class Pair
+{
+    int row;
+    int col;
+    
+    Pair(int r, int c)
+    {
+        row = r;
+        col = c;
+    }
+}
+
+class Solution {
+    
+    int rows;
+    int cols;
+    
+    Queue<Pair> q;
+    boolean[][] visited;
+    
+    public void islandsAndTreasure(int[][] rooms) {
+        
+        // base case
+        if (rooms == null || rooms.length == 0)
+        {
+            return;
+        }
+
+        rows = rooms.length;
+        cols = rooms[0].length;
+        
+        q = new LinkedList<>();
+        visited = new boolean[rows][cols];
+        
+        // initialize the visited matrix
+        for (boolean[] brow : visited)
+        {
+            Arrays.fill(brow, false);
+        }
+        
+        
+        // lets add all the gates to the queue first
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (rooms[i][j] == 0)
+                {
+                    Pair cell = new Pair(i,j);
+                    q.add(cell);
+                }
+            }
+        }
+        
+        // lets do a BFS starting from all the gates and mark the distances
+        // of all the neighboring cells
+        int dist = 0;
+        
+        while (!q.isEmpty())
+        {
+            int qlen = q.size();
+            
+            for (int i = 0; i < qlen; i++)
+            {
+                Pair cell = q.poll();
+                
+                // mark the distance for this cell from the gate
+                int r = cell.row;
+                int c = cell.col;
+                
+                if (visited[r][c] == true)
+                {
+                    continue;
+                }
+                
+                rooms[r][c] = dist;
+                
+                // mark this node as visited
+                visited[r][c] = true;
+                
+                // add all the valid neighbors to the queue for the next stage
+                addNeighbors(rooms, r + 1, c);
+                addNeighbors(rooms, r - 1, c);
+                addNeighbors(rooms, r, c - 1);
+                addNeighbors(rooms, r, c + 1);
+            }
+            
+            // we have processed all cells from this level
+            // so increment the distance for the next level
+            dist += 1;
+        }
+    }
+    
+    
+    // method to add the valid neighbors to the queue
+    private void addNeighbors(int[][] rooms, int r, int c)
+    {
+        // do a bounds check
+        if (r < 0 || r >= rows)
+            return;
+        
+        if (c < 0 || c >= cols)
+            return;
+        
+        // skip if it is a wall or if it has already been computed
+        if (rooms[r][c] == -1 || visited[r][c] == true)
+            return;
+        
+        // this is an uncomputed cell
+        q.add(new Pair(r,c));
+    }
+}
