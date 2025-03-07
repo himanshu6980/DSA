@@ -1,0 +1,39 @@
+
+
+class Solution {
+    static int spanningTree(int V, int E, List<List<int[]>> adj) {
+        // Code Here.
+        //min heap
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.add(new int[]{0, 0}); // {weight, nodetovisit}
+        boolean[] inMST = new boolean[V]; //visitedarray
+        int sum = 0;
+        
+        while (!pq.isEmpty()) {   // v
+            int[] p = pq.poll();   //log v
+            int wt = p[0];
+            int node = p[1];
+            
+            if (inMST[node])
+                continue;
+            
+            inMST[node] = true; // Added to MST
+            sum += wt;
+            
+            for (int[] neighbor : adj.get(node)) {  //E
+                int neighborNode = neighbor[0];
+                int neighborWt = neighbor[1];
+                
+                if (!inMST[neighborNode]) {
+                    pq.add(new int[]{neighborWt, neighborNode});  //log v
+                }
+            }
+        }
+        
+        return sum;
+        
+    }
+}
+
+tc: v (logv+ E*log v)
+sc: o(v+E)

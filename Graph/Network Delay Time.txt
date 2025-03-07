@@ -1,0 +1,82 @@
+import java.util.*;
+
+//Just copy paste the Dijkstra'a Code and Find the maximum amongst the minimums in result vector
+//But, Why maximum ?
+//Because, we have to return the minimum time it takes for all the n nodes to receive the signal
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        // Create adjacency list 
+        ArrayList<ArrayList<iPair>> adj = new ArrayList<>();
+
+        //loop we keep till n+1 becaue nodes are from 1 to n , list start from 0
+        // Here, adj.get(0) is unused, and we access adj.get(1), adj.get(2), ..., adj.get(n) directly
+        //[0 ..n] inclusive
+        for (int i = 0; i < n+1; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Build the graph
+        for (int[] time : times) {
+            int u = time[0]; //source
+            int v = time[1]; //destination
+            int w = time[2]; //weight
+            adj.get(u).add(new iPair(v, w));
+        }
+
+        // Run Dijkstra's algorithm from node k
+        ArrayList<Integer> result = dijkstra(adj, n, k);
+
+        int ans = Integer.MIN_VALUE;
+        for (int i = 1; i < n +1; i++) { // Iterate from 1 to n
+            if (result.get(i) == Integer.MAX_VALUE) {
+                return -1; // If any node is unreachable, return -1
+            }
+            ans = Math.max(ans, result.get(i));
+        }
+
+        return ans;
+    }
+
+    public ArrayList<Integer> dijkstra(ArrayList<ArrayList<iPair>> adj, int n, int src) {
+        PriorityQueue<iPair> pq = new PriorityQueue<>();
+        //n+1 for handle 1 to n
+        ArrayList<Integer> result = new ArrayList<>(Collections.nCopies(n + 1, Integer.MAX_VALUE));
+
+        result.set(src, 0);
+        pq.add(new iPair(0, src));
+
+        while (!pq.isEmpty()) {
+            iPair current = pq.poll();
+            int d = current.first;
+            int node = current.second;
+
+            for (iPair neighbor : adj.get(node)) {
+                int adjNode = neighbor.first;
+                int dist = neighbor.second;
+
+                if (d + dist < result.get(adjNode)) {
+                    result.set(adjNode, d + dist);
+                    pq.add(new iPair(d + dist, adjNode));
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+// Ensure iPair is comparable for the priority queue
+class iPair implements Comparable<iPair> {
+    int first, second;
+
+    iPair(int first, int second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    @Override
+    public int compareTo(iPair other) {
+        return Integer.compare(this.first, other.first);
+    }
+}

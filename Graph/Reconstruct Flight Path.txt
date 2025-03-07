@@ -1,0 +1,32 @@
+class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+
+        List<String> ans = new ArrayList<>();
+
+        HashMap<String,List<String>> adjlist = new HashMap<>();
+
+        for(List<String> ticket:tickets){
+            String from = ticket.get(0);
+            String to = ticket.get(1);
+            adjlist.putIfAbsent(from,new ArrayList<>());
+            adjlist.get(from).add(to); //create graph
+        }
+
+        for(String key:adjlist.keySet()) Collections.sort(adjlist.get(key)); //sort in lexi order
+
+        dfs("JFK",adjlist,ans);        
+        return ans;
+    }
+
+    public static void dfs(String s,HashMap<String,List<String>> adjlist,List<String> ans){
+
+        List<String> destinations = adjlist.get(s);
+
+        while(destinations!=null && !destinations.isEmpty()){
+            String next_dest = destinations.remove(0);
+            dfs(next_dest,adjlist,ans);
+        }
+
+        ans.add(0,s); //at 0 will insert from backtrack  JFK will comes in last in recursion;
+    }   
+}

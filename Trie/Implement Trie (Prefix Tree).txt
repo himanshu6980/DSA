@@ -1,0 +1,71 @@
+
+the time complexity for insertion, search, and prefix search is O(L), and the space complexity is O(N), 
+where L is the length of words or prefixes and N is the total number of characters in all words
+
+class Trie {
+
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    public void insert(String word) {
+        TrieNode crawler = root;
+
+        for (int i = 0; i < word.length(); i++) {
+            int index = word.charAt(i) - 'a';
+            if (crawler.children[index] == null){
+                crawler.children[index] = new TrieNode();
+            }
+            crawler = crawler.children[index];
+        }
+
+        crawler.isEndOfWord = true;
+    }
+    
+    public boolean search(String word) {
+         TrieNode crawler = root;
+
+        for (int i = 0; i < word.length(); i++) {
+            int index = word.charAt(i) - 'a';
+            if (crawler.children[index] == null){
+                return false;
+            }
+            crawler = crawler.children[index];
+        }
+        return crawler != null && crawler.isEndOfWord;
+    }
+    
+  public boolean startsWith(String prefix) {
+    TrieNode crawler = root;
+
+    for (int i = 0; i < prefix.length(); i++) {
+        int index = prefix.charAt(i) - 'a';
+        if (crawler.children[index] == null){
+            return false;
+        }
+        crawler = crawler.children[index];
+    }
+    return true; 
+}
+
+}
+
+class TrieNode {
+        TrieNode[] children;
+        boolean isEndOfWord;
+
+        public TrieNode() {
+            this.children = new TrieNode[26];
+            this.isEndOfWord = false;
+        }
+    }
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */

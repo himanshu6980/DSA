@@ -1,0 +1,81 @@
+
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] freq = new int[26];
+        for (char ch : tasks) {
+            freq[ch - 'A']++;
+        }
+        // max heap
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i = 0; i < 26; i++) {
+            if (freq[i] > 0) {
+                pq.offer(freq[i]);
+            }
+        }
+
+        int time = 0;
+
+        while (!pq.isEmpty()) {
+
+            List<Integer> store = new ArrayList<>();
+            //for n=1 tasks you can do is |AB|A  --> after 1 you can take A again so  values total taken in window
+            for (int i = 1; i <= n + 1; i++) {
+                if (!pq.isEmpty()) {
+                    int f = pq.peek();
+                    pq.poll();
+                    f--;
+                    store.add(f);
+
+                }
+            }
+
+            for(int f: store){
+                if(f>0){
+                    pq.offer(f);
+                }
+            }
+
+            if(pq.isEmpty()){
+                time+=store.size();
+            }
+            else{
+                time+=n+1;
+            }
+
+        }
+
+        return time;
+
+    }
+}
+
+
+grreey way
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+
+        Arrays.sort(count);
+        int maxf = count[25];
+        int gadde=maxf-1;  // A--A--A--A  gadde=3, idlespot=3*2
+        int idleSpot = (maxf - 1) * n;
+
+        for(int i=24;i>=0;i--){
+            idleSpot-=Math.min(count[i], gadde);
+        }
+
+        if(idleSpot>0){
+            return idleSpot+ tasks.length;
+        }
+        else{
+            return tasks.length;
+        }
+
+
+    }
+}

@@ -1,0 +1,121 @@
+import java.util.*;
+
+class Solution {
+    public int minCostConnectPoints(int[][] points) {
+        int n = points.length;
+        
+        // Step 1: Create Graph as Adjacency List
+        List<List<int[]>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        
+        // Fill adjacency list with Manhattan distances
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int weight = Math.abs(points[i][0] - points[j][0]) + 
+                             Math.abs(points[i][1] - points[j][1]);
+                adj.get(i).add(new int[]{j, weight});
+                adj.get(j).add(new int[]{i, weight}); //create edges 
+            }
+        }
+        
+        // Step 2: Apply Prim’s Algorithm
+        return spanningTree(n, adj);
+    }
+    
+    private int spanningTree(int V, List<List<int[]>> adj) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.add(new int[]{0, 0}); // {weight, nodeToVisit}
+        boolean[] inMST = new boolean[V]; // Visited array
+        int sum = 0;
+        int edgesUsed = 0;
+
+        while (!pq.isEmpty()) {   
+            int[] p = pq.poll();
+            int wt = p[0];
+            int node = p[1];
+
+            if (inMST[node])
+                continue;
+
+            inMST[node] = true; // Added to MST
+            sum += wt;
+            edgesUsed++;
+
+            if (edgesUsed == V) 
+                break;
+
+            for (int[] neighbor : adj.get(node)) {
+                int neighborNode = neighbor[0];
+                int neighborWt = neighbor[1];
+
+                if (!inMST[neighborNode]) {
+                    pq.add(new int[]{neighborWt, neighborNode});
+                }
+            }
+        }
+        return sum;
+    }
+}
+
+tc: O(n² log n)
+sc: O(n²)
+
+
+more optimized: 
+
+
+import java.util.*;
+
+class Solution {
+    public int minCostConnectPoints(int[][] points) {
+        int n = points.length;
+        
+        // Step 2: Apply Prim’s Algorithm without explicit adjacency list
+        return spanningTree(n, points);
+    }
+    
+    private int spanningTree(int V, int[][] points) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.add(new int[]{0, 0}); // {weight, nodeToVisit}
+        boolean[] inMST = new boolean[V]; // Visited array
+        int sum = 0;
+        int edgesUsed = 0;
+        int[] minDist = new int[V];
+        Arrays.fill(minDist, Integer.MAX_VALUE);
+        minDist[0] = 0; // Start from node 0
+
+        while (!pq.isEmpty() && edgesUsed < V) {   
+            int[] p = pq.poll();
+            int wt = p[0];
+            int node = p[1];
+
+            if (inMST[node])
+                continue;
+
+            inMST[node] = true; // Added to MST
+            sum += wt;
+            edgesUsed++;
+
+            // Instead of adjacency list, compute distances dynamically
+            for (int neighbor = 0; neighbor < V; neighbor++) {
+                if (!inMST[neighbor]) {
+                    int neighborWt = Math.abs(points[node][0] - points[neighbor][0]) +
+                                     Math.abs(points[node][1] - points[neighbor][1]);
+
+                    if (neighborWt < minDist[neighbor]) {
+                        minDist[neighbor] = neighborWt;
+                        pq.add(new int[]{neighborWt, neighbor});
+                    }
+                }
+            }
+        }
+
+        return sum;
+    }
+}
+
+
+tc: O(n²)
+sc: o(n)

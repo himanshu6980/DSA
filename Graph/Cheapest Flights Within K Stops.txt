@@ -1,0 +1,65 @@
+tc: n*(k+1)
+sc: n*(k+1)
+
+import java.util.*;
+
+class Solution {
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+
+        ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int[] f : flights) {
+            int srcnode = f[0];
+            int destnode = f[1];
+            int cost = f[2];
+
+            adj.get(srcnode).add(new Pair(destnode, cost));
+        }
+		//run o(n+m)  -- n cities, m - noof flights
+
+        Queue<Pair> q = new LinkedList<>();
+        int[] distance = new int[n];
+        Arrays.fill(distance, Integer.MAX_VALUE);  //o(n)
+        q.offer(new Pair(src, 0));
+        distance[src] = 0;
+
+        int level = 0;
+
+        while (!q.isEmpty() && level <= k) {  // k+1 times
+            int size = q.size();
+
+            for (int i = 0; i < size; i++) {
+                Pair curr = q.poll();
+                int node = curr.node;
+                int cost = curr.cost;
+
+                for (Pair p : adj.get(node)) {
+                    int nn = p.node;
+                    int v = p.cost;
+
+                    if (v + cost < distance[nn]) { // 
+                        distance[nn] = v + cost;
+                        q.offer(new Pair(nn, v + cost));
+                    }
+                }
+            }
+            level++;
+        }
+
+        return distance[dst] == Integer.MAX_VALUE ? -1 : distance[dst];
+    }
+}
+
+class Pair {
+    int node;
+    int cost;
+
+    public Pair(int n, int c) {
+        this.node = n;
+        this.cost = c;
+    }
+}

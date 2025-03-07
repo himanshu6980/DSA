@@ -1,0 +1,62 @@
+ tc : avergage o(n)  worst o(n^2) (pivot is max or min)
+ tc : avergage o(n)  worst o(n^2) (pivot is max or min)
+ 
+ class Solution {
+    public int findKthLargest(int[] nums, int k) {
+       int n = nums.length;
+
+       int l=0;
+       int r=n-1;
+       int pivot_index=0;
+
+    // kth largest --pivot index nums[k-1] // descending order
+
+     while(true){
+        pivot_index=partition(nums,l,r);
+
+        if(pivot_index==k-1){
+            break;
+        }
+        else if(pivot_index > k-1){ //ans is in left half of pivot
+            r=pivot_index-1;
+        }
+        else{
+            l=pivot_index+1;  // ans in right side of pivot
+        }
+
+      }
+
+      return nums[pivot_index];
+
+    }
+
+    public int partition(int [] nums, int l, int r){
+
+        int P=nums[l];
+        int i =l+1;  // if i = l then infinite loop ex [6, 2, 1, 5, 3, 4] k=2 also array=[1] case too
+        int j=r;
+
+        while(i<=j){
+
+            if(nums[i]< P && nums[j]> P){
+                swap(nums, i, j);
+                i++;
+                j--;
+            }
+            if(nums[i]>=P){  //ensuring larger elements stay left
+                i++;
+            }
+            if(nums[j]<=P){  //ensuring smaller elements stay right
+                j--;
+            }
+        }
+        swap(nums,l,j);
+        return j; // Pivot at j
+    }
+
+    private void swap(int[] nums, int x, int y) {
+        int temp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = temp;
+    }
+}

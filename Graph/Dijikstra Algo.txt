@@ -1,0 +1,104 @@
+
+//Time : O(E * log(V))
+//E = number of edges
+//V = number of vertices
+
+greedy (pick shortest)
+
+/*
+class iPair {
+    int first, second;
+
+    iPair(int first, int second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+*/
+
+// User function Template for Java
+class Solution {
+    // Function to find the shortest distance of all the vertices
+    // from the source vertex src.
+    ArrayList<Integer> dijkstra(ArrayList<ArrayList<iPair>> adj, int src) {
+        // Write your code here
+         int V = adj.size();
+         //min heap
+        PriorityQueue<iPair> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.first));
+        // distance--node
+		//intitilize with infinity
+        ArrayList<Integer> result = new ArrayList<>(Collections.nCopies(V, Integer.MAX_VALUE));
+        
+        result.set(src, 0);
+        pq.add(new iPair(0, src));
+        
+        
+        
+        while(!pq.isEmpty()){   // --v
+            
+            iPair current = pq.poll();   //-- log v
+            int d = current.first;
+            int node = current.second;
+            
+             for (iPair neighbor : adj.get(node)) {   // --E
+                int adjNode = neighbor.first;
+                int dist = neighbor.second;
+
+                if (d + dist < result.get(adjNode)) {
+                    result.set(adjNode, d + dist);
+                    pq.add(new iPair(d + dist, adjNode));  // log v
+                }
+            }
+        
+        }
+        
+        return result;
+    }
+}
+
+
+v * (log v + E * log v)
+.. we can use Treeset too 
+
+
+
+import java.util.*;
+
+class iPair {
+    int first, second;
+
+    iPair(int first, int second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+
+class Solution {
+    // Function to find the shortest distance of all the vertices from the source vertex src.
+    public ArrayList<Integer> dijkstra(ArrayList<ArrayList<iPair>> adj, int src) {
+        int V = adj.size();
+        TreeSet<iPair> set = new TreeSet<>(Comparator.comparingInt(a -> a.first));
+        ArrayList<Integer> result = new ArrayList<>(Collections.nCopies(V, Integer.MAX_VALUE));
+
+        result.set(src, 0);
+        set.add(new iPair(0, src));
+
+        while (!set.isEmpty()) {
+            iPair current = set.pollFirst();
+            int d = current.first;
+            int node = current.second;
+
+            for (iPair neighbor : adj.get(node)) {
+                int adjNode = neighbor.first;
+                int dist = neighbor.second;
+
+                if (d + dist < result.get(adjNode)) {
+                    set.remove(new iPair(result.get(adjNode), adjNode)); // Remove the old distance if present
+                    result.set(adjNode, d + dist);
+                    set.add(new iPair(d + dist, adjNode));
+                }
+            }
+        }
+        return result;
+    }
+}

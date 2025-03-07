@@ -1,0 +1,98 @@
+brute force --> iterate word search I , (each word DFS)
+
+trie will save unnecessary calls for dfs for each charcter
+
+tc : O(k * L + n * m * 4^L)  k - no of word , L - lenght of one word avg 
+sc: O(k * L + n * m)
+import java.util.*;
+
+class Solution {
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> result = new ArrayList<>();
+        Trie trie = new Trie();
+
+        // Insert all words into the Trie
+        for (String word : words) {
+            trie.insert(word);
+        }
+
+        int n = board.length;
+        int m = board[0].length;
+        Set<String> foundWords = new HashSet<>();
+
+        // Search for words in the board
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                dfs(board, i, j, trie.root, "", foundWords);
+            }
+        }
+
+        result.addAll(foundWords);
+        return result;
+    }
+
+    private void dfs(char[][] board, int i, int j, TrieNode node, String word, Set<String> result) {
+        int n = board.length, m = board[0].length;
+
+        // Boundary check
+        if (i < 0 || j < 0 || i >= n || j >= m || board[i][j] == '#') {
+            return;
+        }
+
+        if(node.children[board[i][j] - 'a'] == null){
+            return ; // no next children in trie node , this will avoid too many dfs in baord
+        }
+
+        char ch = board[i][j];
+        node = node.children[ch - 'a'];
+        word += ch;
+
+        if (node.isEndOfWord) {
+            result.add(word);
+        }
+
+        // Mark the cell as visited
+        board[i][j] = '#';
+
+        // Explore all 4 directions
+        dfs(board, i - 1, j, node, word, result); // Up
+        dfs(board, i + 1, j, node, word, result); // Down
+        dfs(board, i, j - 1, node, word, result); // Left
+        dfs(board, i, j + 1, node, word, result); // Right
+
+        // Backtrack
+        board[i][j] = ch;
+    }
+}
+
+// Trie implementation
+class Trie {
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char ch : word.toCharArray()) {
+            int index = ch - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new TrieNode();
+            }
+            node = node.children[index];
+        }
+        node.isEndOfWord = true;
+    }
+}
+
+// TrieNode definition
+class TrieNode {
+    TrieNode[] children;
+    boolean isEndOfWord;
+
+    public TrieNode() {
+        this.children = new TrieNode[26]; // For 26 lowercase English letters
+        this.isEndOfWord = false;
+    }
+}
