@@ -1,0 +1,107 @@
+The Builder pattern is a creational design pattern that allows you to construct complex objects step by step. It's particularly useful when an object has many constructor parameters, some of which might be optional.
+
+public class Computer {
+    // Required parameters
+    private String CPU;
+    private String RAM;
+    
+    // Optional parameters
+    private boolean hasGPU;
+    private boolean hasBluetooth;
+    private boolean hasWiFi;
+    private int usbPorts;
+    
+    // Private constructor - only accessible through Builder
+    private Computer(Builder builder) {
+        this.CPU = builder.CPU;
+        this.RAM = builder.RAM;
+        this.hasGPU = builder.hasGPU;
+        this.hasBluetooth = builder.hasBluetooth;
+        this.hasWiFi = builder.hasWiFi;
+        this.usbPorts = builder.usbPorts;
+    }
+    
+    // Getters
+    public String getCPU() { return CPU; }
+    public String getRAM() { return RAM; }
+    public boolean hasGPU() { return hasGPU; }
+    public boolean hasBluetooth() { return hasBluetooth; }
+    public boolean hasWiFi() { return hasWiFi; }
+    public int getUsbPorts() { return usbPorts; }
+    
+    @Override
+    public String toString() {
+        return "Computer [CPU=" + CPU + ", RAM=" + RAM + ", hasGPU=" + hasGPU + 
+               ", hasBluetooth=" + hasBluetooth + ", hasWiFi=" + hasWiFi + 
+               ", usbPorts=" + usbPorts + "]";
+    }
+    
+    // Builder class
+    public static class Builder {
+        // Required parameters
+        private final String CPU;
+        private final String RAM;
+        
+        // Optional parameters - initialized with default values
+        private boolean hasGPU = false;
+        private boolean hasBluetooth = false;
+        private boolean hasWiFi = false;
+        private int usbPorts = 0;
+        
+        public Builder(String cpu, String ram) {
+            this.CPU = cpu;
+            this.RAM = ram;
+        }
+        
+        public Builder setGPU(boolean hasGPU) {
+            this.hasGPU = hasGPU;
+            return this;
+        }
+        
+        public Builder setBluetooth(boolean hasBluetooth) {
+            this.hasBluetooth = hasBluetooth;
+            return this;
+        }
+        
+        public Builder setWiFi(boolean hasWiFi) {
+            this.hasWiFi = hasWiFi;
+            return this;
+        }
+        
+        public Builder setUsbPorts(int usbPorts) {
+            this.usbPorts = usbPorts;
+            return this;
+        }
+        
+        public Computer build() {
+            return new Computer(this);
+        }
+    }
+}
+
+
+public class BuilderPatternDemo {
+    public static void main(String[] args) {
+        // Create a basic computer
+        Computer basicComputer = new Computer.Builder("Intel i3", "8GB")
+                                            .build();
+        
+        // Create a gaming computer
+        Computer gamingComputer = new Computer.Builder("Intel i9", "32GB")
+                                            .setGPU(true)
+                                            .setBluetooth(true)
+                                            .setWiFi(true)
+                                            .setUsbPorts(6)
+                                            .build();
+        
+        // Create a work computer
+        Computer workComputer = new Computer.Builder("Intel i5", "16GB")
+                                            .setWiFi(true)
+                                            .setUsbPorts(4)
+                                            .build();
+        
+        System.out.println("Basic Computer: " + basicComputer);
+        System.out.println("Gaming Computer: " + gamingComputer);
+        System.out.println("Work Computer: " + workComputer);
+    }
+}

@@ -1,0 +1,72 @@
+The Strategy design pattern is a behavioral pattern that enables selecting an algorithm's behavior at runtime
+
+When you have multiple ways to perform a task and want to switch between them dynamically.
+
+
+
+interface PaymentStrategy {
+    void pay(int amount);
+}
+
+class CreditCardPayment implements PaymentStrategy {
+    private String cardNumber;
+    private String name;
+
+    public CreditCardPayment(String cardNumber, String name) {
+        this.cardNumber = cardNumber;
+        this.name = name;
+    }
+
+    @Override
+    public void pay(int amount) {
+        System.out.println("Paid " + amount + " using Credit Card: " + cardNumber);
+    }
+}
+
+class PayPalPayment implements PaymentStrategy {
+    private String email;
+
+    public PayPalPayment(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public void pay(int amount) {
+        System.out.println("Paid " + amount + " using PayPal: " + email);
+    }
+}
+
+
+class PaymentContext {
+    private PaymentStrategy paymentStrategy;
+
+    public PaymentContext(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void executePayment(int amount) {
+        paymentStrategy.pay(amount);
+    }
+}
+
+
+public class StrategyPatternExample {
+    public static void main(String[] args) {
+        // Create payment strategies
+        PaymentStrategy creditCard = new CreditCardPayment("1234-5678-9012-3456", "John Doe");
+        PaymentStrategy paypal = new PayPalPayment("john.doe@example.com");
+
+        // Create context with a default strategy
+        PaymentContext context = new PaymentContext(creditCard);
+        context.executePayment(100); // Pay using Credit Card
+
+        // Change strategy to PayPal
+        context.setPaymentStrategy(paypal);
+        context.executePayment(50); // Pay using PayPal
+
+    }
+}

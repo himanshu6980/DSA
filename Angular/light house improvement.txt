@@ -1,0 +1,62 @@
+Lighhouse improvement
+
+1. Lazy Loading Modules : Lazy loading allows loading modules only when needed, reducing initial load time.
+
+const routes: Routes = [
+  { path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
+  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
+
+
+2. Using trackBy prevents unnecessary re-rendering when looping over list
+
+@Component({
+  selector: 'app-list',
+  template: `
+    <ul>
+      <li *ngFor="let item of items; trackBy: trackById">{{ item.name }}</li>
+    </ul>
+  `
+})
+export class ListComponent {
+  items = [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }];
+
+  trackById(index: number, item: any) {
+    return item.id;
+  }
+}
+
+
+3.Lighthouse recommends using optimized images (WebP, AVIF) and properly sized images.
+
+<picture>
+  <source srcset="assets/image.webp" type="image/webp">
+  <img src="assets/image.jpg" alt="Sample Image" width="300" height="200">
+</picture>
+
+
+4. Add Alt Attributes to Images :  Helps screen readers interpret images.
+
+<img src="assets/logo.png" alt="Company Logo">
+
+
+5. Replace <div> with semantic elements like <header>, <main>, <section>, and <button>.
+
+6. Use ARIA attributes to improve screen reader support.
+
+<button aria-label="Close" (click)="closeModal()">X</button>
+
+7. Use Angular Pipes for Data Transformation Instead of manually transforming data 
+
+
+8.Remove Unused JavaScript : Use source-map-explorer to analyze unused JS:
+
+npm install source-map-explorer --save-dev
+ng build --prod --source-map
+npx source-map-explorer dist/browser/main.js

@@ -1,0 +1,98 @@
+The Facade design pattern provides a simplified interface to a complex subsystem of classes. It's like having a friendly front desk person who handles all the complex interactions with various departments in a company so you don't have to.
+
+// Subsystem components
+class DVDPlayer {
+    public void on() { System.out.println("DVD Player is on"); }
+    public void play(String movie) { System.out.println("Playing " + movie); }
+    public void stop() { System.out.println("DVD Player stopped"); }
+    public void eject() { System.out.println("DVD ejected"); }
+    public void off() { System.out.println("DVD Player is off"); }
+}
+
+class Amplifier {
+    public void on() { System.out.println("Amplifier is on"); }
+    public void setDvd(DVDPlayer dvd) { System.out.println("Amplifier set to DVD"); }
+    public void setSurroundSound() { System.out.println("Amplifier surround sound enabled"); }
+    public void setVolume(int level) { System.out.println("Amplifier volume set to " + level); }
+    public void off() { System.out.println("Amplifier is off"); }
+}
+
+class Projector {
+    public void on() { System.out.println("Projector is on"); }
+    public void wideScreenMode() { System.out.println("Projector in widescreen mode"); }
+    public void off() { System.out.println("Projector is off"); }
+}
+
+class TheaterLights {
+    public void dim(int level) { System.out.println("Theater lights dimming to " + level + "%"); }
+    public void on() { System.out.println("Theater lights on"); }
+}
+
+class Screen {
+    public void down() { System.out.println("Screen is going down"); }
+    public void up() { System.out.println("Screen is going up"); }
+}
+
+// Facade
+class HomeTheaterFacade {
+    private Amplifier amp;
+    private DVDPlayer dvd;
+    private Projector projector;
+    private TheaterLights lights;
+    private Screen screen;
+    
+    public HomeTheaterFacade(Amplifier amp, DVDPlayer dvd, Projector projector, 
+                           TheaterLights lights, Screen screen) {
+        this.amp = amp;
+        this.dvd = dvd;
+        this.projector = projector;
+        this.lights = lights;
+        this.screen = screen;
+    }
+    
+    public void watchMovie(String movie) {
+        System.out.println("Get ready to watch a movie...");
+        lights.dim(10);
+        screen.down();
+        projector.on();
+        projector.wideScreenMode();
+        amp.on();
+        amp.setDvd(dvd);
+        amp.setSurroundSound();
+        amp.setVolume(5);
+        dvd.on();
+        dvd.play(movie);
+    }
+    
+    public void endMovie() {
+        System.out.println("Shutting down the home theater...");
+        dvd.stop();
+        dvd.eject();
+        dvd.off();
+        amp.off();
+        projector.off();
+        screen.up();
+        lights.on();
+    }
+}
+
+// Client code
+public class FacadePatternDemo {
+    public static void main(String[] args) {
+        // Create components
+        Amplifier amp = new Amplifier();
+        DVDPlayer dvd = new DVDPlayer();
+        Projector projector = new Projector();
+        TheaterLights lights = new TheaterLights();
+        Screen screen = new Screen();
+        
+        // Create the facade
+        HomeTheaterFacade homeTheater = 
+            new HomeTheaterFacade(amp, dvd, projector, lights, screen);
+        
+        // Use the simplified interface
+        homeTheater.watchMovie("Inception");
+        System.out.println("\n--- Movie is playing ---\n");
+        homeTheater.endMovie();
+    }
+}

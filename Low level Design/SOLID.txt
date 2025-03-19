@@ -1,0 +1,218 @@
+SOLID
+
+1. SRP (Single Responsibility) : 	One class = One responsibility
+
+eg : 
+
+// Violation of SRP
+class Report {
+    public void generateReport() {
+        // Code to generate report
+    }
+
+    public void saveToFile(String filePath) {
+        // Code to save report to a file
+    }
+}
+
+// Following SRP
+class Report {
+    public void generateReport() {
+        // Code to generate report
+    }
+}
+
+class ReportSaver {
+    public void saveToFile(Report report, String filePath) {
+        // Code to save report to a file
+    }
+}
+
+2. OCP (Open-Closed): 	Extend without modifying existing code
+
+// Violation of OCP
+class Rectangle {
+    public double width;
+    public double height;
+}
+
+class AreaCalculator {
+    public double calculateArea(Rectangle rectangle) {
+        return rectangle.width * rectangle.height;
+    }
+}
+
+// Following OCP
+interface Shape {
+    double calculateArea();
+}
+
+class Rectangle implements Shape {
+    public double width;
+    public double height;
+
+    @Override
+    public double calculateArea() {
+        return width * height;
+    }
+}
+
+class Circle implements Shape {
+    public double radius;
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+
+
+3 . LSP (Liskov Substitution): 	Subclasses should not break parent class behavior (A subclass should extend behavior without changing the base class's expectations.)
+
+// Violation of LSP
+class Bird {
+    public void fly() {
+        System.out.println("Flying");
+    }
+}
+
+class Ostrich extends Bird {
+    @Override
+    public void fly() {
+        throw new UnsupportedOperationException("Ostrich can't fly");
+    }
+}
+
+// Following LSP
+interface Flyable {
+    void fly();
+}
+
+class Sparrow implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Flying");
+    }
+}
+
+class Ostrich implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Ostrich can't fly, but it runs!");
+    }
+}
+
+The first version violates LSP because an Ostrich cannot substitute a Bird without breaking the program.
+
+The second version uses an interface (Flyable) to ensure that all subclasses can be used interchangeably.
+
+
+4. ISP (Interface Segregation) : 	Prefer small, specific interfaces (Clients should not be forced to depend on interfaces they do not use. Instead of one large interface, create smaller, specific ones.)
+
+
+// Violation of ISP
+interface Worker {
+    void work();
+    void eat();
+}
+
+class HumanWorker implements Worker {
+    @Override
+    public void work() {
+        System.out.println("Working");
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("Eating");
+    }
+}
+
+class RobotWorker implements Worker {
+    @Override
+    public void work() {
+        System.out.println("Working");
+    }
+
+    @Override
+    public void eat() {
+        throw new UnsupportedOperationException("Robots don't eat");
+    }
+}
+
+// Following ISP
+interface Workable {
+    void work();
+}
+
+interface Eatable {
+    void eat();
+}
+
+class HumanWorker implements Workable, Eatable {
+    @Override
+    public void work() {
+        System.out.println("Working");
+    }
+
+    @Override
+    public void eat() {
+        System.out.println("Eating");
+    }
+}
+
+class RobotWorker implements Workable {
+    @Override
+    public void work() {
+        System.out.println("Working");
+    }
+}
+
+
+5. DIP (Dependency Inversion): 	Depend on abstractions, not concrete classes
+
+// Bad Example: The OrderService class is tightly coupled to MySQLDatabase
+class MySQLDatabase {
+    public void saveOrder() {
+        System.out.println("Saving order to MySQL");
+    }
+}
+
+class OrderService {
+    private MySQLDatabase database;
+
+    public OrderService() {
+        this.database = new MySQLDatabase(); // Tight coupling
+    }
+
+    public void save() {
+        database.saveOrder();
+    }
+}
+
+
+FIX: 
+
+interface Database {
+    void saveOrder();
+}
+
+class MySQLDatabase implements Database {
+    public void saveOrder() {
+        System.out.println("Saving order to MySQL");
+    }
+}
+
+class OrderService {
+    private Database database;
+
+    public OrderService(Database database) { // Inject dependency via constructor
+        this.database = database;
+    }
+
+    public void save() {
+        database.saveOrder();
+    }
+}
+

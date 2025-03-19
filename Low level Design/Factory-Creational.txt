@@ -1,0 +1,72 @@
+The Factory Design Pattern is a creational pattern that provides an interface for creating objects without specifying their concrete classes. It encapsulates object creation logic, making your code more flexible, maintainable, and decoupled.
+
+Core Components
+
+Product Interface: Defines the interface for objects created by the factory
+Concrete Products: Specific implementations of the product interface
+Factory: Creates and returns product instances
+
+// Step 1: Create the Product interface
+interface Vehicle {
+    void drive();
+}
+
+// Step 2: Create Concrete Products implementing the interface
+class Car implements Vehicle {
+    @Override
+    public void drive() {
+        System.out.println("Driving a car");
+    }
+}
+
+class Motorcycle implements Vehicle {
+    @Override
+    public void drive() {
+        System.out.println("Riding a motorcycle");
+    }
+}
+
+class Truck implements Vehicle {
+    @Override
+    public void drive() {
+        System.out.println("Driving a truck");
+    }
+}
+
+// Step 3: Create the Factory class
+class VehicleFactory {
+    public Vehicle createVehicle(String vehicleType) {
+        if (vehicleType == null) {
+            return null;
+        }
+        
+        if (vehicleType.equalsIgnoreCase("CAR")) {
+            return new Car();
+        } else if (vehicleType.equalsIgnoreCase("MOTORCYCLE")) {
+            return new Motorcycle();
+        } else if (vehicleType.equalsIgnoreCase("TRUCK")) {
+            return new Truck();
+        }
+        
+        return null;
+    }
+}
+
+// Client code example
+public class FactoryPatternDemo {
+    public static void main(String[] args) {
+        VehicleFactory vehicleFactory = new VehicleFactory();
+        
+        // Get a Car object and call its drive method
+        Vehicle car = vehicleFactory.createVehicle("CAR");
+        car.drive();
+        
+        // Get a Motorcycle object and call its drive method
+        Vehicle motorcycle = vehicleFactory.createVehicle("MOTORCYCLE");
+        motorcycle.drive();
+        
+        // Get a Truck object and call its drive method
+        Vehicle truck = vehicleFactory.createVehicle("TRUCK");
+        truck.drive();
+    }
+}
