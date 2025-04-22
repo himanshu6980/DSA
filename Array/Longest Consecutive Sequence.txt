@@ -1,13 +1,41 @@
 
+brute force : tc: o(n^2)
 
-tc: o(nlogn)  sc: o(1)
+ public static boolean linearSearch(int []a, int num) {
+        int n = a.length; //size of array
+        for (int i = 0; i < n; i++) {
+            if (a[i] == num)
+                return true;
+        }
+        return false;
+    }
+    public static int longestSuccessiveElements(int []a) {
+        int n = a.length; //size of array
+        int longest = 1;
+        //pick a element and search for its
+        //consecutive numbers:
+        for (int i = 0; i < n; i++) {
+            int x = a[i];
+            int cnt = 1;
+            //search for consecutive numbers
+            //using linear search:
+            while (linearSearch(a, x + 1) == true) {
+                x += 1;
+                cnt += 1;
+            }
 
-import java.util.Arrays;
-import java.util.HashSet;
+            longest = Math.max(longest, cnt);
+        }
+        return longest;
+    }
+
+
+
+
 
 public class Solution {
     public static int longestSuccessiveElements(int []a) {
-        // Write your code here.
+        //tc: o(nlogn)  sc: o(1)
         // Arrays.sort(a);
         // int longest=1;
         // int counter=0;
@@ -28,47 +56,10 @@ public class Solution {
 
         // return longest;
 		
-		Time Complexity: O(N) + O(2*N) ~ O(3*N), where N = size of the array.
-Reason: O(N) for putting all the elements into the set data structure. After that for every starting element, we are finding the consecutive elements. Though we are using nested loops, the set will be traversed at most twice in the worst case. So, the time complexity is O(2*N) instead of O(N2).
-
-Space Complexity: O(N), as we are using the set data structure to solve this problem.
-
-
-        int n=a.length;
-
-        int longest=1;
-
-        int counter=0;
-
-        HashSet<Integer> hset=new HashSet<>();
-
-        for(int i=0;i<n;i++){
-            hset.add(a[i]);
-        }
-
-        for(int num: hset){
-
-            if(!hset.contains(num-1)){
-                counter=1;
-                int x=num;
-
-                while(hset.contains(x+1)){
-                    x=x+1;
-                    counter+=1;
-                }
-
-                longest=Math.max(longest, counter);
-            }
-        }
-
-        return longest;
-
-    }
-}
-	
-	
-	
-	tc: o(n)  sc: o(n)
+		//optimal 
+		
+		
+		tc: o(n)  sc: o(n)
 
 
     public int longestConsecutive(int[] nums) {
@@ -108,3 +99,47 @@ Space Complexity: O(N), as we are using the set data structure to solve this pro
 
         return len;
     }
+	
+	
+	// other optimal 
+		
+		Time Complexity: O(N) + O(2*N) ~ O(3*N), where N = size of the array.
+Reason: O(N) for putting all the elements into the set data structure. After that for every starting element, we are finding the consecutive elements. Though we are using nested loops, the set will be traversed at most twice in the worst case. So, the time complexity is O(2*N) instead of O(N^2).
+
+Space Complexity: O(N), as we are using the set data structure to solve this problem.
+
+
+        int n=a.length;
+
+        int longest=1;
+
+        int counter=0;
+
+        HashSet<Integer> hset=new HashSet<>();
+
+        for(int i=0;i<n;i++){
+            hset.add(a[i]);
+        }
+
+        for(int num: hset){
+
+            if(!hset.contains(num-1)){
+                counter=1;
+                int x=num;
+
+                while(hset.contains(x+1)){
+                    x=x+1;
+                    counter+=1;
+                }
+
+                longest=Math.max(longest, counter);
+            }
+        }
+
+        return longest;
+
+    }
+}
+	
+	
+	

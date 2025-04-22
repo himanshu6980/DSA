@@ -1,1 +1,1 @@
-lcs(a.b) length==len(a) //is a subsequence of string b
+lcs(a,b) length==len(a) //is a subsequence of string b

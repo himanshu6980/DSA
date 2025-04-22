@@ -30,6 +30,9 @@ class Solution {
             result.add(arr[i]);
             i = subsequence[i];
         }
+		
+		 Collections.reverse(result); // Reverse to get correct order
+
         return result.size();
 }
 }

@@ -8,9 +8,9 @@ Reason: We are using a recursion stack space(O(N))
 and a 2D array (again O(N*4)). Therefore total space complexity will be O(N) + O(N) ≈ O(N) 
  
  public static int solve(int day , int last , int[][] task,int[][] t ){
-            if(day < 0){
+         if(day < 0){
             return 0;
-            }
+          }
         if(day==0){
             int maxi=Integer.MIN_VALUE;
             

@@ -1,8 +1,7 @@
-import java.util.* ;
-import java.io.*; 
+ 
 public class Solution {
     public static int findAllSubarraysWithGivenSum(int arr[], int s) {
-        // Write your code here.
+        // tc: o(n^2)
 
         // int n=arr.length;
 
@@ -20,7 +19,9 @@ public class Solution {
             
         // }
 
-        // return cnt;   
+        // return cnt; 
+
+		tc: o(n)		
 
         int n = arr.length;
 

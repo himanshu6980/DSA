@@ -1,11 +1,19 @@
+pure recusion : tc-> O(3^{n+m})
+
+memo tc: o(n*m)
+
 class Solution {
     public int countSquares(int[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
         int [][] dp = new int[n][m];
 		
+		//dp[i][j] array stores the number of squares ending at position (i, j)
+		
 		//initialize the first row and column as same for dp aaray because boundary ones will count as same given
+		(The first row and first column of dp are directly copied from the input matrix because a single 1 in these positions can only form a 1x1 square)
 		only middle ones will create extra
+		
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 if(i==0 || j==0){

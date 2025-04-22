@@ -1,5 +1,15 @@
 //using histogram area function for matrix every row
 
+
+There are n rows , m column.
+
+Each row updates the height[] array in O(m).
+
+Calls largestRectangleArea(height), which runs in O(m).
+
+Total complexity: o(n*m)
+ 
+
 public int maximalRectangle(char[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;

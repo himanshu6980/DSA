@@ -1,3 +1,10 @@
+brute force: tc: o(n*m) linear seach
+
+better: bianry search on row level  O(N + logM)
+
+
+optimal : 
+tc: O(log(NxM)
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
         int left=0;

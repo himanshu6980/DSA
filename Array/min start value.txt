@@ -1,3 +1,5 @@
+ tc: o(n)
+ 
  class Solution {
     public int minStartValue(int[] nums) {
         int minVal = 0;

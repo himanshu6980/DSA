@@ -1,4 +1,6 @@
 
+tc: o(n)
+
 
     public int maxProfit(int[] prices, int fee) {
         

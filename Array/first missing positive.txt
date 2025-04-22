@@ -1,5 +1,27 @@
+brute force : using set  tc: o(n) sc: o(n)
+
+public int firstMissingPositive(int[] nums) {
+        HashSet<Integer> set=new HashSet<>();
+
+        for(int i: nums){
+            set.add(i);
+        }
+
+        int ans=1;
+
+        for(int i=1;i<=Math.pow(10,5)+1;i++){
+            if(!set.contains(i)){
+                ans=i;
+                break;
+            }
+        }
+
+        return ans;
+    }
+	
+optimal :cyclic sort tc: o(n) sc: o(1)
+
 class Solution {
-    // Function to swap elements in the array
     private void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
@@ -8,6 +30,8 @@ class Solution {
     
     public int firstMissingPositive(int[] nums) {
         int n = nums.length;
+		
+		//[2, -3, 4, 1, 1, 7]
         
         // Place each positive integer i at index i-1 if possible
         for (int i = 0; i < n; i++) {
@@ -15,6 +39,10 @@ class Solution {
                 swap(nums, i, nums[i] - 1);
             }
         }
+		
+		//each element is swapped at most once that why its tc is o(n)
+		
+		//after [1, 2, -3, 4, 1, 7]
         
         // Find the first missing positive integer
         for (int i = 0; i < n; i++) {
@@ -28,4 +56,3 @@ class Solution {
     }
 }
 
-}

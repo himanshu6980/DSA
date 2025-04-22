@@ -1,8 +1,9 @@
+tc: 0(n)
+
 public class Solution {
     public static int removeDuplicates(int[] arr,int n) {
-        // Write your code here.
 
-        int j=0;
+        int j=0; //track pos of last uniq element
 
         for(int i=1;i<n;i++){
 

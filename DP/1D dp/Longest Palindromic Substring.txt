@@ -1,5 +1,6 @@
-//T.C : O(n^2) - Because the AMortized Time Complexity of solve() will become 1 due to memoization.
+without memo, isPalindrom will take o(n) , total tc would be o(n^3)
 
+//T.C : O(n^2) - Because the AMortized Time Complexity of solve() will become 1 due to memoization.
 //recursion + memo 
 
 class Solution {

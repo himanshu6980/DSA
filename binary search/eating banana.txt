@@ -1,7 +1,7 @@
 class Solution {
     public int minEatingSpeed(int[] arr, int h) {
         //brute force is run loop from 1 to max(piles[i]), calculete total time if it is <= h , return that 
-
+		//tc: n*maxi 
         int maxi = maxEle(arr);
         // //for brute force
         // for (int i = 1; i <= maxi; i++) {
@@ -12,6 +12,8 @@ class Solution {
         // }
 
        // for optimial binary seach
+	   
+	   tc: o(n*log(maxi))
 
        int left=1;
        int right=maxi;

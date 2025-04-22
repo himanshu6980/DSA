@@ -1,0 +1,61 @@
+tc: o(n logn )
+
+//greedy
+
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        //sort by end time
+        //remove the minimum number of overlapping intervals, 
+        //which is the same as keeping the maximum number of non-overlapping intervals
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+
+        int last=intervals[0][1];
+        int cnt=0;
+        for(int i=1;i<intervals.length;i++){
+            if(intervals[i][0]>=last){
+                // // If the current interval starts after or when the last non-overlapping one ends
+                // // Update 'last' to the end of the current interval (no overlap)
+                last=intervals[i][1];
+            }else{
+             // Overlapping interval found, increment the counter
+
+                cnt++;
+            }
+        }
+        return cnt;
+
+        
+    }
+}
+
+
+//recursion
+
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        // Sort by end time (greedy strategy)
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        
+        // Start recursion from the second interval (index 1)
+        return countRemovals(intervals, 1, intervals[0][1]);
+    }
+
+    // Recursive function to count removals
+    private int countRemovals(int[][] intervals, int index, int lastEnd) {
+        // Base case: no more intervals
+        if (index == intervals.length) {
+            return 0;
+        }
+
+        // If current interval doesn't overlap with previous
+        if (intervals[index][0] >= lastEnd) {
+            // No removal needed, move to next
+            return countRemovals(intervals, index + 1, intervals[index][1]);
+        } else {
+            // Overlap found, count it as a removal and skip this interval
+            return 1 + countRemovals(intervals, index + 1, lastEnd);
+        }
+    }
+}
+
+

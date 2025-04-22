@@ -1,5 +1,7 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
+	
+		 //Approach 1  tc: o(n* klogk ) since we are sorting k characters n times in the loop.
         // HashMap<String, List<String>> map=new HashMap<>();
 
         // for(int i=0;i<strs.length;i++){
@@ -25,7 +27,7 @@ class Solution {
 
         // return new ArrayList<>(map.values());
 
-        //approach 2
+        //approach 2  better tc: o(n*k) 
 
          HashMap<String, List<String>> map=new HashMap<>();
 

@@ -9,6 +9,7 @@ The array cannot be partitioned into equal sum sets.
 apply knapsack for sum /2 
 
 memoization
+Time Complexity: O(sum * N) 
 
 class Solution {
     public boolean canPartition(int[] nums) {

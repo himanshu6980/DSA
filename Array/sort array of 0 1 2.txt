@@ -1,3 +1,9 @@
+brute force normal sort: tc:  nlog n 
+
+better: count 0 , 1, 2 ..insert in array line by line  tc: o(n)
+
+tc: o(n) 
+
 import java.util.* ;
 import java.io.*; 
 public class Solution {

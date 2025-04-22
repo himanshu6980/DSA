@@ -1,9 +1,28 @@
-import java.util.* ;
-import java.io.*; 
+better:  tc: o(n^2)
+
+    public static int getLongestSubarray(int []a, int k) {
+        int n = a.length; 
+
+        int len = 0;
+        for (int i = 0; i < n; i++) { 
+            int s = 0;
+            for (int j = i; j < n; j++) { 
+                // add the current element to
+                // the subarray a[i...j-1]:
+                s += a[j];
+
+                if (s == k)
+                    len = Math.max(len, j - i + 1);
+            }
+        }
+        return len;
+    }
+	
+optimal :  tc: o(n) 
+
 public class Solution {
 	public static int getLongestSubarray(int []a, int k) {
-		// Write your code here
-		  int len=0;
+		 int len=0;
         long sum=0;
 
         HashMap<Long,Integer> prefixSum=new HashMap<>();
@@ -13,7 +32,8 @@ public class Solution {
             sum+=a[i];
 
             if(sum==k){
-                len=Math.max(len,i+1);
+			//max length update
+              len=Math.max(len,i+1);
                 
             }
 
@@ -28,7 +48,7 @@ public class Solution {
             if (!prefixSum.containsKey(sum)) {
                 prefixSum.put(sum, i);
             }       
-             }
+         }
 
         return len;
 	}

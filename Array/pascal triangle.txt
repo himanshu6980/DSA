@@ -1,3 +1,5 @@
+tc: o(n^2) sc: o(n^2)
+
 class Solution {
     public List<List<Integer>> generate(int N) {
         List<List<Integer>> ans = new ArrayList<>();

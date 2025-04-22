@@ -13,15 +13,17 @@ t: n*N s: n*N
         for(int i=0;i<N;i++){
             length[i] = i+1;
         }
+		
+		// A DP table where t[i][j] stores the maximum obtainable price using the first i pieces for a rod of length j
         
         int [][] t = new int[n+1][N+1];
         
-      	    
+      	  //when no rod pieces are available, the profit is 0
 	    for(int j=0;j<N+1;j++){
 	        t[0][j]=0;
 	    }
 	    
-	    
+	    //when rod length is 0, the profit is 0
 	    for(int i=0;i<n+1;++i){
 	        
 	        t[i][0] = 0;

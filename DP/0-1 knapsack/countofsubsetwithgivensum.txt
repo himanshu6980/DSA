@@ -13,6 +13,8 @@ Auxiliary Space: O(sum*n), as the size of the 2-D array, is sum*n.
 public int perfectSum(int arr[],int n, int sum) 
 	{ 
 	    int [][] t = new int [n+1][sum+1];
+		
+		//t[i][j] represents the number of subsets of the first i elements that sum to j
 	     int mod = (int)Math.pow(10,9) + 7;
 	    
 	    //intialize ele picked row  with ele_count =0 --> noofsubset=0
@@ -28,6 +30,21 @@ public int perfectSum(int arr[],int n, int sum)
 	        int k = countnoofzerosinarraytillindex(arr , i);
 	        
 	        t[i][0] = (int)Math.round(Math.pow(2 , k));
+			
+			this above part why 
+			
+			/*arr = {0, 0, 3, 5}
+			Up to i = 2 ([0, 0]), there are 2 zeros.
+
+			The number of ways to form a subset with sum 0 = 2^2=4
+
+			Exclude both zeroes → {}
+
+			Include first zero only → {0}
+
+			Include second zero only → {0}
+
+			Include both zeroes → {0, 0}*/
 	        
 	    }
 	   

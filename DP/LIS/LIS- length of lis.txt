@@ -19,14 +19,22 @@
         if(prev !=-1 && t[prev][idx]!=-1){
             return t[prev][idx];
         }
+		
+		// Option 1: Take the current element if it is greater than the previous one
 
 
         int take = 0;
         if (prev == -1 || nums[idx] > nums[prev]) {
             take = 1 + solve(idx, idx + 1, nums,t);
         }
+		
+		 // Option 2: Skip the current element
+
 
         int skip = solve(prev, idx + 1, nums,t);
+		
+		// Store the result in the memoization table if prev is valid
+
 
         if(prev !=-1){
             t[prev][idx]=Math.max(skip, take);

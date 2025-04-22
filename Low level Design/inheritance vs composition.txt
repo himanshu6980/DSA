@@ -1,0 +1,106 @@
+
+// Inheritance example
+class Engine {
+    void start() {
+        System.out.println("Engine started");
+    }
+}
+
+class Car extends Engine {
+    void drive() {
+        start(); // Using inherited method
+        System.out.println("Car is moving");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.drive();
+    }
+}
+
+
+Issues with this approach:
+
+Tight coupling - Car is permanently tied to Engine
+
+Can't change behavior at runtime
+
+Breaks encapsulation (Car exposes all Engine methods)
+
+What if Car needs multiple engines? Inheritance doesn't allow that.
+
+
+When to Use Inheritance?
+Inheritance is still appropriate when:
+
+There's a true "is-a" relationship
+
+You need polymorphism
+
+The subclass is a proper specialization of the superclass
+
+eg Animal , Dog extends Animal 
+
+
+
+
+// Composition example
+class Engine {
+    void start() {
+        System.out.println("Engine started");
+    }
+}
+
+class Car {
+    private Engine engine; // Composition - Car HAS-A Engine
+    
+    // Constructor injection
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+    
+    // Method to delegate to Engine
+    void startEngine() {
+        engine.start();
+    }
+    
+    void drive() {
+        startEngine();
+        System.out.println("Car is moving");
+    }
+    
+    // Can change engine at runtime
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Engine v8 = new Engine();
+        Car car = new Car(v8);
+        car.drive();
+        
+        // Can switch to a different engine
+        Engine electric = new Engine() {
+            @Override
+            void start() {
+                System.out.println("Electric motor activated");
+            }
+        };
+        car.setEngine(electric);
+        car.drive();
+    }
+}
+
+
+Advantages of Composition:
+Flexibility: Can change behavior at runtime (like swapping engines)
+
+Loose Coupling: Car isn't tied to a specific Engine implementation
+
+Better Encapsulation: Engine details are hidden
+
+Multiple Components: Can easily have multiple engines:

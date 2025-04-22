@@ -1,11 +1,14 @@
-import java.util.*;
+brute force: find all permution tc: o(n*n!)
+
+tc: o(n)
+
 public class Solution {
     public static List< Integer > nextGreaterPermutation(List< Integer > A) {
-        // Write your code here.
-
         int idx=-1;
 
         int n = A.size();
+		
+		// first index i from the back of the given array where arr[i] becomes smaller than arr[i+1]
 
         for(int i=n-2;i>=0;i--){
             if(A.get(i)<A.get(i+1)){
@@ -13,12 +16,17 @@ public class Solution {
                 break;
             }
         }
+		
+		//if such a break-point does not exist i.e. if the array is sorted in decreasing order,
 
         if(idx==-1){
          Collections.reverse(A);
          return A;
 
         }
+		//If a break-point exists:
+	//Find the smallest number i.e. > arr[i] and in the right half of index i(i.e. from index i+1 to n-1) and swap it with arr[i].
+    // Reverse the entire right half(i.e. from index i+1 to n-1) of index i. And finally, return the array.
 
         for(int i=n-1;i>=idx;i--){
             if(A.get(i)>A.get(idx)){

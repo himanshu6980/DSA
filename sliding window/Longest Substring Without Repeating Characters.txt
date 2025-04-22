@@ -65,6 +65,7 @@ class Solution {
 
             for (int j = i; j < s.length(); j++) {
                 char currentChar = s.charAt(j);
+				
                 if (charArray[currentChar]) {
                     ans = Math.max(ans, str.length());
                     break; // Stop if a duplicate character is found
@@ -82,29 +83,33 @@ class Solution {
 
 
 
+import java.util.HashMap;
+import java.util.Map;
 
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int l=0;
-        int r=0;
-        Map<Character,Integer> charmap=new HashMap<>();
-        int maxLen=0;
+        int left = 0;  // Left pointer
+        int right = 0; // Right pointer
+        Map<Character, Integer> charmap = new HashMap<>(); // Stores character and its last seen index
+        int maxLen = 0;  // Stores the maximum length of substring found
 
-        for( r=0;r<s.length();r++){
-            //in the map
-            if(charmap.containsKey(s.charAt(r))){
-                //in the window
-                if(charmap.get(s.charAt(r))>=l){
-                    l = charmap.get(s.charAt(r)) + 1; 
+        for (right = 0; right < s.length(); right++) {  // Move right pointer across the string
+            char currentChar = s.charAt(right);
+
+            // If the character is already in the map and inside the current window
+            if (charmap.containsKey(currentChar)) {
+                if (charmap.get(currentChar) >= left) {
+                    left = charmap.get(currentChar) + 1; // Move left pointer to exclude the duplicate
                 }
             }
 
-            maxLen=Math.max(maxLen, r-l+1);
+            // Update max length
+            maxLen = Math.max(maxLen, right - left + 1);
 
-            charmap.put(s.charAt(r), r);
-
+            // Store/update the character's last seen index
+            charmap.put(currentChar, right);
         }
 
-        return maxLen;
+        return maxLen; // Return the maximum substring length found
     }
 }

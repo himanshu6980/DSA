@@ -1,3 +1,5 @@
+pure recursion: tc: o(2^n)
+
 tc: o(n^2)
 
 class Solution {

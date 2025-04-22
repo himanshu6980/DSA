@@ -1,34 +1,39 @@
 tc: o(n*n) sc: o(n)
 
-       int n = nums.length;
-        int[] lengths = new int[n];
-        int[] counts = new int[n];
-        int maxLength = 0, result = 0;
+import java.util.*;
 
-        // initialize lengths and counts arrays
-        Arrays.fill(lengths, 1);
-        Arrays.fill(counts, 1);
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n == 0) return 0;
 
-        // calculate the length of the longest increasing subsequence ending at each index
+        int[] length = new int[n];  // Stores LIS length ending at index i
+        int[] count = new int[n];   // Stores number of LIS at index i
+        Arrays.fill(length, 1);
+        Arrays.fill(count, 1);
+
+        int maxLength = 1; // Stores max LIS length
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    if (lengths[j] + 1 > lengths[i]) {
-                        lengths[i] = lengths[j] + 1;
-                        counts[i] = counts[j];
-                    } else if (lengths[j] + 1 == lengths[i]) { //different subsequence giving same length
-                        counts[i] += counts[j];
+                if (nums[j] < nums[i]) { 
+                    if (length[j] + 1 > length[i]) {   // New longer subsequence, reset coun
+                        length[i] = length[j] + 1; // Update LIS length at i
+                        count[i] = count[j]; // Copy count from j to i
+                    } else if (length[j] + 1 == length[i]) { 
+                        count[i] += count[j]; // Add count from j to i  // Same length, add to count
                     }
                 }
             }
-            maxLength = Math.max(maxLength, lengths[i]);
+            maxLength = Math.max(maxLength, length[i]); // Track max LIS length
         }
 
-        // count the number of longest increasing subsequences
+        int numOfLIS = 0;
         for (int i = 0; i < n; i++) {
-            if (lengths[i] == maxLength) {
-                result += counts[i];
+            if (length[i] == maxLength) {
+                numOfLIS += count[i]; // Sum up all LIS of max length
             }
         }
-
-        return result;
+        return numOfLIS;
+    }
+}

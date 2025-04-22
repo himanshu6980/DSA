@@ -1,8 +1,7 @@
-import java.util.ArrayList;
 
 public class Solution {
     public static int numberOfInversions(int []arr, int n) {
-        // Write your code here.
+         //brute force tc: o(n^2)
         // int cnt=0;
 
         // for(int i=0;i<n-1;i++){
@@ -15,6 +14,8 @@ public class Solution {
         // }
 
         // return cnt;
+		
+		//optimal solution  below tc: o(nlogn)
 
         return mergeSort(arr,0,n-1);
 
@@ -50,10 +51,15 @@ public class Solution {
                 left++;
             } else {
                 cnt += (mid - left + 1); // main cond
+				
                 temp.add(arr[right]);
                 right++;
             }
         }
+		
+/*When this happens, it means that all the remaining elements in the left half (from left to mid) are greater than the current element in the right half.
+
+Therefore, the number of inversions contributed by this element is (mid - left + 1), which is the number of elements remaining in the left half.*/
 
 
         while (left <= mid) {

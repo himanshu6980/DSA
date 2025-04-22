@@ -5,10 +5,13 @@
         ans.add(arr[0]);
         int len = 1;
         for (int i = 1; i < arr.length; i++) {
+		     // If current element is greater than the last element in 'ans', it extends the LIS
             if (arr[i] > ans.get(ans.size() - 1)) {
                 ans.add(arr[i]);
                 len++;
             } else {
+			// If arr[i] is smaller or equal, find the position to replace using binary search
+			// Find the position where 'arr[i]' can replace an existing element to maintain a potential longer LIS
                 int indx = binarySearch(ans, arr[i]);
                 ans.set(indx, arr[i]);
             }

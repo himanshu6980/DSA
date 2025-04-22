@@ -1,5 +1,6 @@
 // min (left max, right max) at i - arr[i] ()building height
 
+tc: o(n^2)
 class Solution {
     public int trap(int[] arr) {
         int n = arr.length;
@@ -28,6 +29,8 @@ class Solution {
 }
 
 
+tc: o(n) better
+
     public int trap(int[] arr) {
      
        int n = arr.length;
@@ -52,7 +55,7 @@ class Solution {
 	
 	
 	
-
+optimal 
 
 class Solution {
     public int trap(int[] height) {

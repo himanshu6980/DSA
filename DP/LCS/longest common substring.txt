@@ -24,6 +24,7 @@
                     }
                     
                     else{
+						//this below is diff in LCS rest same
                         t[i][j] =0;
                     }
                 }

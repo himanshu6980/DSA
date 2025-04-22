@@ -6,7 +6,7 @@ public int findDuplicate(int[] nums) {
         //     return nums[i]
         // }
 
-        //t: o(n) s: o(n)
+        //approach 2 tc: o(n) s: o(n)
         // int [] freq=new int[nums.length];
         // int ans=0;
         // for(int i =0;i<nums.length;i++){
@@ -46,7 +46,7 @@ public int findDuplicate(int[] nums) {
 	
 	
 	
-	other ques : t: o(n) s: o(1)
+	other ques : tc: o(n) s: o(1)
 	
 		//mark visited negative
 	    public List<Integer> findDuplicates(int[] nums) {

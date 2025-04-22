@@ -1,3 +1,4 @@
+sc: o(n)
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         int [] nums3 = new int[m+n];
@@ -38,7 +39,7 @@ class Solution {
 
 
 //without extra space
-
+sc: o(1)
 
 
 import java.util.Arrays;
@@ -47,9 +48,14 @@ public class Solution {
     public static void mergeTwoSortedArraysWithoutExtraSpace(
         long []arr1, long []arr2){
         // Write your code here.
+		
+		// The left pointer will point to the last index of the arr1[](i.e. Basically the maximum element of the array). The right pointer will point to the first index of the arr2[](i.e. Basically the minimum element of the array).
 
+		//Using the 2 pointers, we will swap the bigger elements of arr1[] with the smaller elements of arr2[] until the minimum of arr2[] becomes greater or equal to the maximum of arr1[].
         int n = arr1.length;
         int m = arr2.length;
+		
+		//eg: arr1 [1,4,8,10]  arr2 : [2,3,9]
 
         int left=n-1;
         int right=0;
@@ -73,6 +79,10 @@ public class Solution {
 
             }
         }
+		
+		//arr1: [1,4,3,2] arr2: [10,8,9]
+		
+		//arr1[] will contain all the smaller elements and arr2[] will contain all the bigger elements. 
 
         Arrays.sort(arr1);
         Arrays.sort(arr2);

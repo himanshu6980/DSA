@@ -1,13 +1,14 @@
   
   bitonic : A subsequence of array is called Bitonic 
   if it is first strictly increasing, then strictly decreasing.
+
+[1, 11, 2, 10, 4, 5, 2, 1]   output ==> 6 [1, 2, 10, 4, 2, 1]
   
-  
-  
+  tc: o(n^2)
   
   public int LongestBitonicSequence(int[] arr)
     {   int n = arr.length;
-         int[] lis = new int[n];
+         int[] lis = new int[n]; //longest increasing
         Arrays.fill(lis, 1);
         int maxLength = 0;
         for (int i = 1; i < n; i++) {
@@ -17,8 +18,10 @@
                 }
             }
         }
+		
+		//lis = [1, 2, 2, 3, 3, 4, 2, 1]
 
-         int[] lds = new int[n];
+        int[] lds = new int[n];  //longest decreasing 
         Arrays.fill(lds, 1);
         for (int i = n-1; i >= 0; i--) {
             for (int j = n-1; j > i; j--) {
@@ -27,8 +30,13 @@
                 }
             }
         }
+		
+		
+		//lds = [6, 1, 5, 2, 3, 3, 2, 1]
+
 
         for(int i=0;i<n;i++){
+		//[1+6-1=6, 2+1-1=2, 2+5-1=6, 3+2-1=4, 3+3-1=5, 4+3-1=6, 2+2-1=3, 1+1-1=1]
              maxLength = Math.max(maxLength , lis[i]+lds[i]-1);
         }
 

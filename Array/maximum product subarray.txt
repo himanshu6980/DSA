@@ -1,8 +1,24 @@
+brtue force : tc: o(n^2)
+
+int maxProductSubArray(int arr[]) {
+	    int result = arr[0];
+	    for(int i=0;i<arr.length-1;i++) {
+	        int p = arr[i];
+	        for(int j=i+1;j<arr.length;j++) {
+	            result = Math.max(result,p);
+	            p *= arr[j];
+	        }
+	        result = Math.max(result,p);
+	    }
+	   return result;     
+	}
+
+
+optimal : tc: o(n) 
 public class Solution {
     public static int subarrayWithMaxProduct(int []arr){
-        // Write your code here.
 
-        int n = arr.length; //size of array.
+        int n = arr.length;
 
         int pre = 1, suff = 1;
         int ans = Integer.MIN_VALUE;

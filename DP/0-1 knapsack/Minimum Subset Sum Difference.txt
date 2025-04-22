@@ -56,6 +56,19 @@ public int minDifference(int arr[], int n)
 	            break;
 	        }
 	    }
+		
+		/*
+		
+		 t[i][j] will store whether a sum j can be formed using the first i elements of the array.
+		
+		The last row of t[i][j] tells us which subset sums are possible using all i elements.
+
+		We check from sum/2 down to 0 to find the largest subset sum S1 such that t[n][j] == true.
+
+		Compute the minimum difference as: sum-2*S1
+
+		This ensures that S1 is as close as possible to S2, minimizing their absolute difference.
+		*/
 	    
 	    return minSubsetSUm;
 	}

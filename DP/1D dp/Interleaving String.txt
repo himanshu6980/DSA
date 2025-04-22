@@ -1,3 +1,8 @@
+This code checks whether the string s3 is an interleaving of s1 and s2. Interleaving means that s3 is formed by merging s1 and s2 while maintaining their relative order.
+
+
+tcc: O(m*n)
+
 class Solution {
     public boolean isInterleave(String s1, String s2, String s3) {
         if (s1.length() + s2.length() != s3.length()) {
