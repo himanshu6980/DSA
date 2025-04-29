@@ -1,0 +1,45 @@
+tc:  O(n log n)  
+
+
+
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        int n = hand.length;
+
+        if (n % groupSize != 0) {
+            return false;
+        }
+
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int num : hand) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        while (!map.isEmpty()) {
+
+            // Get the smallest remaining card value
+
+            int curr = map.firstKey();
+            // Try to form a consecutive sequence starting from firstCard
+
+            for (int i = 0; i < groupSize; i++) {
+                // If we don't have the next consecutive card, grouping fails
+
+                if (!map.containsKey(curr + i)) {
+                    return false;
+                }
+
+                int count = map.get(curr + i);
+                // Remove the card from map if we've used all instances
+
+                if (count == 1) {
+                    map.remove(curr + i);
+                } else {
+                    map.put(curr + i, count - 1);
+                }
+            }
+        }
+
+        return true;
+    }
+}

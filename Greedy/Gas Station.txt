@@ -1,0 +1,97 @@
+o(n^2)
+
+brute force 
+
+class Solution {
+    
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int n = gas.length; // Total number of gas stations
+
+        // Try each station as the potential starting point
+        for (int i = 0; i < n; i++) {
+            int currGas = gas[i]; // Initial gas at starting station
+            int costofgasneeded = cost[i]; // Gas needed to move to the next station
+
+            // If not enough gas to move from station i, skip it
+            if (costofgasneeded > currGas) {
+                continue;
+            }
+
+            // Move to the next station
+            int j = (i + 1) % n;
+            currGas = currGas - cost[i] + gas[j];
+
+            // Try to complete the circuit
+            while (j != i) {
+                int costForMovingFromThisj = cost[j];
+
+                // If gas is insufficient to move to the next station, break and try next starting point
+                if (costForMovingFromThisj > currGas) {
+                    break;
+                }
+
+                // Move to the next station
+                j = (j + 1) % n;
+
+                // Add gas at the new station and subtract travel cost
+                int gasEarnInNextStationj = gas[j];
+                currGas = currGas - costForMovingFromThisj + gasEarnInNextStationj;
+            }
+
+            // If we returned to the starting point, return the index
+            if (i == j) {
+                return i;
+            }
+        }
+
+        // No valid starting point found
+        return -1;
+    }
+}
+
+
+
+//greedy 
+
+Only one valid solution exists (as per the problem constraints).
+
+If total gas ≥ total cost, then a solution exists.(then it is possible to complete the circle — we just need to find where to start)
+
+We only need to find where the total starts going negative, and skip those stations as starting points.
+
+
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int n = gas.length;
+
+        // Calculate the total gas and total cost
+        int sumGas = 0, sumCost = 0;
+        for (int i = 0; i < n; i++) {
+            sumGas += gas[i];
+            sumCost += cost[i];
+        }
+
+        // If total gas is less than total cost, it's impossible to complete the circuit
+        if (sumGas < sumCost) {
+            return -1;
+        }
+
+        // Track the current fuel balance and the starting index
+        int total = 0;
+        int result = 0;
+
+        // Traverse each station to find the valid starting index
+        for (int i = 0; i < n; i++) {
+            total += gas[i] - cost[i]; // Update fuel balance at station i
+
+            // If balance is negative, can't reach next station from current result
+            if (total < 0) {
+                total = 0;       // Reset balance
+                result = i + 1;  // Move starting point to the next station
+            }
+        }
+
+        // Return the index of the valid starting station
+        return result;
+    }
+}

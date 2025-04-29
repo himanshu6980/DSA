@@ -1,0 +1,173 @@
+
+greddy 
+tc: o(n) 
+
+class Solution {
+    public int jump(int[] nums) {
+        final int size = nums.length;
+
+        // destination is last index
+        int destination = size-1;
+
+        int curCoverage = 0, lastJumpIdx = 0;
+
+        // counter of jump
+        int timesOfJump = 0;
+
+        // Quick response if start index == destination index == 0
+        if( size == 1 ){
+            return 0;
+        }
+
+
+        // Greedy stragegy: extend coverage as long as possible with lazp jump
+        for( int i = 0 ; i < size ; i++){
+
+            // extend coverage
+            curCoverage = Math.max(curCoverage, i + nums[i] );
+
+            // forced to jump (by lazy jump) to extend coverage
+            if( i == lastJumpIdx ){
+
+                lastJumpIdx = curCoverage;
+
+                timesOfJump++;
+
+                // check if we reached destination already
+                if( curCoverage >= destination){
+                    return timesOfJump;
+                }
+            }
+        }
+
+        return timesOfJump;
+    }
+}
+
+using 2d aaray 
+pure recusion : O(n!)
+
+tc : O(n^3) (since n^2 states × n operations per state).
+class Solution {
+    public int jump(int[] nums) {
+        //dp[i][j] = minimum jumps to reach the end starting from index `i`, with `j` jumps made so far (optional depending on your definition).
+       int[][] dp = new int[nums.length][nums.length];
+
+         for (int i = 0; i < nums.length; i++) {
+            Arrays.fill(dp[i], -1);  
+        }
+
+       
+        return solve(nums, 0, 0,dp);
+    }
+
+    public int solve(int [] nums, int index, int minJumps,int [][] dp){
+
+        if(index>=nums.length-1){
+            return minJumps;
+        }
+
+
+          if (dp[index][minJumps] != -1) {
+            return dp[index][minJumps];
+        }
+
+        int  maxJumps=nums[index];
+
+        int mini=Integer.MAX_VALUE;
+
+        for(int i=1;i<=maxJumps;i++){
+            if (index + i < nums.length) {
+            mini=Math.min(mini, solve(nums,index+i,minJumps+1,dp));
+            }
+        }
+
+        return dp[index][minJumps]=mini;
+
+
+    }
+
+  
+}
+
+
+using 1d array
+
+O(n^2) (since n states × n operations per state).
+
+
+
+import java.util.Arrays;
+
+class Solution {
+    public int jump(int[] nums) {
+        // dp[i] will store the minimum jumps needed to reach the end from index i
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, -1);
+        return solve(nums, 0, dp);
+    }
+
+    public int solve(int[] nums, int index, int[] dp) {
+        // Base case: if we're at or beyond the last index, no more jumps needed
+        if (index >= nums.length - 1) {
+            return 0;
+        }
+
+        // If we've already computed this state, return it
+        if (dp[index] != -1) {
+            return dp[index];
+        }
+
+        int maxJumps = nums[index];
+        int minJumps = Integer.MAX_VALUE;
+
+        // Try all possible jumps from 1 to maxJumps
+        for (int i = 1; i <= maxJumps; i++) {
+            if (index + i < nums.length) {
+                int jumps = solve(nums, index + i, dp);
+                if (jumps != Integer.MAX_VALUE) {
+                    minJumps = Math.min(minJumps, 1 + jumps);
+                }
+            }
+        }
+
+        // Memoize the result before returning
+        dp[index] = minJumps;
+        return minJumps;
+    }
+}
+
+
+
+bottom up - tabulation 
+
+dp[i] will store the minimum jumps needed to reach the last index from index i.
+
+Initialize dp array with Integer.MAX_VALUE to represent that initially, all states are unreachable.
+
+Set dp[n-1] = 0 because no jumps are needed if you are already at the last index.
+
+
+import java.util.Arrays;
+
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[n - 1] = 0; // Base case: no jumps needed at the last index
+
+        for (int i = n - 2; i >= 0; i--) {
+            int maxJump = nums[i];
+            int minJumps = Integer.MAX_VALUE;
+            for (int j = 1; j <= maxJump && i + j < n; j++) {
+                if (dp[i + j] != Integer.MAX_VALUE) {
+                    minJumps = Math.min(minJumps, 1 + dp[i + j]);
+                }
+            }
+            dp[i] = minJumps;
+        }
+
+        return dp[0];
+    }
+}
